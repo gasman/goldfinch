@@ -1,0 +1,8 @@
+*.lib
+*.obj
+*.sym
+loader.bas.tap
+sector_dump.bin
+sector_dump.bin.tap
+sector_dump.tap
+zcc_opt.def
