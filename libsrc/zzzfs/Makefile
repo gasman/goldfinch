@@ -1,5 +1,3 @@
-# $Id: Makefile,v 1.8 2008/03/01 10:20:28 aralbrec Exp $
-
 CFILES = \
 	open.c \
 	readbyte.c \
@@ -29,4 +27,4 @@ all: ../../lib/zzzfs.lib
 	zcc +zx -vn -c $*.c 
 
 clean:
-	rm -f *.sym *.map zcc_opt.def *.o* $(GEN_AFILES)
+	rm -f *.sym *.map zcc_opt.def *.o*

@@ -1,9 +1,14 @@
+LIBRARIES = \
+	divide \
+	block_device \
+	zzzfs
+
 all:
-	cd divide ; make ; cd ..
-	cd block_device ; make ; cd ..
-	cd zzzfs ; make ; cd ..
+	for l in $(LIBRARIES); do \
+		cd $$l ; make ; cd ..; \
+	done
 
 clean:
-	cd divide ; make clean ; cd ..
-	cd block_device ; make clean ; cd ..
-	cd zzzfs ; make clean ; cd ..
+	for l in $(LIBRARIES); do \
+		cd $$l ; make clean ; cd ..; \
+	done

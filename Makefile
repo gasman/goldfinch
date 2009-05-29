@@ -4,7 +4,7 @@ sector_dump.tap: loader.bas.tap sector_dump.bin.tap
 	cat loader.bas.tap sector_dump.bin.tap > sector_dump.tap
 
 sector_dump.bin.tap: sector_dump.bin
-	bintap sector_dump.bin sector_dump.bin.tap sectordump 32768
+	bintap sector_dump.bin sector_dump.bin.tap sectordump 32768 > /dev/null
 
 loader.bas.tap: loader.bas
 	zmakebas -a 10 -n loader -o loader.bas.tap loader.bas
@@ -17,7 +17,7 @@ simple_io.tap: loader.bas.tap simple_io.bin.tap
 	cat loader.bas.tap simple_io.bin.tap > simple_io.tap
 
 simple_io.bin.tap: simple_io.bin
-	bintap simple_io.bin simple_io.bin.tap simpleio 32768
+	bintap simple_io.bin simple_io.bin.tap simpleio 32768 > /dev/null
 
 simple_io.bin: libs include/divide.h include/block_device.h simple_io.c
 	zcc +zx -vn simple_io.c -o simple_io.bin -Ca-ilib/zzzfs -Ca-ilib/divide -Ca-ilib/block_device
