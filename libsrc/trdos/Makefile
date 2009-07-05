@@ -1,7 +1,9 @@
 CFILES = \
 	trdos_fsopen.c \
 	trdos_opendir.c \
-	trdos_readdir.c
+	trdos_readdir.c \
+	trdos_open_dirent.c \
+	trdos_read.c
 
 AFILES = 
 
