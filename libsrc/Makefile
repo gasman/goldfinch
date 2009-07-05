@@ -1,7 +1,8 @@
 LIBRARIES = \
 	divide \
 	block_device \
-	zzzfs
+	zzzfs \
+	trdos
 
 all:
 	for l in $(LIBRARIES); do \

@@ -1,4 +1,4 @@
-all: simple_io.tap sector_dump.tap
+all: simple_io.tap sector_dump.tap trdos.tap
 
 sector_dump.tap: loader.bas.tap sector_dump.bin.tap
 	cat loader.bas.tap sector_dump.bin.tap > sector_dump.tap
@@ -21,6 +21,16 @@ simple_io.bin.tap: simple_io.bin
 
 simple_io.bin: libs include/divide.h include/block_device.h simple_io.c
 	zcc +zx -vn simple_io.c -o simple_io.bin -Ca-ilib/zzzfs -Ca-ilib/divide -Ca-ilib/block_device
+
+
+trdos.tap: loader.bas.tap trdos.bin.tap
+	cat loader.bas.tap trdos.bin.tap > trdos.tap
+
+trdos.bin.tap: trdos.bin
+	bintap trdos.bin trdos.bin.tap trdos 32768 > /dev/null
+
+trdos.bin: libs include/divide.h include/block_device.h include/trdos.h trdos.c
+	zcc +zx -vn trdos.c -o trdos.bin -Ca-ilib/zzzfs -Ca-ilib/divide -Ca-ilib/block_device -Ca-ilib/trdos
 
 libs:
 	cd libsrc && make && cd ..
