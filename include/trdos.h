@@ -32,8 +32,10 @@ extern ssize_t __LIB__ trdos_read(TRDOS_FILESYSTEM *, TRDOS_FILE *, void *, size
 
 /* callee definitions */
 extern void __LIB__ __CALLEE__ trdos_fsopen_callee(BLOCK_DEVICE *, TRDOS_FILESYSTEM *);
+extern void __LIB__ __CALLEE__ trdos_open_dirent_callee(TRDOS_FILESYSTEM *, DIRENT *, TRDOS_FILE *);
 
 /* set up to use callee when doing plain non-function-pointer calls */
 #define trdos_fsopen(a,b) trdos_fsopen_callee(a,b)
+#define trdos_open_dirent(a,b,c) trdos_open_dirent_callee(a,b,c)
 
 #endif

@@ -4,7 +4,7 @@ XLIB trdos_fsopen
 LIB trdos_fsopen_callee
 XREF ASMDISP_TRDOS_FSOPEN_CALLEE
 
-.memcpy
+.trdos_fsopen
 
    pop de
    pop hl

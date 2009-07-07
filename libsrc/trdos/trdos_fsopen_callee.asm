@@ -1,4 +1,4 @@
-; void __CALLEE__ trdos_fsopen(BLOCK_DEVICE *device, TRDOS_FILESYSTEM *fs)
+; void __CALLEE__ trdos_fsopen_callee(BLOCK_DEVICE *device, TRDOS_FILESYSTEM *fs)
 ; open a block device for access as a trdos file system
 
 XLIB trdos_fsopen_callee
