@@ -1,5 +1,4 @@
 CFILES = \
-	trdos_opendir.c \
 	trdos_readdir.c \
 	trdos_read.c
 
@@ -7,7 +6,9 @@ AFILES = \
 	trdos_fsopen.asm \
 	trdos_fsopen_callee.asm \
 	trdos_open_dirent.asm \
-	trdos_open_dirent_callee.asm
+	trdos_open_dirent_callee.asm \
+	trdos_opendir.asm \
+	trdos_opendir_callee.asm
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)

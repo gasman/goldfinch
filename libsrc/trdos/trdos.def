@@ -24,3 +24,11 @@ defvars 0
 	trd_file_pos	ds.w	1	; position within block_buffer
 	trd_file_block_buffer	ds.b	512 ; can make this [256] once we're assured of a block_device that serves blocks of 256 bytes
 }
+
+; Directory
+defvars 0
+{
+	trd_dir_block_number	ds.l	1	; the block number of the block currently loaded into block_buffer
+	trd_dir_current_dir_entry	ds.l	1	; the pointer into block_buffer to the next unread directory entry
+	trd_dir_block_buffer	ds.b	512	; can make this [256] once we're assured of a block_device that serves blocks of 256 bytes
+}
