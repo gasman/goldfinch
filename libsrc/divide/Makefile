@@ -1,8 +1,8 @@
 CFILES = 
 
 AFILES = \
-	divide_read_sector.asm \
-	divide_read_sector_callee.asm \
+	divide_read_block.asm \
+	divide_read_block_callee.asm \
 	divide_open_drive.asm
 
 OBJECTS = $(CFILES:.c=.o)

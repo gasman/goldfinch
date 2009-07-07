@@ -1,24 +1,27 @@
-; void __CALLEE__ divide_read_sector_callee(void *buffer, unsigned long sector_number, unsigned char drive_number)
+; void __CALLEE__ divide_read_block_callee(BLOCK_DEVICE *device, void *buffer, unsigned long block_number)
 
-XLIB divide_read_sector_callee
-XDEF ASMDISP_DIVIDE_READ_SECTOR_CALLEE
+XLIB divide_read_block_callee
+XDEF ASMDISP_DIVIDE_READ_BLOCK_CALLEE
 
-.divide_read_sector_callee
+include	"divide.def"
 
-	pop hl
+.divide_read_block_callee
+
+	pop ix	; get return address
 	pop de
-	ld a,e
-	pop de
-	pop bc
-	ex (sp),hl
+	pop bc	; get block number
+	pop hl	; get buffer address
+	ex (sp),ix	; get device and restore return address
 	
 	; enter : hl = buffer address
 	;         bcde = LBA sector number
-	;         a = drive ID code (DIVIDE_DRIVE_MASTER or DIVIDE_DRIVE_SLAVE)
+	;         ix = pointer to BLOCK_DEVICE structure
 	; exit  : carry set if successful
 	; uses  : af, bc, de, hl
 	
 .asmentry
+	; get drive ID byte (contributes bits 4 and 6 of the "LBA bits 24..28 + drive" register)
+	ld a,(ix + divide_blockdev_driveid)
 	or b
 	out (0xbb),a	; LBA bits 24..28 + drive (bit 4) + LBA flag (bit 6)
 	ld a,e
@@ -51,4 +54,4 @@ XDEF ASMDISP_DIVIDE_READ_SECTOR_CALLEE
 	scf	; indicate success
 	ret
 
-DEFC ASMDISP_DIVIDE_READ_SECTOR_CALLEE = asmentry - divide_read_sector_callee
+DEFC ASMDISP_DIVIDE_READ_BLOCK_CALLEE = asmentry - divide_read_block_callee

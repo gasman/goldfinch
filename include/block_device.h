@@ -12,6 +12,14 @@ typedef struct block_device_st {
 */
 typedef struct block_device_st BLOCK_DEVICE;
 
-extern void __LIB__ read_block(BLOCK_DEVICE *, void *, unsigned long block_number);
+// First a list of functions using CALLER and FASTCALL linkage
+extern void __LIB__ read_block(BLOCK_DEVICE *device, void *buffer, unsigned long block_number);
+
+// And now a list of the same non-FASTCALL functions using CALLEE linkage
+extern void __LIB__ __CALLEE__ read_block_callee(BLOCK_DEVICE *device, void *buffer, unsigned long block_number);
+
+// And now we make CALLEE linkage default to make compiled progs shorter and faster
+// These defines will generate warnings for function pointers but that's ok
+#define read_block(a,b,c)	read_block(a,b,c)
 
 #endif

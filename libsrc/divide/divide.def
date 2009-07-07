@@ -1,0 +1,11 @@
+; Identifiers for master / slave drive
+DEFC DIVIDE_DRIVE_MASTER = 0x40
+DEFC DIVIDE_DRIVE_SLAVE = 0x50
+
+; block device for a DivIDE drive. Compatible with block device api defined in block_device.def
+defvars 0
+{
+	divide_blockdev_driver	ds.w	1	; pointer to device driver (jump table)
+	divide_blockdev_driveid	ds.b	1	; 'master' or 'slave' identifier byte
+	divide_blockdev_spare_1	ds.b	1	; spare byte
+}

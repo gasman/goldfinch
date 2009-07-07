@@ -1,11 +1,11 @@
 ; CALLER linkage for function pointers
-; void read_block_callee(BLOCK_DEVICE *device, void *buffer, unsigned long block_number)
+; void divide_read_block_callee(BLOCK_DEVICE *device, void *buffer, unsigned long block_number)
 
-XLIB read_block
-LIB read_block_callee
-XREF ASMDISP_READ_BLOCK_CALLEE
+XLIB divide_read_block
+LIB divide_read_block_callee
+XREF ASMDISP_DIVIDE_READ_BLOCK_CALLEE
 
-.read_block
+.divide_read_block
 	
 	; stack contents: return addr, block number low, block number high, buffer addr, device pointer
 	pop af	; get return addr
@@ -19,4 +19,4 @@ XREF ASMDISP_READ_BLOCK_CALLEE
 	push de
 	push af	; restore everything to be torn down by caller
 
-	jp read_block_callee + ASMDISP_READ_BLOCK_CALLEE
+	jp divide_read_block_callee + ASMDISP_DIVIDE_READ_BLOCK_CALLEE
