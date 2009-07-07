@@ -26,10 +26,14 @@ typedef struct trdos_file_st {
 extern void __LIB__ trdos_fsopen(BLOCK_DEVICE *, TRDOS_FILESYSTEM *);
 extern void __LIB__ trdos_opendir(TRDOS_FILESYSTEM *, TRDOS_DIR *);
 extern int __LIB__ trdos_readdir(TRDOS_FILESYSTEM *, TRDOS_DIR *, DIRENT *); /* returns 0 if at end of dir */
-
-/* void trdos_open_dirent(TRDOS_FILESYSTEM *fs, DIRENT *dirent, TRDOS_FILE *file); */
 extern void __LIB__ trdos_open_dirent(TRDOS_FILESYSTEM *, DIRENT *, TRDOS_FILE *);
-/* ssize_t __LIB__ trdos_read(TRDOS_FILESYSTEM *fs, TRDOS_FILE *file, void *buf, size_t nbyte); */
 extern ssize_t __LIB__ trdos_read(TRDOS_FILESYSTEM *, TRDOS_FILE *, void *, size_t);
+
+
+/* callee definitions */
+extern void __LIB__ __CALLEE__ trdos_fsopen_callee(BLOCK_DEVICE *, TRDOS_FILESYSTEM *);
+
+/* set up to use callee when doing plain non-function-pointer calls */
+#define trdos_fsopen(a,b) trdos_fsopen_callee(a,b)
 
 #endif

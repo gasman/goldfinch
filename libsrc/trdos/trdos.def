@@ -1,0 +1,5 @@
+; trdos filesystem
+defvars 0
+{
+	trdfs_block_device	ds.w	1	; pointer to blockdevice
+}
