@@ -22,7 +22,27 @@ AFILES = \
 	clus_allocate.asm \
 	clus_extendchain.asm \
 	clus_freechain.asm \
-	clus_erase.asm
+	clus_erase.asm \
+	dir_root.asm \
+	dir_home.asm \
+	dir_change.asm \
+	dir_entrydetails.asm \
+	dir_getentry.asm \
+	dir_next.asm \
+	dir_getfree.asm \
+	dir_findvolumelabel.asm \
+	dir_validchar.asm \
+	dir_parsefilename.asm \
+	drive_getdircopy.asm \
+	drive_getdirhandle.asm \
+	drive_refdir.asm \
+	dir_getfirstmatch.asm \
+	dir_matchname.asm \
+	dir_catalog.asm \
+	dir_path.asm \
+	file_delete.asm \
+	file_isopen.asm \
+	file_create_entry.asm
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)

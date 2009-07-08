@@ -24,6 +24,78 @@ defgroup
 	bufflag_upd			; set if buffer has been updated
 }
 
+; Drives
+
+defc	drive_numdrives = 16
+
+; Directory handles
+
+defc	dir_numhandles = 16		; can reduce considerably if necessary
+
+defvars 0
+{
+	fdh_phandle	ds.w	1	; partition handle
+	fdh_flags	ds.b	1	; bit 7=1 for root
+	fdh_clusstart	ds.w	1	; start cluster (0 for root)
+	fdh_sector	ds.b	1	; current sector
+	fdh_cluster	ds.w	1	; current cluster (sector offset for root)
+	fdh_entry	ds.b	1	; current entry within sector
+
+	fdh_size	ds.b	1	; dummy
+}
+
+; FAT directory entries
+
+defc	direntry_deleted = $e5		; deleted flag
+defc	DIRENTRY_ENTRYSIZE = $20	; size of a directory entry
+
+defvars 0
+{
+	direntry_name	ds.b	8	; name
+	direntry_ext	ds.b	3	; extension
+	direntry_attr	ds.b	1	; attributes
+	direntry_unused	ds.b	10	; not used without LFN
+	direntry_time	ds.w	1	; time
+	direntry_date	ds.w	1	; date
+	direntry_cluster ds.w	1	; start cluster
+	direntry_filesize ds.l	1	; size in bytes
+}
+
+; Directory entry attribute bits
+defgroup
+{
+	dirattr_ro = 0,
+	dirattr_hid,
+	dirattr_sys,
+	dirattr_vol,
+	dirattr_dir,
+	dirattr_arc
+}
+
+defc	dirattr_lfn = $0f		; R/O, HIDDEN, SYS, VOL
+defc	dirattr_syshid_mask = $06	; SYS, HIDDEN
+defc	dirattr_nodeletemask = $1f	; only ARC allowed
+
+; File handles
+defc	file_numhandles = 16
+
+defvars 0
+{
+	ffh_dhandle	ds.b	fdh_size ; copy of directory handle, with entry=this file
+	ffh_mode	ds.b	1	; file mode flags (0 if handle free)
+	ffh_cluster	ds.w	1	; current cluster
+	ffh_sector	ds.b	1	; current sector
+	ffh_offset	ds.w	1	; current pos within sector
+	ffh_filepos	ds.l	1	; filepointer
+	
+	; The next three must be contigious (for copying from FAT dir and to +3DOS header)
+	ffh_clusstart	ds.w	1	; start cluster
+	ffh_filesize	ds.l	1	; exact filesize in bytes
+	ffh_header	ds.b	8	; +3DOS header record (set by +3 BASIC)
+	ffh_idedos_hdr	ds.w	1	; address of header in IDEDOS
+	ffh_size	ds.b	1	; dummy
+}
+
 ; Partition handles
 ; TBD: This stuff can be re-ordered for convenience of setup, except the standard partition
 ;      handle *must* come first.
@@ -57,6 +129,15 @@ defvars fatfs_data_area
 	buf_mrulist	ds.b	buf_numbufs		; IDs of buffers in order, MRU first
 	buf_handles	ds.b	fbh_size*buf_numbufs	; buffer handles
 	buf_buffers	ds.b	buf_secsize*buf_numbufs	; sector buffers
+	file_handles	ds.b	ffh_size*file_numhandles ; file handles
+	drive_ptrs	ds.w	drive_numdrives		; pointers to drive directory handles
+	sys_directory	ds.b	fdh_size		; system directory handle (temporary)
+	sys_directory2	ds.b	fdh_size		; system directory handle (temporary)
+
+	; Miscellaneous variables
+	fat_defdrive	ds.b	1			; default drive letter ('A'-'P')
+	dir_filespec1	ds.b	11			; 11-byte filespecs
+	dir_filespec2	ds.b	11
 }
 
 ; error codes (borrowed from p3dos.def)
@@ -103,4 +184,12 @@ defgroup {      rc_invpartition=56,
                 rc_cmdphase,
                 rc_dataphase,
                 rc_notdir
+        }
+
+; "reason codes" from idedos.def
+; Reason codes for ide_path
+defgroup {      rc_path_change = 0,
+                rc_path_get,
+                rc_path_make,
+                rc_path_delete
         }
