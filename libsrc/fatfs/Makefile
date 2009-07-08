@@ -9,7 +9,9 @@ AFILES = \
 	buf_writebuf.asm \
 	buf_findbuf.asm \
 	buf_update.asm \
-	buf_flushbuffers.asm
+	buf_flushbuffers.asm \
+	fat_readfat.asm \
+	fat_writefat.asm
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)

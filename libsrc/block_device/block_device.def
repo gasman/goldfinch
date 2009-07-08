@@ -3,6 +3,7 @@ defvars 0
 {
 	blockdev_driver	ds.w	1	; pointer to device driver (jump table)
 	blockdev_data	ds.w	1	; pointer / space for device-driver-specific data
+	blockdev_size
 }
 
 ; structure of a device driver, to be implemented as a jump table of JP xxxx entries (3 bytes each)

@@ -11,7 +11,7 @@ XREF ASMDISP_READ_BLOCK_CALLEE
 ; ***************************************************************************
 ; * Subroutine to get buffer for sector, reading from disk if necessary     *
 ; ***************************************************************************
-; On entry, BCDE=sector required, IX=block device handle
+; On entry, BCDE=sector required, IX=partition handle (or actually any struct that behaves as a block_device)
 ; On exit, Fc=1 (success) and HL=address of buffer
 ; or Fc=0 and A=error.
 ; This will update the MRU list

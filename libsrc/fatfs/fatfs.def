@@ -1,5 +1,7 @@
 ; FAT filesystem module definitions
 
+include "../block_device/block_device.def"
+
 ; Buffers
 
 defc	buf_numbufs = 4
@@ -22,6 +24,31 @@ defgroup
 	bufflag_upd			; set if buffer has been updated
 }
 
+; Partition handles
+; TBD: This stuff can be re-ordered for convenience of setup, except the standard partition
+;      handle *must* come first.
+defc	part_numhandles = 16		; 1 per drive
+
+defvars 0
+{
+	fph_parthandle	ds.b	blockdev_size ; associated block device (corresponds to IDEDOS partition handle in residos)
+	fph_fattype	ds.b	1	; bit 7=0 for FAT12, 1 for FAT 16
+	fph_fatsize	ds.w	1	; # secs per FAT
+	fph_fat_copies	ds.b	1	; # copies of FAT
+	fph_fat1_start	ds.b	3	; logical sector start for FAT 1 (TBD: Not enough for FAT32)
+	fph_rootsize	ds.w	1	; # secs in root directory
+	fph_root_start	ds.b	3	; logical sector start for root directory (TBD: Not enough for FAT32)
+	fph_clussize	ds.b	1	; # secs per cluster
+	fph_maxclust	ds.w	1	; maximum valid cluster (min is $0002)
+	fph_lastalloc	ds.w	1	; last allocated cluster (init to $0001)
+	fph_data_start	ds.b	3	; logical sector start for data (cluster $0002) (TBD: Not enough for FAT32)
+	fph_primary	ds.b	1	; primary partition number (1-4)
+	fph_secondary	ds.b	1	; secondary partition number (0, or 1+)
+	fph_freeclusts	ds.w	1	; number of free clusters
+	
+	fph_size	ds.b	1	; dummy
+}
+
 defc	fatfs_data_area = $c000 ; TODO: allocate this in fatfs_data.asm
 
 defvars fatfs_data_area
@@ -31,3 +58,49 @@ defvars fatfs_data_area
 	buf_handles	ds.b	fbh_size*buf_numbufs	; buffer handles
 	buf_buffers	ds.b	buf_secsize*buf_numbufs	; sector buffers
 }
+
+; error codes (borrowed from p3dos.def)
+defgroup {      rc_ready,
+                rc_wp,
+                rc_seek,
+                rc_crc,
+                rc_nodata,
+                rc_mark,
+                rc_unrecog,
+                rc_unknown,
+                rc_diskchg,
+                rc_unsuit,
+                rc_badname=20,
+                rc_badparam,
+                rc_nodrive,
+                rc_nofile,
+                rc_exists,
+                rc_eof,
+                rc_diskfull,
+                rc_dirfull,
+                rc_ro,
+                rc_number,
+                rc_denied,
+                rc_norename,
+                rc_extent,
+                rc_uncached,
+                rc_toobig,
+                rc_notboot,
+                rc_inuse
+        }
+; ...aaand from idedos.def
+defgroup {      rc_invpartition=56,
+                rc_partexist,
+                rc_notimp,
+                rc_partopen,
+                rc_nohandle,
+                rc_notswap,
+                rc_mapped,
+                rc_noxdpb,
+                rc_noswap,
+                rc_invdevice,
+                rc_8bitdata,
+                rc_cmdphase,
+                rc_dataphase,
+                rc_notdir
+        }
