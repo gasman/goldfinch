@@ -11,7 +11,18 @@ AFILES = \
 	buf_update.asm \
 	buf_flushbuffers.asm \
 	fat_readfat.asm \
-	fat_writefat.asm
+	fat_writefat.asm \
+	clus_getsector.asm \
+	clus_readtobuf.asm \
+	clus_tobuf_noread.asm \
+	clus_readtomem.asm \
+	clus_writefrommem.asm \
+	clus_nextsector.asm \
+	clus_valid.asm \
+	clus_allocate.asm \
+	clus_extendchain.asm \
+	clus_freechain.asm \
+	clus_erase.asm
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)
