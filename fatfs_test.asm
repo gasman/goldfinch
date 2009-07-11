@@ -9,7 +9,7 @@ LIB divide_open_drive
 XREF ASMDISP_DIVIDE_OPEN_DRIVE
 
 LIB fatfs_init
-LIB drive_init
+LIB fatfs_drive_init
 
 ;._main
 	call fatfs_init
@@ -18,7 +18,7 @@ LIB drive_init
 	call divide_open_drive + ASMDISP_DIVIDE_OPEN_DRIVE
 	; returns block_device in hl
 	ld de,partition_handle
-	call drive_init	; populate the partition handle at de from the block device at hl
+	call fatfs_drive_init	; populate the partition handle at de from the block device at hl
 
 ;	ld bc,0	; return with bc=0 if no error
 ;	ret c
