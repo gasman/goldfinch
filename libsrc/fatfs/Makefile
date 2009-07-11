@@ -44,6 +44,7 @@ AFILES = \
 	fatfs_file_isopen.asm \
 	fatfs_file_create_entry.asm \
 	fatfs_drive_init.asm \
+	fatfs_drive_init_callee.asm \
 	fatfs_init.asm
 
 OBJECTS = $(CFILES:.c=.o)

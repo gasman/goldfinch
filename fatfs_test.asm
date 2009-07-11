@@ -9,7 +9,8 @@ LIB divide_open_drive
 XREF divide_open_drive_asmentry
 
 LIB fatfs_init
-LIB fatfs_drive_init
+LIB fatfs_drive_init_callee
+XREF fatfs_drive_init_asmentry
 
 ;._main
 	call fatfs_init
@@ -18,7 +19,7 @@ LIB fatfs_drive_init
 	call divide_open_drive_asmentry + (divide_open_drive-divide_open_drive)
 	; returns block_device in hl
 	ld de,partition_handle
-	call fatfs_drive_init	; populate the partition handle at de from the block device at hl
+	call fatfs_drive_init_asmentry + (fatfs_drive_init_callee-fatfs_drive_init_callee)	; populate the partition handle at de from the block device at hl
 
 ;	ld bc,0	; return with bc=0 if no error
 ;	ret c
@@ -29,4 +30,4 @@ LIB fatfs_drive_init
 	
 .partition_handle
 	defs fph_size + 1
-	
+	defb 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
