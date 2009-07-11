@@ -3,7 +3,7 @@
 
 XLIB read_block
 LIB read_block_callee
-XREF ASMDISP_READ_BLOCK_CALLEE
+XREF read_block_asmentry
 
 .read_block
 	
@@ -19,4 +19,4 @@ XREF ASMDISP_READ_BLOCK_CALLEE
 	push de
 	push af	; restore everything to be torn down by caller
 
-	jp read_block_callee + ASMDISP_READ_BLOCK_CALLEE
+	jp read_block_asmentry + (read_block_callee - read_block_callee)

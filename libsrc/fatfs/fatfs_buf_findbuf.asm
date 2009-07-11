@@ -6,7 +6,7 @@ LIB fatfs_buf_findbuf_noread
 XREF fatfs_buf_locatebuf
 
 LIB read_block_callee
-XREF ASMDISP_READ_BLOCK_CALLEE
+XREF read_block_asmentry
 
 ; ***************************************************************************
 ; * Subroutine to get buffer for sector, reading from disk if necessary     *
@@ -27,7 +27,7 @@ XREF ASMDISP_READ_BLOCK_CALLEE
 	ld	d,(iy+fbh_sector+1)
 	ld	c,(iy+fbh_sector+2)
 	ld	b,(iy+fbh_sector+3)	; BCDE=sector
-	call	read_block_callee + ASMDISP_READ_BLOCK_CALLEE	; read sector
+	call	read_block_asmentry + (read_block_callee-read_block_callee)
 	pop	hl			; retrieve buffer address
 	jr	c,buf_findbuf_ok	; exit if no error
 	res	bufflag_inuse,(iy+fbh_flags)	; not valid if error

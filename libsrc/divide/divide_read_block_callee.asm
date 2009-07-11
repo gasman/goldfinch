@@ -1,6 +1,7 @@
 ; void __CALLEE__ divide_read_block_callee(BLOCK_DEVICE *device, void *buffer, unsigned long block_number)
 
 XLIB divide_read_block_callee
+XDEF divide_read_block_asmentry
 XDEF ASMDISP_DIVIDE_READ_BLOCK_CALLEE
 
 include	"divide.def"
@@ -19,7 +20,7 @@ include	"divide.def"
 	; exit  : carry set if successful
 	; uses  : af, bc, de, hl
 	
-.asmentry
+.divide_read_block_asmentry
 	; get drive ID byte (contributes bits 4 and 6 of the "LBA bits 24..28 + drive" register)
 	ld a,(ix + divide_blockdev_driveid)
 	or b
@@ -54,4 +55,4 @@ include	"divide.def"
 	scf	; indicate success
 	ret
 
-DEFC ASMDISP_DIVIDE_READ_BLOCK_CALLEE = asmentry - divide_read_block_callee
+DEFC ASMDISP_DIVIDE_READ_BLOCK_CALLEE = divide_read_block_asmentry - divide_read_block_callee
