@@ -16,14 +16,9 @@ LIB drive_init
 	; get handle to divide master device
 	ld a,DIVIDE_DRIVE_MASTER
 	call divide_open_drive + ASMDISP_DIVIDE_OPEN_DRIVE
-	; copy it to the partition handle
+	; returns block_device in hl
 	ld de,partition_handle
-	ld bc,blockdev_size
-	push de
-	ldir
-	; run drive_init on it
-	pop ix
-	call drive_init
+	call drive_init	; populate the partition handle at de from the block device at hl
 
 ;	ld bc,0	; return with bc=0 if no error
 ;	ret c

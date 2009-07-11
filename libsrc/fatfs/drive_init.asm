@@ -9,8 +9,18 @@ LIB dir_findvolumelabel
 ; ***************************************************************************
 ; * Initialize partition handle from block device                           *
 ; ***************************************************************************
-; enter with ix = partition handle to be filled in (block_device part already initialized)
+; (cobbled together from drive_getpartition in ResiDOS fatfs)
+; enter with hl = pointer to block_device, de = pointer to partition handle to be filled in
+; Exit: Fc=1 (success), IX=filled in, DE=name address, B=name length (8/11)
+;       Fc=0 (failure), A=error
+; AFBCDEHLIY corrupt
 .drive_init
+	push de	; save pointer to partition handle
+	; copy the block device structure to the partition handle
+	ld bc,blockdev_size
+	ldir
+	pop ix ; refetch pointer to partition handle
+	
 	ld	b,0
 	ld	c,b
 	ld	d,b
