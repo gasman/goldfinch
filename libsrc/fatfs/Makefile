@@ -42,7 +42,9 @@ AFILES = \
 	dir_path.asm \
 	file_delete.asm \
 	file_isopen.asm \
-	file_create_entry.asm
+	file_create_entry.asm \
+	drive_init.asm \
+	fatfs_init.asm
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)

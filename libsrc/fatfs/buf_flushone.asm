@@ -25,6 +25,7 @@ XREF buf_writeany
 	bit	bufflag_inuse,(iy+fbh_flags)
 	ret	z
 	push	bc
-	call	buf_writeany		; write the buffer
+	call	buf_writeany + (buf_writebuf-buf_writebuf)		; write the buffer
+	; ^^^ stupid hack to persuade z80asm to explicitly link the buf_writebuf library
 	pop	bc
 	ret

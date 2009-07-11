@@ -19,7 +19,8 @@ XREF ASMDISP_READ_BLOCK_CALLEE
 
 .buf_findbuf
 	push	iy
-	call	buf_locatebuf
+	call buf_locatebuf + buf_findbuf_noread - buf_findbuf_noread
+	; ^^^ nasty hack to force import of the buf_findnoread library
 	jr	c,buf_findbuf_ok	; exit if contents already valid
 	push	hl			; save buffer address
 	ld	e,(iy+fbh_sector)

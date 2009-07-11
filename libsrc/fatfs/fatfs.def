@@ -1,6 +1,15 @@
 ; FAT filesystem module definitions
 
-include "../block_device/block_device.def"
+;include "../block_device/block_device.def"
+; copied from block_device.def, because z80asm is rubbish at dealing with relative paths:
+if !blockdev_data
+defvars 0
+{
+	blockdev_driver	ds.w	1	; pointer to device driver (jump table)
+	blockdev_data	ds.w	1	; pointer / space for device-driver-specific data
+	blockdev_size
+}
+endif
 
 ; Buffers
 
@@ -43,6 +52,35 @@ defvars 0
 
 	fdh_size	ds.b	1	; dummy
 }
+
+; FAT boot record
+
+defvars 0
+{
+	bootrec_jumpcode	ds.b	3
+	bootrec_oemname		ds.b	8
+	bootrec_secsize		ds.w	1
+	bootrec_clussize	ds.b	1
+	bootrec_resvd		ds.w	1
+	bootrec_fatcopies	ds.b	1
+	bootrec_rootents	ds.w	1
+	bootrec_secs_small	ds.w	1
+	bootrec_media		ds.b	1
+	bootrec_fatsize		ds.w	1
+	bootrec_spt		ds.w	1
+	bootrec_hds		ds.w	1
+	bootrec_hidden		ds.l	1
+	bootrec_secs_large	ds.l	1
+	bootrec_drive		ds.w	1
+	bootrec_extsig		ds.b	1
+	bootrec_serial		ds.l	1
+	bootrec_volname		ds.b	11
+	bootrec_fatname		ds.b	8
+	bootrec_code		ds.b	448
+	bootrec_signature	ds.w	1
+}
+
+defc	bootrec_extsig_byte = $29
 
 ; FAT directory entries
 
@@ -121,6 +159,10 @@ defvars 0
 	fph_size	ds.b	1	; dummy
 }
 
+defc	fattype_fat16 = $80
+
+; Data area
+
 defc	fatfs_data_area = $c000 ; TODO: allocate this in fatfs_data.asm
 
 defvars fatfs_data_area
@@ -135,9 +177,11 @@ defvars fatfs_data_area
 	sys_directory2	ds.b	fdh_size		; system directory handle (temporary)
 
 	; Miscellaneous variables
+	drive_sectorbuf	ds.w	1			; pointer to sector buffer used for MBRs etc
 	fat_defdrive	ds.b	1			; default drive letter ('A'-'P')
 	dir_filespec1	ds.b	11			; 11-byte filespecs
 	dir_filespec2	ds.b	11
+	fatfs_data_area_end
 }
 
 ; error codes (borrowed from p3dos.def)

@@ -1,5 +1,6 @@
 *.lib
 *.o
+*.obj
 *.sym
 *.bin
 *.tap

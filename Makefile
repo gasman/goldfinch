@@ -1,4 +1,4 @@
-all: simple_io.tap sector_dump.tap trdos.tap
+all: simple_io.tap sector_dump.tap trdos.tap fatfs_test.tap
 
 sector_dump.tap: loader.bas.tap sector_dump.bin.tap
 	cat loader.bas.tap sector_dump.bin.tap > sector_dump.tap
@@ -31,6 +31,16 @@ trdos.bin.tap: trdos.bin
 
 trdos.bin: libs include/divide.h include/block_device.h include/trdos.h trdos.c
 	zcc +zx -vn trdos.c -o trdos.bin -Ca-ilib/zzzfs -Ca-ilib/divide -Ca-ilib/block_device -Ca-ilib/trdos
+
+
+fatfs_test.tap: loader.bas.tap fatfs_test.bin.tap
+	cat loader.bas.tap fatfs_test.bin.tap > fatfs_test.tap
+
+fatfs_test.bin.tap: fatfs_test.bin
+	bintap fatfs_test.bin fatfs_test.bin.tap fatfs 32768 > /dev/null
+
+fatfs_test.bin: libs fatfs_test.asm
+	z80asm -a -nv -ns -nm -ilib/divide -ilib/block_device -ilib/fatfs fatfs_test.asm
 
 libs:
 	cd libsrc && make && cd ..
