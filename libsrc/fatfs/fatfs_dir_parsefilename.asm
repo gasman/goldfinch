@@ -4,7 +4,8 @@ include "fatfs.def"
 
 LIB fatfs_dir_validchar
 LIB fatfs_drive_getdircopy
-LIB fatfs_dir_root
+LIB fatfs_dir_root_callee
+XREF fatfs_dir_root_asmentry
 LIB fatfs_dir_getfirstmatch
 LIB fatfs_dir_change
 
@@ -77,7 +78,7 @@ LIB fatfs_dir_change
 	jr	nz,dir_parsefilename_segment
 .dir_parsefilename_root
 	inc	de			; skip '\' or '/'
-	call	fatfs_dir_root		; change to root
+	call	fatfs_dir_root_asmentry + (fatfs_dir_root_callee-fatfs_dir_root_callee)	; change to root
 .dir_parsefilename_segment
 	res	7,c			; no filename part
 	push	hl			; save start of destination

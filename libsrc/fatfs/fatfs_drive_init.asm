@@ -4,7 +4,7 @@ XLIB fatfs_drive_init
 LIB fatfs_drive_init_callee
 XREF fatfs_drive_init_asmentry
 
-.trdos_fsopen
+.fatfs_drive_init
 
    pop bc
    pop de

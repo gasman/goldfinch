@@ -23,7 +23,7 @@ AFILES = \
 	fatfs_clus_extendchain.asm \
 	fatfs_clus_freechain.asm \
 	fatfs_clus_erase.asm \
-	fatfs_dir_root.asm \
+	fatfs_dir_root_callee.asm \
 	fatfs_dir_home.asm \
 	fatfs_dir_change.asm \
 	fatfs_dir_entrydetails.asm \

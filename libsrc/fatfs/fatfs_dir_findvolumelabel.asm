@@ -2,7 +2,8 @@ XLIB fatfs_dir_findvolumelabel
 
 include "fatfs.def"
 
-LIB fatfs_dir_root
+LIB fatfs_dir_root_callee
+XREF fatfs_dir_root_asmentry
 LIB fatfs_dir_entrydetails
 LIB fatfs_dir_next
 
@@ -17,7 +18,7 @@ LIB fatfs_dir_next
 	
 .fatfs_dir_findvolumelabel
 	ld	iy,sys_directory
-	call	fatfs_dir_root		; get root directory
+	call	fatfs_dir_root_asmentry + (fatfs_dir_root_callee-fatfs_dir_root_callee)	; get root directory
 	ret	nc
 .dir_fvl_loop
 	call	fatfs_dir_entrydetails	; get entry details

@@ -3,7 +3,8 @@ XLIB fatfs_dir_change
 include "fatfs.def"
 
 LIB fatfs_dir_entrydetails
-LIB fatfs_dir_root
+LIB fatfs_dir_root_callee
+XREF fatfs_dir_root_asmentry
 LIB fatfs_dir_home
 
 ; ***************************************************************************
@@ -27,7 +28,7 @@ LIB fatfs_dir_home
 	ld	b,(hl)			; BC=directory start cluster
 	ld	a,b
 	or	c
-	jp	z,fatfs_dir_root		; set root directory if necessary
+	jp	z,fatfs_dir_root_asmentry + (fatfs_dir_root_callee-fatfs_dir_root_callee)	; set root directory if necessary
 	ld	(iy+fdh_clusstart),c
 	ld	(iy+fdh_clusstart+1),b	; set start cluster
 	res	7,(iy+fdh_flags)	; signal subdirectory

@@ -50,7 +50,7 @@ fatfs_test_c.bin.tap: fatfs_test_c.bin
 	bintap fatfs_test_c.bin fatfs_test_c.bin.tap fatfs 32768 > /dev/null
 
 fatfs_test_c.bin: libs include/divide.h include/block_device.h include/fatfs.h fatfs_test_c.c
-	zcc +zx -vn fatfs_test_c.c -o fatfs_test_c.bin -Ca-ilib/divide -Ca-ilib/block_device -Ca-ilib/fatfs
+	zcc +zx -vn fatfs_test_c.c -o fatfs_test_c.bin -lndos -Ca-ilib/divide -Ca-ilib/block_device -Ca-ilib/fatfs
 
 libs:
 	cd libsrc && make && cd ..
