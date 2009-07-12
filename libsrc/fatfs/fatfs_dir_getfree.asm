@@ -3,7 +3,8 @@ XLIB fatfs_dir_getfree
 include "fatfs.def"
 
 LIB fatfs_dir_home
-LIB fatfs_dir_entrydetails
+LIB fatfs_dir_entrydetails_callee
+XREF fatfs_dir_entrydetails_asmentry
 LIB fatfs_dir_next
 LIB fatfs_clus_extendchain
 LIB fatfs_clus_erase
@@ -20,7 +21,7 @@ LIB fatfs_clus_erase
 .fatfs_dir_getfree
 	call	fatfs_dir_home		; start at top of directory
 .dir_getfree_loop
-	call	fatfs_dir_entrydetails	; check current entry
+	call	fatfs_dir_entrydetails_asmentry + (fatfs_dir_entrydetails_callee-fatfs_dir_entrydetails_callee)	; check current entry
 	ret	nc			; exit if error
 	ret	z			; exit if entry is available
 	call	fatfs_dir_next		; next entry

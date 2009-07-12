@@ -4,7 +4,8 @@ include "fatfs.def"
 
 LIB fatfs_dir_root_callee
 XREF fatfs_dir_root_asmentry
-LIB fatfs_dir_entrydetails
+LIB fatfs_dir_entrydetails_callee
+XREF fatfs_dir_entrydetails_asmentry
 LIB fatfs_dir_next
 
 ; ***************************************************************************
@@ -21,7 +22,7 @@ LIB fatfs_dir_next
 	call	fatfs_dir_root_asmentry + (fatfs_dir_root_callee-fatfs_dir_root_callee)	; get root directory
 	ret	nc
 .dir_fvl_loop
-	call	fatfs_dir_entrydetails	; get entry details
+	call	fatfs_dir_entrydetails_asmentry + (fatfs_dir_entrydetails_callee-fatfs_dir_entrydetails_callee)	; get entry details
 	ret	nc
 	jr	z,dir_fvl_next		; skip unused entries
 	bit	dirattr_vol,a		; is it a volume label?

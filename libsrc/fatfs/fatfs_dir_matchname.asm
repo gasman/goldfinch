@@ -2,7 +2,8 @@ XLIB fatfs_dir_matchname
 
 include "fatfs.def"
 
-LIB fatfs_dir_entrydetails
+LIB fatfs_dir_entrydetails_callee
+XREF fatfs_dir_entrydetails_asmentry
 
 ; ***************************************************************************
 ; * Check filename match                                                    *
@@ -14,7 +15,7 @@ LIB fatfs_dir_entrydetails
 
 .fatfs_dir_matchname
 	push	de
-	call	fatfs_dir_entrydetails	; get HL=entry address
+	call	fatfs_dir_entrydetails_asmentry + (fatfs_dir_entrydetails_callee-fatfs_dir_entrydetails_callee)	; get HL=entry address
 	pop	de
 	ret	nc			; exit if error
 	jr	z,dir_matchname_nomatch	; no match if free entry

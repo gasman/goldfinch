@@ -7,7 +7,8 @@ LIB fatfs_dir_parsefilename
 LIB fatfs_dir_getfirstmatch
 XREF fatfs_dir_getnextmatch
 LIB fatfs_file_isopen
-LIB fatfs_dir_entrydetails
+LIB fatfs_dir_entrydetails_callee
+XREF fatfs_dir_entrydetails_asmentry
 LIB fatfs_buf_writebuf
 LIB fatfs_clus_freechain
 
@@ -38,7 +39,7 @@ LIB fatfs_clus_freechain
 	call	fatfs_file_isopen
 	ld	a,rc_denied
 	ret	nc			; can't delete if file is open
-	call	fatfs_dir_entrydetails	; HL=entry, A=attribs
+	call	fatfs_dir_entrydetails_asmentry - (fatfs_dir_entrydetails_callee-fatfs_dir_entrydetails_callee)	; HL=entry, A=attribs
 	ret	nc
 	and	dirattr_nodeletemask
 	ld	a,rc_nofile

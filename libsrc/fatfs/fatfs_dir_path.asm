@@ -6,7 +6,8 @@ LIB fatfs_dir_parsefilename
 LIB fatfs_drive_getdirhandle
 LIB fatfs_dir_getfirstmatch
 LIB fatfs_dir_change
-LIB fatfs_dir_entrydetails
+LIB fatfs_dir_entrydetails_callee
+XREF fatfs_dir_entrydetails_asmentry
 LIB fatfs_dir_next
 LIB fatfs_dir_getentry
 LIB fatfs_file_delete
@@ -98,7 +99,7 @@ LIB fatfs_drive_getdircopy
 	call	fatfs_dir_change		; enter the directory
 	ret	nc
 .dir_path_delete_checkempty
-	call	fatfs_dir_entrydetails	; get next entry details
+	call	fatfs_dir_entrydetails_asmentry + (fatfs_dir_entrydetails_callee-fatfs_dir_entrydetails_callee)	; get next entry details
 	ret	nc
 	jr	z,dir_path_delete_blankentry	; okay if unused
 	ld	a,(hl)
@@ -225,7 +226,7 @@ LIB fatfs_drive_getdircopy
 	call	fatfs_dir_change		; change to parent directory
 .dir_path_finddir
 	jr	nc,dir_path_get_error
-	call	fatfs_dir_entrydetails
+	call	fatfs_dir_entrydetails_asmentry + (fatfs_dir_entrydetails_callee-fatfs_dir_entrydetails_callee)
 	jr	nc,dir_path_get_error
 	jr	z,dir_path_blankentry	; skip unused entries
 	ld	de,direntry_cluster

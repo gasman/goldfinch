@@ -8,7 +8,8 @@ LIB fatfs_dir_getfirstmatch
 XREF fatfs_dir_getcurrentmatch
 LIB fatfs_dir_home
 LIB fatfs_dir_next
-LIB fatfs_dir_entrydetails
+LIB fatfs_dir_entrydetails_callee
+XREF fatfs_dir_entrydetails_asmentry
 
 ; ***************************************************************************
 ; * FAT_CATALOG                                                             *
@@ -92,7 +93,7 @@ defc	CATENTRY_SIZE=$0d
 	call	fatfs_dir_getcurrentmatch	; find another match
 	jp	nc,dir_catalog_fail
 	jr	nz,dir_catalog_nomatch
-	call	fatfs_dir_entrydetails	; HL=entry, A=attribs
+	call	fatfs_dir_entrydetails_asmentry + (fatfs_dir_entrydetails_callee-fatfs_dir_entrydetails_callee)	; HL=entry, A=attribs
 	jp	nc,dir_catalog_fail
 	pop	de			; DE=buffer address
 	pop	bc			; C=filter

@@ -2,7 +2,8 @@ XLIB fatfs_dir_change
 
 include "fatfs.def"
 
-LIB fatfs_dir_entrydetails
+LIB fatfs_dir_entrydetails_callee
+XREF fatfs_dir_entrydetails_asmentry
 LIB fatfs_dir_root_callee
 XREF fatfs_dir_root_asmentry
 LIB fatfs_dir_home
@@ -16,7 +17,7 @@ LIB fatfs_dir_home
 ; ABCDEHL corrupted.
 
 .fatfs_dir_change
-	call	fatfs_dir_entrydetails	; get details
+	call	fatfs_dir_entrydetails_asmentry + (fatfs_dir_entrydetails_callee-fatfs_dir_entrydetails_callee)	; get details
 	ret	nc			; exit if error
 	jr	z,dir_change_badentry	; no good if free entry
 	bit	dirattr_dir,a
