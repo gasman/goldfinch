@@ -1,15 +1,6 @@
 CFILES = 
 
 AFILES = \
-	fatfs_buf_emptybuffers.asm \
-	fatfs_buf_setmru.asm \
-	fatfs_buf_gethandle.asm \
-	fatfs_buf_findbuf_noread.asm \
-	fatfs_buf_flushone.asm \
-	fatfs_buf_writebuf.asm \
-	fatfs_buf_findbuf.asm \
-	fatfs_buf_update.asm \
-	fatfs_buf_flushbuffers.asm \
 	fatfs_fat_readfat.asm \
 	fatfs_fat_writefat.asm \
 	fatfs_clus_getsector.asm \

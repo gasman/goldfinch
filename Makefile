@@ -1,4 +1,4 @@
-all: simple_io.tap sector_dump.tap trdos.tap fatfs_test.tap fatfs_test_c.tap
+all: simple_io.tap sector_dump.tap trdos.tap # fatfs_test.tap fatfs_test_c.tap
 
 sector_dump.tap: loader.bas.tap sector_dump.bin.tap
 	cat loader.bas.tap sector_dump.bin.tap > sector_dump.tap
@@ -10,7 +10,7 @@ loader.bas.tap: loader.bas
 	zmakebas -a 10 -n loader -o loader.bas.tap loader.bas
 
 sector_dump.bin: libs include/divide.h include/block_device.h sector_dump.c
-	zcc +zx -vn sector_dump.c -o sector_dump.bin -lndos -Ca-ilib/divide -Ca-ilib/block_device
+	zcc +zx -s -m -vn sector_dump.c -o sector_dump.bin -lndos -Ca-ilib/divide -Ca-ilib/block_device -Ca-ilib/buffer
 
 
 simple_io.tap: loader.bas.tap simple_io.bin.tap

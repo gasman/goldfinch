@@ -1,18 +1,18 @@
-XLIB fatfs_buf_update
+XLIB buffer_update
 
-include "fatfs.def"
+include "buffer.def"
 
-LIB fatfs_buf_gethandle
+LIB buffer_gethandle
 
 ; ***************************************************************************
 ; * Flag the MRU buffer as updated                                          *
 ; ***************************************************************************
 ; ADE corrupted.
 
-.fatfs_buf_update
+.buffer_update
 	push	iy
 	ld	a,(buf_mrulist)
-	call	fatfs_buf_gethandle		; get MRU buffer handle
+	call	buffer_gethandle		; get MRU buffer handle
 	set	bufflag_upd,(iy+fbh_flags)	; set update flag
 	pop	iy
 	ret

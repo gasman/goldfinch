@@ -1,6 +1,7 @@
 LIBRARIES = \
 	divide \
 	block_device \
+	buffer \
 	zzzfs \
 	trdos \
 	fatfs

@@ -1,6 +1,6 @@
-XLIB fatfs_buf_gethandle
+XLIB buffer_gethandle
 
-include "fatfs.def"
+include "buffer.def"
 
 ; ***************************************************************************
 ; Subroutine to get a buffer handle                                         *
@@ -9,7 +9,7 @@ include "fatfs.def"
 ; On exit, IY=buffer handle
 ; ADE corrupted.
 
-.fatfs_buf_gethandle
+.buffer_gethandle
 	ld	iy,buf_handles-fbh_size
 	ld	de,fbh_size
 	inc	a

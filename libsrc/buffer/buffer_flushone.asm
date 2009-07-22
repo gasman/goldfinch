@@ -1,10 +1,10 @@
-XLIB fatfs_buf_flushone
+XLIB buffer_flushone
 
-include "fatfs.def"
+include "buffer.def"
 
-LIB fatfs_buf_gethandle
-LIB fatfs_buf_writebuf
-XREF fatfs_buf_writeany
+LIB buffer_gethandle
+LIB buffer_writebuf
+XREF buffer_writeany
 
 ; ***************************************************************************
 ; * Flush a single updated buffer                                           *
@@ -15,9 +15,9 @@ XREF fatfs_buf_writeany
 ;      or, Fc=0 (failure) and A=error
 ; ADEHL corrupted.
 
-.fatfs_buf_flushone
+.buffer_flushone
 	push	af
-	call	fatfs_buf_gethandle
+	call	buffer_gethandle
 	pop	af
 	scf
 	bit	bufflag_upd,(iy+fbh_flags)
@@ -25,7 +25,7 @@ XREF fatfs_buf_writeany
 	bit	bufflag_inuse,(iy+fbh_flags)
 	ret	z
 	push	bc
-	call	fatfs_buf_writeany + (fatfs_buf_writebuf-fatfs_buf_writebuf)		; write the buffer
+	call	buffer_writeany + (buffer_writebuf-buffer_writebuf)		; write the buffer
 	; ^^^ stupid hack to persuade z80asm to explicitly link the buf_writebuf library
 	pop	bc
 	ret

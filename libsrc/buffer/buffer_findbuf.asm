@@ -1,9 +1,9 @@
-XLIB fatfs_buf_findbuf
+XLIB buffer_findbuf
 
-include "fatfs.def"
+include "buffer.def"
 
-LIB fatfs_buf_findbuf_noread
-XREF fatfs_buf_locatebuf
+LIB buffer_findbuf_noread
+XREF buffer_locatebuf
 
 LIB read_block_callee
 XREF read_block_asmentry
@@ -17,10 +17,10 @@ XREF read_block_asmentry
 ; This will update the MRU list
 ; ABCDEHL corrupted.
 
-.fatfs_buf_findbuf
+.buffer_findbuf
 	push	iy
-	call fatfs_buf_locatebuf + fatfs_buf_findbuf_noread - fatfs_buf_findbuf_noread
-	; ^^^ nasty hack to force import of the fatfs_buf_findnoread library
+	call buffer_locatebuf + buffer_findbuf_noread - buffer_findbuf_noread
+	; ^^^ nasty hack to force import of the buffer_findnoread library
 	jr	c,buf_findbuf_ok	; exit if contents already valid
 	push	hl			; save buffer address
 	ld	e,(iy+fbh_sector)

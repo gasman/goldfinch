@@ -1,13 +1,13 @@
-XLIB fatfs_buf_emptybuffers
+XLIB buffer_emptybuffers
 
-include "fatfs.def"
+include "buffer.def"
 
 ; ***************************************************************************
 ; * Subroutine to empty/initialise the buffer details                       *
 ; ***************************************************************************
 ; BCDEHL corrupted.
 
-.fatfs_buf_emptybuffers
+.buffer_emptybuffers
 	ld	hl,buf_mrulist
 	ld	bc,buf_numbufs*$100	; B=buffers, C=0
 	push	bc

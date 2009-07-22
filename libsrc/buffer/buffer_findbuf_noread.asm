@@ -1,10 +1,10 @@
-XLIB fatfs_buf_findbuf_noread
-XDEF fatfs_buf_locatebuf
+XLIB buffer_findbuf_noread
+XDEF buffer_locatebuf
 
-include "fatfs.def"
+include "buffer.def"
 
-LIB fatfs_buf_setmru
-LIB fatfs_buf_flushone
+LIB buffer_setmru
+LIB buffer_flushone
 
 ; ***************************************************************************
 ; * Subroutine to get buffer for sector, without reading from disk          *
@@ -18,12 +18,12 @@ LIB fatfs_buf_flushone
 ; Enter at buf_locatebuf to also return buffer handle in IY.
 ; TBD: Maybe this should be able to return an error, as it does do disk writes.
 
-.fatfs_buf_findbuf_noread
+.buffer_findbuf_noread
 	push	iy
-	call	fatfs_buf_locatebuf
+	call	buffer_locatebuf
 	pop	iy
 	ret
-.fatfs_buf_locatebuf
+.buffer_locatebuf
 	ld	iy,buf_handles
 	ld	l,buf_numbufs
 .buf_fb_search
@@ -49,7 +49,7 @@ LIB fatfs_buf_flushone
 	jr	nz,buf_fb_mismatch
 	ld	a,buf_numbufs
 	sub	l			; A=buffer number
-	call	fatfs_buf_setmru		; set MRU, get address
+	call	buffer_setmru		; set MRU, get address
 	scf				; Fc=1, buffer contents valid
 	ret
 .buf_fb_mismatch
@@ -61,7 +61,7 @@ LIB fatfs_buf_flushone
 	jr	nz,buf_fb_search	; check remaining buffers
 	ld	a,(buf_mrulist+buf_numbufs-1)	; A=LRU buffer number
 	push	de
-	call	fatfs_buf_flushone		; leaves IY=buffer handle
+	call	buffer_flushone		; leaves IY=buffer handle
 	pop	hl			; BCHL=sector
 	set	bufflag_inuse,(iy+fbh_flags)
 	res	bufflag_upd,(iy+fbh_flags)
@@ -74,6 +74,6 @@ LIB fatfs_buf_flushone
 	ld	(iy+fbh_sector+2),c
 	ld	(iy+fbh_sector+3),b
 	ld	a,(buf_mrulist+buf_numbufs-1)	; A=LRU buffer again
-	call	fatfs_buf_setmru		; set MRU, get address to HL
+	call	buffer_setmru		; set MRU, get address to HL
 	and	a			; Fc=0, contents not valid
 	ret

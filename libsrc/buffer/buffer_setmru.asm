@@ -1,7 +1,7 @@
-XLIB fatfs_buf_setmru
-XDEF fatfs_buf_getaddress
+XLIB buffer_setmru
+XDEF buffer_getaddress
 
-include "fatfs.def"
+include "buffer.def"
 
 ; ***************************************************************************
 ; * Subroutine to set the MRU buffer and obtain its address                 *
@@ -11,7 +11,7 @@ include "fatfs.def"
 ; Enter at buf_getaddress to avoid making buffer MRU
 ; ABCDE corrupted.
 
-.fatfs_buf_setmru
+.buffer_setmru
 	ld	hl,buf_mrulist
 	ld	b,a
 	ld	c,a
@@ -22,7 +22,7 @@ include "fatfs.def"
 	ld	b,a
 	cp	c
 	jr	nz,buf_sm_reorder	; until position of ours is filled
-.fatfs_buf_getaddress
+.buffer_getaddress
 	inc	a
 	ld	hl,buf_buffers-buf_secsize
 	ld	de,buf_secsize

@@ -1,11 +1,11 @@
-XLIB fatfs_buf_writebuf
-XDEF fatfs_buf_writeany
+XLIB buffer_writebuf
+XDEF buffer_writeany
 
-include "fatfs.def"
+include "buffer.def"
 
-LIB fatfs_buf_gethandle
-LIB fatfs_buf_setmru
-XREF fatfs_buf_getaddress
+LIB buffer_gethandle
+LIB buffer_setmru
+XREF buffer_getaddress
 
 ; ***************************************************************************
 ; * Subroutine to write the MRU buffer                                      *
@@ -15,18 +15,18 @@ XREF fatfs_buf_getaddress
 ; IX is changed to the partition handle of the MRU buffer.
 ; Enter at buf_writeany to write a specific buffer (A) without setting as MRU
 
-.fatfs_buf_writebuf
+.buffer_writebuf
 	ld	a,(buf_mrulist)
-.fatfs_buf_writeany
+.buffer_writeany
 	push	iy
 	push	af
-	call	fatfs_buf_gethandle		; get buffer handle
+	call	buffer_gethandle		; get buffer handle
 	ld	a,(iy+fbh_phandle)	; get partition handle to IX
 	ld	ixl,a
 	ld	a,(iy+fbh_phandle+1)
 	ld	ixh,a
 	pop	af
-	call	fatfs_buf_getaddress		; get address in HL
+	call	buffer_getaddress		; get address in HL
 	res	bufflag_upd,(iy+fbh_flags)	; clear update flag
 	ld	e,(iy+fbh_sector)	; get sector to BCDE
 	ld	d,(iy+fbh_sector+1)
