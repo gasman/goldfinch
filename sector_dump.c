@@ -24,6 +24,10 @@ int main() {
 		}
 		printf("\n");
 	}
+	
+	/* to test writing a block:
+	buffer[0] = 0;
+	divide_write_block(device, (void *)buffer, 1L); */
 
 	printf("done.\n");
 	return 0;
