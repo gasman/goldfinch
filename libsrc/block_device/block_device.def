@@ -10,4 +10,5 @@ defvars 0
 defvars 0
 {
 	blockdevdriver_read_block	ds.b	3
+	blockdevdriver_write_block	ds.b	3
 }

@@ -2,7 +2,9 @@ CFILES =
 
 AFILES = \
 	read_block.asm \
-	read_block_callee.asm
+	read_block_callee.asm \
+	write_block.asm \
+	write_block_callee.asm
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)
