@@ -8,6 +8,8 @@ include	"divide.def"
 
 LIB divide_read_block_callee
 XREF divide_read_block_asmentry
+LIB divide_write_block_callee
+XREF divide_write_block_asmentry
 
 .divide_open_drive
 
@@ -39,3 +41,4 @@ DEFC ASMDISP_DIVIDE_OPEN_DRIVE = divide_open_drive_asmentry - divide_open_drive
 ; 'device driver' for DivIDE drives: a lookup table to the asm entry points
 .divide_block_device_driver
 	jp divide_read_block_asmentry + (divide_read_block_callee - divide_read_block_callee)	; read_block
+	jp divide_write_block_asmentry + (divide_write_block_callee - divide_write_block_callee)	; write_block

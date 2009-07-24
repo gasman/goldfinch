@@ -3,6 +3,8 @@ CFILES =
 AFILES = \
 	divide_read_block.asm \
 	divide_read_block_callee.asm \
+	divide_write_block.asm \
+	divide_write_block_callee.asm \
 	divide_open_drive.asm
 
 OBJECTS = $(CFILES:.c=.o)

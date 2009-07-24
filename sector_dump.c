@@ -29,6 +29,10 @@ int main() {
 		}
 		printf("\n");
 	}
+	
+	/* to test writing a block:
+	buffer[0] = 0;
+	write_block(device, (void *)buffer, 1L); */
 
 	buffer = buffer_findbuf(device, 0L);
 	printf("Buffer re-found at %04x:\n", buffer);
