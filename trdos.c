@@ -22,7 +22,7 @@ int main() {
 	trdos_fsopen(device, &fs);
 
 	open_root_dir(&fs, &dir);
-	while (trdos_read_dir(&dir, &entry)) {
+	while (read_dir(&dir, &entry)) {
 		printf("%s\n", entry.filename);
 	}
 
