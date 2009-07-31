@@ -1,4 +1,4 @@
-; void trdos_read_dir(DIR *dir, DIRENT *dirent) - read the next entry from a directory
+; int trdos_read_dir(DIR *dir, DIRENT *dirent) - read the next entry from a directory
 XLIB trdos_read_dir
 
 LIB buffer_findbuf
@@ -7,6 +7,7 @@ include	"../lowio/lowio.def"
 include	"trdos.def"
 
 ; enter with hl = dir, ix = dirent
+; returns 0 if end of dir
 .trdos_read_dir
 	; first make a pointer to the dir (which is handily also a pointer to (a copy of) the filesystem).
 	; NB this requires the calling code NOT to deallocate the dir before it's finished doing stuff
@@ -41,7 +42,7 @@ include	"trdos.def"
 	; check for end of dir
 	ld a,(hl)
 	or a
-	ret z	; return with carry reset if end of dir (indicated by an entry starting with 0)
+	jr z,end_of_dir	; return with carry reset if end of dir (indicated by an entry starting with 0)
 	
 	; TODO: recognise deleted dir entries (is there such a thing in trdos?) and skip them
 	
@@ -85,5 +86,8 @@ include	"trdos.def"
 	; TODO: define and populate the sector number fields which will allow us to open the file
 	
 	scf	; signal success
+	ld hl,1
 	ret
-	
+.end_of_dir
+	ld hl,0
+	ret
