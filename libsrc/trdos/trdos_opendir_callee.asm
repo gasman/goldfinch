@@ -14,8 +14,8 @@ include "trdos.def"
 	pop iy
 	push hl
 
-	; enter : iy = TRDOS_FILESYSTEM *fs
-	;         ix = TRDOS_DIR *dir
+	; enter : hl = TRDOS_FILESYSTEM *fs
+	;         de = TRDOS_DIR *dir
 	; exit  : 
 	; uses  : 
 .asmentry

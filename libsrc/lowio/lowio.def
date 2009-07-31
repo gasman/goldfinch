@@ -1,0 +1,34 @@
+; low-level I/O API
+
+; structure of a filesystem object
+defvars 0
+{
+	filesystem_driver	ds.w	1	; pointer to device driver (jump table)
+	filesystem_data	ds.w	1	; pointer / space for filesystem-specific data
+	filesystem_size
+}
+
+; structure of a device driver, to be implemented as a jump table of JP xxxx entries (3 bytes each)
+defvars 0
+{
+	fsdriver_open_root_dir	ds.b	3
+	fsdriver_read_dir	ds.b	3
+}
+
+; structure of a directory handle
+defvars 0
+{
+	dir_filesystem	ds.b	filesystem_size	; copy of the filesystem object
+	dir_fs_data	; followed by filesystem-specific state
+}
+
+defc MAX_NAME = 32	;max length of a filename (including terminating \0)
+
+; structure of a directory entry
+defvars 0
+{
+	dirent_dir_ptr	ds.w	1	; pointer to the dir (and thus the filesystem) object
+	dirent_filename	ds.b	MAX_NAME	; null-terminated filename
+	dirent_flags	ds.b	1	; bit field; bit 0 set if this is a directory
+	dirent_fs_data	; filesystem-specific state; enough to open the file
+}

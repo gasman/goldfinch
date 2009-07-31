@@ -30,7 +30,7 @@ trdos.bin.tap: trdos.bin
 	bintap trdos.bin trdos.bin.tap trdos 32768 > /dev/null
 
 trdos.bin: libs include/divide.h include/block_device.h include/trdos.h trdos.c
-	zcc +zx -vn trdos.c -o trdos.bin -Ca-ilib/zzzfs -Ca-ilib/divide -Ca-ilib/block_device -Ca-ilib/trdos
+	zcc +zx -m -vn trdos.c -o trdos.bin -Ca-ilib/zzzfs -Ca-ilib/divide -Ca-ilib/block_device -Ca-ilib/trdos -Ca-ilib/buffer
 
 
 fatfs_test.tap: loader.bas.tap fatfs_test.bin.tap

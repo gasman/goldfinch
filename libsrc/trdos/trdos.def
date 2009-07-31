@@ -1,34 +1,6 @@
-; trdos filesystem
+; trdos-specific section of a dir handle
 defvars 0
 {
-	trdfs_block_device	ds.w	1	; pointer to blockdevice
-}
-
-defc NAME_MAX = 32 ; max size of a filename in bytes
-
-; Directory entry; we're cheerfully wavering on the question of whether this should be filesystem-specific or not
-defvars 0
-{
-	trd_dirent_name	ds.b	NAME_MAX	; name field
-	trd_dirent_sector_count	ds.b	1
-	trd_dirent_start_sector	ds.b	1
-	trd_dirent_start_track	ds.b	1
-}
-
-; File handle
-defvars 0
-{
-	trd_file_block_number	ds.l	1	; the block number of the block currently loaded into block_buffer
-	trd_file_blocks_read	ds.b	1
-	trd_file_block_count	ds.b	1
-	trd_file_pos	ds.w	1	; position within block_buffer
-	trd_file_block_buffer	ds.b	512 ; can make this [256] once we're assured of a block_device that serves blocks of 256 bytes
-}
-
-; Directory
-defvars 0
-{
-	trd_dir_block_number	ds.l	1	; the block number of the block currently loaded into block_buffer
-	trd_dir_current_dir_entry	ds.l	1	; the pointer into block_buffer to the next unread directory entry
-	trd_dir_block_buffer	ds.b	512	; can make this [256] once we're assured of a block_device that serves blocks of 256 bytes
+	trdos_dir_block_number	ds.w	1	; block number that the directory pointer currently sits in
+	trdos_dir_block_offset	ds.b	1	; offset into the (256-byte) sector where the next dir entry is
 }
