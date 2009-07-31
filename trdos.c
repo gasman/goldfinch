@@ -21,7 +21,7 @@ int main() {
 	/* open the tr-dos filesystem on it */
 	trdos_fsopen(device, &fs);
 
-	trdos_open_root_dir(&fs, &dir);
+	open_root_dir(&fs, &dir);
 	while (trdos_read_dir(&dir, &entry)) {
 		printf("%s\n", entry.filename);
 	}

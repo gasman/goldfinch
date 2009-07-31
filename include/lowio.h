@@ -33,8 +33,10 @@ typedef struct dirent_st {
 // First a list of functions using CALLER and FASTCALL linkage
 
 // And now a list of the same non-FASTCALL functions using CALLEE linkage
+extern void __LIB__ __CALLEE__ open_root_dir_callee(FILESYSTEM *fs, DIR *dir);
 
 // And now we make CALLEE linkage default to make compiled progs shorter and faster
 // These defines will generate warnings for function pointers but that's ok
+#define open_root_dir(a,b) open_root_dir_callee(a,b)
 
 #endif

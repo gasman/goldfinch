@@ -4,7 +4,8 @@ LIBRARIES = \
 	buffer \
 	zzzfs \
 	trdos \
-	fatfs
+	fatfs \
+	lowio
 
 all:
 	for l in $(LIBRARIES); do \
