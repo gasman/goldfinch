@@ -59,7 +59,7 @@ include	"trdos.def"
 	ld (iy + dir_fs_data + trdos_dir_block_number),c
 .same_sector
 	
-	;push de	; save dirent
+	push de	; save dirent
 	; copy filename to dir entry
 	inc de
 	inc de	; advance to the dirent_filename field
@@ -82,8 +82,22 @@ include	"trdos.def"
 	xor a
 	ld (de),a
 	
-	; pop ix
-	; TODO: define and populate the sector number fields which will allow us to open the file
+	pop ix	; restore dirent
+	xor a
+	ld (ix + dirent_flags),a	; clear flags
+
+	inc hl	; skip past 4 bytes of file params
+	inc hl
+	inc hl
+	inc hl
+	ld a,(hl)	; read sector_count
+	ld (ix + dirent_fs_data + trdos_dirent_sector_count),a
+	inc hl
+	ld a,(hl)	; read start_sector
+	ld (ix + dirent_fs_data + trdos_dirent_start_sector),a
+	inc hl
+	ld a,(hl)	; read start_track
+	ld (ix + dirent_fs_data + trdos_dirent_start_track),a
 	
 	scf	; signal success
 	ld hl,1

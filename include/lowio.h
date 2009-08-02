@@ -13,7 +13,7 @@ typedef struct filesystem_st {
 typedef struct dir_st {
 	FILESYSTEM fs; /* copy of the corresponding filesystem handle */
 	union dir_fs_data {
-		struct trdos_fs_data {
+		struct trdos_dir_fs_data {
 			unsigned int block_number; /* block number that the directory pointer currently sits in */
 			unsigned char block_offset; /* offset into the (256-byte) sector where the next dir entry is */
 		};
@@ -26,8 +26,13 @@ typedef struct dirent_st {
 	DIR *dir; /* pointer to the dir (and thus the filesystem) object */
 	char filename[MAX_NAME]; /* null-terminated filename */
 	unsigned char flags; /* bit field; bit 0 set if this is a directory */
-	union dirent_fs_data { /*  filesystem-specific state; enough to open the file */
-	};
+	union dirent_fs_data_u { /*  filesystem-specific state; enough to open the file */
+		struct trdos_dirent_fs_data_st {
+			unsigned char sector_count;
+			unsigned char start_sector;
+			unsigned char start_track;
+		} trdos_dirent_fs_data;
+	} dirent_fs_data;
 } DIRENT;
 
 // First a list of functions using CALLER and FASTCALL linkage

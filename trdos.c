@@ -27,5 +27,6 @@ int main() {
 	}
 
 	printf("done... trdos dir entry read at %04x\n", &entry);
+	printf("Size of a dirent is %d\n", sizeof(DIRENT));
 	return 0;
 }
