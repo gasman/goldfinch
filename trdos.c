@@ -13,6 +13,7 @@ int main() {
 	DIR dir;
 	DIRENT entry;
 	unsigned char i;
+	FSFILE file;
 	
 	buffer_emptybuffers();
 
@@ -22,11 +23,12 @@ int main() {
 	trdos_fsopen(device, &fs);
 
 	open_root_dir(&fs, &dir);
-	while (read_dir(&dir, &entry)) {
+	for (i = 0; i < 4; i++) {
+		read_dir(&dir, &entry);
 		printf("%s\n", entry.filename);
 	}
+	trdos_open_dirent(&entry, &file);
 
-	printf("done... trdos dir entry read at %04x\n", &entry);
-	printf("Size of a dirent is %d\n", sizeof(DIRENT));
+	printf("done... trdos dir entry opened at %04x\n", &file);
 	return 0;
 }

@@ -12,12 +12,12 @@ typedef struct filesystem_st {
 /* Directory handle */
 typedef struct dir_st {
 	FILESYSTEM fs; /* copy of the corresponding filesystem handle */
-	union dir_fs_data {
-		struct trdos_dir_fs_data {
+	union dir_fs_data_u {
+		struct trdos_dir_fs_data_st {
 			unsigned int block_number; /* block number that the directory pointer currently sits in */
 			unsigned char block_offset; /* offset into the (256-byte) sector where the next dir entry is */
-		};
-	};
+		} trdos_dir_fs_data;
+	} dir_fs_data;
 } DIR;
 
 #define MAX_NAME 32
@@ -34,6 +34,18 @@ typedef struct dirent_st {
 		} trdos_dirent_fs_data;
 	} dirent_fs_data;
 } DIRENT;
+
+/* File record */
+typedef struct fsfile_st {
+	FILESYSTEM fs; /* Copy of the corresponding filesystem handle */
+	union file_fs_data_u { /* filesystem-specific state */
+		struct trdos_file_fs_data_st {
+			unsigned int block_number; /* block number that the file pointer currently sits in */
+			unsigned char block_offset; /* offset into the (256-byte) sector where the next byte is */
+			unsigned char remaining_blocks; /* number of blocks left to read before EOF */
+		} trdos_file_fs_data;
+	} file_fs_data;
+} FSFILE;
 
 // First a list of functions using CALLER and FASTCALL linkage
 

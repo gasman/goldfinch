@@ -32,3 +32,10 @@ defvars 0
 	dirent_flags	ds.b	1	; bit field; bit 0 set if this is a directory
 	dirent_fs_data	; filesystem-specific state; enough to open the file
 }
+
+; structure of a file handle
+defvars 0
+{
+	file_filesystem	ds.b	filesystem_size	; copy of the filesystem object
+	file_fs_data	; followed by filesystem-specific state
+}
