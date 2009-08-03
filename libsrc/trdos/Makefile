@@ -8,7 +8,9 @@ AFILES = \
 	trdos_read_dir.asm \
 	trdos_read_dir_callee.asm \
 	trdos_open_dirent.asm \
-	trdos_open_dirent_callee.asm
+	trdos_open_dirent_callee.asm \
+	trdos_read_file.asm \
+	trdos_read_file_callee.asm
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)

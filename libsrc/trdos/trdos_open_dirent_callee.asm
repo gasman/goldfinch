@@ -7,10 +7,10 @@ LIB trdos_open_dirent
 include	"trdos.def"
 
 .trdos_open_dirent_callee
-	pop hl
+	pop ix
 	pop de
-	ex (sp),hl
-	; enter with : hl = DIRENT *dirent
+	ex (sp),ix
+	; enter with : ix = DIRENT *dirent
 	;         de = FILE *file
 	jp trdos_open_dirent
 

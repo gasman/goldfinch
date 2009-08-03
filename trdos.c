@@ -28,7 +28,13 @@ int main() {
 		printf("%s\n", entry.filename);
 	}
 	trdos_open_dirent(&entry, &file);
+	trdos_read_file(&file, buffer, 200);
 
+	printf("block device at %04x\n", device);
+	printf("trdos filesystem at %04x\n", &fs);
+	printf("trdos dir at %04x\n", &dir);
+	printf("trdos dir entry populated at %04x\n", &entry);
 	printf("done... trdos dir entry opened at %04x\n", &file);
+	printf("first 200 chars stored at %04x\n", buffer);
 	return 0;
 }

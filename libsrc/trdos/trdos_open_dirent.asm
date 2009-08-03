@@ -4,15 +4,15 @@ XLIB trdos_open_dirent
 include	"../lowio/lowio.def"
 include	"trdos.def"
 
-; enter with hl = dirent, de = file
+; enter with ix = dirent, de = file
 .trdos_open_dirent
-	push hl
+	ld l,(ix + dirent_dir_ptr)
+	ld h,(ix + dirent_dir_ptr + 1)
 	push de
 	; copy filesystem struct to file
 	ld bc,filesystem_size
 	ldir
 	pop iy	; file ptr in iy
-	pop ix	; dirent ptr in ix
 	
 	; populate block number
 	ld l,(ix + dirent_fs_data + trdos_dirent_start_track)
@@ -27,7 +27,7 @@ include	"trdos.def"
 	ld a,(ix + dirent_fs_data + trdos_dirent_start_sector)
 	or l
 	ld (iy + file_fs_data + trdos_file_block_number),a
-	ld (iy + file_fs_data + trdos_file_block_number),h
+	ld (iy + file_fs_data + trdos_file_block_number + 1),h
 	
 	; populate sectors_left
 	ld a,(ix + dirent_fs_data + trdos_dirent_sector_count)
