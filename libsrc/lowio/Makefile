@@ -3,7 +3,8 @@ CFILES =
 AFILES = \
 	open_root_dir_callee.asm \
 	read_dir_callee.asm \
-	open_dirent_callee.asm
+	open_dirent_callee.asm \
+	read_file_callee.asm
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)

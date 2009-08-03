@@ -28,7 +28,7 @@ int main() {
 		printf("%s\n", entry.filename);
 	}
 	open_dirent(&entry, &file);
-	trdos_read_file(&file, buffer, 200);
+	read_file(&file, buffer, 200);
 
 	printf("block device at %04x\n", device);
 	printf("trdos filesystem at %04x\n", &fs);
