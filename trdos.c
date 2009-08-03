@@ -27,7 +27,7 @@ int main() {
 		read_dir(&dir, &entry);
 		printf("%s\n", entry.filename);
 	}
-	trdos_open_dirent(&entry, &file);
+	open_dirent(&entry, &file);
 	trdos_read_file(&file, buffer, 200);
 
 	printf("block device at %04x\n", device);

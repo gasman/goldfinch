@@ -13,6 +13,8 @@ defvars 0
 {
 	fsdriver_open_root_dir	ds.b	3
 	fsdriver_read_dir	ds.b	3
+	fsdriver_open_dirent	ds.b	3
+	fsdriver_read_file	ds.b	3
 }
 
 ; structure of a directory handle

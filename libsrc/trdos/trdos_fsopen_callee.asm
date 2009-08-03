@@ -6,6 +6,8 @@ XDEF ASMDISP_TRDOS_FSOPEN_CALLEE
 
 LIB trdos_open_root_dir
 LIB trdos_read_dir
+LIB trdos_open_dirent
+LIB trdos_read_file
 
 include	"../lowio/lowio.def"
 
@@ -35,3 +37,5 @@ DEFC ASMDISP_TRDOS_FSOPEN_CALLEE = asmentry - trdos_fsopen_callee
 	; jump table to fs routines
 	jp trdos_open_root_dir
 	jp trdos_read_dir
+	jp trdos_open_dirent
+	jp trdos_read_file
