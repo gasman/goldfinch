@@ -17,8 +17,10 @@ include "lowio.def"
 	ld h,(ix + file_filesystem + filesystem_driver + 1)
 	
 	IF fsdriver_read_file <> 0	; add on offset to the read_file entry point (if it's not zero)
+		push bc
 		ld bc,fsdriver_read_file
 		add hl,bc
+		pop bc
 	ENDIF
 	push hl
 	ret	; jump to read_read_file handler routine
