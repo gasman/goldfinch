@@ -6,6 +6,7 @@ include "buffer.def"
 LIB buffer_gethandle
 LIB buffer_setmru
 XREF buffer_getaddress
+LIB buf_mrulist
 
 ; ***************************************************************************
 ; * Subroutine to write the MRU buffer                                      *

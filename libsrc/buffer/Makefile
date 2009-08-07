@@ -1,6 +1,7 @@
 CFILES = 
 
 AFILES = \
+	buffer_data.asm \
 	buffer_emptybuffers.asm \
 	buffer_setmru.asm \
 	buffer_gethandle.asm \

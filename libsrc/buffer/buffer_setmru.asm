@@ -3,6 +3,9 @@ XDEF buffer_getaddress
 
 include "buffer.def"
 
+LIB buf_mrulist
+LIB buf_buffers
+
 ; ***************************************************************************
 ; * Subroutine to set the MRU buffer and obtain its address                 *
 ; ***************************************************************************

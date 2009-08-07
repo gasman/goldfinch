@@ -21,17 +21,3 @@ defgroup
 	bufflag_inuse = 0,		; set if buffer in use
 	bufflag_upd			; set if buffer has been updated
 }
-
-; Data area
-
-defc	buffer_data_area = $c800 ; TODO: allocate this in buffer_data.asm
-
-defvars buffer_data_area
-{	
-	; Structures
-	buf_mrulist	ds.b	buf_numbufs		; IDs of buffers in order, MRU first
-	buf_handles	ds.b	fbh_size*buf_numbufs	; buffer handles
-	buf_buffers	ds.b	buf_secsize*buf_numbufs	; sector buffers
-
-	buffer_data_area_end
-}

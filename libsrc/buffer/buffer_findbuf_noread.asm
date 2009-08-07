@@ -3,6 +3,8 @@ XDEF buffer_locatebuf
 
 include "buffer.def"
 
+LIB buf_mrulist
+LIB buf_handles
 LIB buffer_setmru
 LIB buffer_flushone
 

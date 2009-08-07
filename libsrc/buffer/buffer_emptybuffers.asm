@@ -2,6 +2,9 @@ XLIB buffer_emptybuffers
 
 include "buffer.def"
 
+LIB buf_mrulist
+LIB buf_handles
+
 ; ***************************************************************************
 ; * Subroutine to empty/initialise the buffer details                       *
 ; ***************************************************************************

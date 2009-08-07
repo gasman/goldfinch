@@ -3,6 +3,7 @@ XLIB buffer_update
 include "buffer.def"
 
 LIB buffer_gethandle
+LIB buf_mrulist
 
 ; ***************************************************************************
 ; * Flag the MRU buffer as updated                                          *

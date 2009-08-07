@@ -2,6 +2,8 @@ XLIB buffer_gethandle
 
 include "buffer.def"
 
+LIB buf_handles
+
 ; ***************************************************************************
 ; Subroutine to get a buffer handle                                         *
 ; ***************************************************************************
