@@ -2,7 +2,7 @@
 ; open a block device for access as a trdos file system
 
 XLIB trdos_fsopen_callee
-XDEF ASMDISP_TRDOS_FSOPEN_CALLEE
+XDEF trdos_fsopen_asmentry
 
 LIB trdos_open_root_dir
 LIB trdos_read_dir
@@ -21,7 +21,7 @@ include	"../lowio/lowio.def"
    ;         ix = FILESYSTEM *fs
    ; uses  : hl, ix
    
-.asmentry
+.trdos_fsopen_asmentry
 	; set pointer to the trdos filesystem driver
 	ld de,trdos_filesystem_driver
 	ld (ix+filesystem_driver),e
@@ -30,8 +30,6 @@ include	"../lowio/lowio.def"
 	ld (ix+filesystem_data),l
 	ld (ix+filesystem_data+1),h
 	ret
-
-DEFC ASMDISP_TRDOS_FSOPEN_CALLEE = asmentry - trdos_fsopen_callee
 
 .trdos_filesystem_driver
 	; jump table to fs routines
