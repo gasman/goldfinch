@@ -1,7 +1,7 @@
 ; BLOCK_DEVICE __LIB__ __FASTCALL__ *divide_open_drive_callee(unsigned char drive_number);
 
 XLIB divide_open_drive
-XDEF divide_open_drive_asmentry
+XDEF divide_open_drive_asm
 
 include	"divide.def"
 
@@ -16,7 +16,7 @@ LIB divide_write_block_asm
 	; exit  : hl = address of BLOCK_DEVICE structure
 	; uses  : 
 	
-.divide_open_drive_asmentry
+.divide_open_drive_asm
 	; return a pointer to the master or slave block device, depending on the ID passed in A
 	ld hl,master_drive_block_device
 	cp DIVIDE_DRIVE_MASTER

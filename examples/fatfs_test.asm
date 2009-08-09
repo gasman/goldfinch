@@ -5,9 +5,7 @@ include "../libsrc/divide/divide.def"
 include "../libsrc/block_device/block_device.def"
 include "../libsrc/fatfs/fatfs.def"
 
-LIB divide_open_drive
-XREF divide_open_drive_asmentry
-
+LIB divide_open_drive_asm
 LIB fatfs_init
 LIB fatfs_drive_init_callee
 XREF fatfs_drive_init_asmentry
@@ -16,7 +14,7 @@ XREF fatfs_drive_init_asmentry
 	call fatfs_init
 	; get handle to divide master device
 	ld a,DIVIDE_DRIVE_MASTER
-	call divide_open_drive_asmentry + (divide_open_drive-divide_open_drive)
+	call divide_open_drive_asm
 	; returns block_device in hl
 	ld de,partition_handle
 	call fatfs_drive_init_asmentry + (fatfs_drive_init_callee-fatfs_drive_init_callee)	; populate the partition handle at de from the block device at hl
