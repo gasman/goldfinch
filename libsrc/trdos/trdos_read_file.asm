@@ -2,7 +2,6 @@
 XLIB trdos_read_file
 
 include	"../lowio/lowio.def"
-include	"trdos.def"
 
 LIB buffer_findbuf
 
@@ -10,7 +9,7 @@ LIB buffer_findbuf
 ; returns hl=0 and carry reset if end of file
 .trdos_read_file
 	; test for end of file (= blocks_remaining == 0)
-	ld a,(ix + file_fs_data + trdos_file_blocks_remaining)
+	ld a,(ix + file_trdos_blocks_remaining)
 	or a
 	jr z,exit_eof
 
@@ -25,8 +24,8 @@ LIB buffer_findbuf
 
 	; read sector number into BCDE
 	ld bc,0
-	ld d,(ix + file_fs_data + trdos_file_block_number + 1)
-	ld e,(ix + file_fs_data + trdos_file_block_number)
+	ld d,(ix + file_trdos_block_number + 1)
+	ld e,(ix + file_trdos_block_number)
 
 	; get block device handle into IX
 	push ix
@@ -37,9 +36,9 @@ LIB buffer_findbuf
 	
 	call buffer_findbuf
 	; now hl = pointer to sector buffer
-	; add trdos_file_block_offset to get to the file data position
+	; add file_trdos_block_offset to get to the file data position
 	pop ix	; restore file pointer
-	ld e,(ix + file_fs_data + trdos_file_block_offset)
+	ld e,(ix + file_trdos_block_offset)
 	ld d,0
 	add hl,de
 
@@ -49,7 +48,7 @@ LIB buffer_findbuf
 	
 .copy_loop
 	ldi	; copy byte to user buffer
-	inc (ix + file_fs_data + trdos_file_block_offset)
+	inc (ix + file_trdos_block_offset)
 	jr z,next_sector	; if offset overflows to 0, advance to next sector
 	; otherwise, test for bc=0
 	ld a,b
@@ -61,10 +60,10 @@ LIB buffer_findbuf
 	ret
 	
 .next_sector
-	dec (ix + file_fs_data + trdos_file_blocks_remaining)
-	inc (ix + file_fs_data + trdos_file_block_number)
+	dec (ix + file_trdos_blocks_remaining)
+	inc (ix + file_trdos_block_number)
 	jr nz,trdos_read_file
-	inc (ix + file_fs_data + trdos_file_block_number + 1)
+	inc (ix + file_trdos_block_number + 1)
 	jr trdos_read_file
 
 .exit_eof

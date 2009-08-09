@@ -4,8 +4,6 @@ XLIB trdos_open_dirent_callee
 
 LIB trdos_open_dirent
 
-include	"trdos.def"
-
 .trdos_open_dirent_callee
 	pop ix
 	pop de

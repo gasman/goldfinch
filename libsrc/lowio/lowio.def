@@ -57,5 +57,12 @@ defvars dirent_fsdata
 defvars 0
 {
 	file_filesystem	ds.b	filesystem_size	; copy of the filesystem object
-	file_fs_data	; followed by filesystem-specific state
+	file_fsdata	; followed by filesystem-specific state
+}
+; Filesystem-specific portion - TR-DOS
+defvars file_fsdata
+{
+	file_trdos_block_number	ds.w	1	; number of block containing next data
+	file_trdos_block_offset	ds.b	1	; offset of data pointer into that block
+	file_trdos_blocks_remaining	ds.b	1	; number of blocks left before EOF
 }
