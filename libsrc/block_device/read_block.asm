@@ -2,8 +2,7 @@
 ; void read_block_callee(BLOCK_DEVICE *device, void *buffer, unsigned long block_number)
 
 XLIB read_block
-LIB read_block_callee
-XREF read_block_asmentry
+LIB read_block_asm
 
 .read_block
 	
@@ -19,4 +18,4 @@ XREF read_block_asmentry
 	push de
 	push af	; restore everything to be torn down by caller
 
-	jp read_block_asmentry + (read_block_callee - read_block_callee)
+	jp read_block_asm

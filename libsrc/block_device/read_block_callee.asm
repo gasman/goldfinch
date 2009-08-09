@@ -1,8 +1,7 @@
 ; void __CALLEE__ read_block_callee(BLOCK_DEVICE *device, void *buffer, unsigned long block_number)
 
 XLIB read_block_callee
-XDEF read_block_asmentry
-XDEF ASMDISP_READ_BLOCK_CALLEE
+XDEF read_block_asm
 
 include	"block_device.def"
 
@@ -19,7 +18,7 @@ include	"block_device.def"
 	;         ix = pointer to BLOCK_DEVICE structure
 	; exit  : carry set if successful
 	; uses  : potentially anything, because it calls a child function...
-.read_block_asmentry
+.read_block_asm
 	push hl	; save buffer address
 	ld l,(ix + blockdev_driver + 0)	; get pointer to device driver in hl
 	ld h,(ix + blockdev_driver + 1)
@@ -32,5 +31,3 @@ include	"block_device.def"
 	ENDIF
 	ex (sp),hl	; recall buffer address; push address of read_block handler in its place
 	ret	; jump to read_block handler routine
-
-DEFC ASMDISP_READ_BLOCK_CALLEE = read_block_asmentry - read_block_callee

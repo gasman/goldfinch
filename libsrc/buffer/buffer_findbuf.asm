@@ -4,9 +4,7 @@ include "buffer.def"
 
 LIB buffer_findbuf_noread
 XREF buffer_locatebuf
-
-LIB read_block_callee
-XREF read_block_asmentry
+LIB read_block_asm
 
 ; ***************************************************************************
 ; * Subroutine to get buffer for sector, reading from disk if necessary     *
@@ -27,7 +25,7 @@ XREF read_block_asmentry
 	ld	d,(iy+fbh_sector+1)
 	ld	c,(iy+fbh_sector+2)
 	ld	b,(iy+fbh_sector+3)	; BCDE=sector
-	call	read_block_asmentry + (read_block_callee-read_block_callee)
+	call	read_block_asm
 	pop	hl			; retrieve buffer address
 	jr	c,buf_findbuf_ok	; exit if no error
 	res	bufflag_inuse,(iy+fbh_flags)	; not valid if error

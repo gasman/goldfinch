@@ -2,8 +2,7 @@
 ; void write_block_callee(BLOCK_DEVICE *device, void *buffer, unsigned long block_number)
 
 XLIB write_block
-LIB write_block_callee
-XREF write_block_asmentry
+LIB write_block_asm
 
 .write_block
 	
@@ -19,4 +18,4 @@ XREF write_block_asmentry
 	push de
 	push af	; restore everything to be torn down by caller
 
-	jp write_block_asmentry + (write_block_callee - write_block_callee)
+	jp write_block_asm

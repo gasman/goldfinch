@@ -4,8 +4,7 @@ XDEF ASMDISP_FATFS_DRIVE_INIT_CALLEE
 
 include "fatfs.def"
 
-LIB read_block_callee
-XREF read_block_asmentry
+LIB read_block_asm
 LIB fatfs_dir_findvolumelabel
 
 .fatfs_drive_init_callee
@@ -33,7 +32,7 @@ LIB fatfs_dir_findvolumelabel
 	ld	d,b
 	ld	e,b
 	ld	hl,(drive_sectorbuf)
-	call	read_block_asmentry + (read_block_callee-read_block_callee)	; read the boot sector
+	call	read_block_asm	; read the boot sector
 	ret	nc			; exit with error
 	ld	iy,(drive_sectorbuf)
 	ld	(ix+fph_fattype),fattype_fat16
