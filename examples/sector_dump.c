@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include "include/divide.h"
-#include "include/block_device.h"
-#include "include/buffer.h"
+#include "../include/divide.h"
+#include "../include/block_device.h"
+#include "../include/buffer.h"
 
 int main() {
 	unsigned char *buffer;

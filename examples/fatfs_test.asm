@@ -1,9 +1,9 @@
 	org 0x8000
 ;	module border.asm
 	
-include "libsrc/divide/divide.def"
-include "libsrc/block_device/block_device.def"
-include "libsrc/fatfs/fatfs.def"
+include "../libsrc/divide/divide.def"
+include "../libsrc/block_device/block_device.def"
+include "../libsrc/fatfs/fatfs.def"
 
 LIB divide_open_drive
 XREF divide_open_drive_asmentry

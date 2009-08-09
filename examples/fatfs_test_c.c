@@ -1,5 +1,5 @@
-#include "include/fatfs.h"
-#include "include/divide.h"
+#include "../include/fatfs.h"
+#include "../include/divide.h"
 #include <stdio.h>
 
 int main() {

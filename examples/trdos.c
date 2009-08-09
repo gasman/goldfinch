@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <strings.h>
-#include "include/divide.h"
-#include "include/block_device.h"
-#include "include/trdos.h"
-#include "include/lowio.h"
-#include "include/buffer.h"
+#include "../include/divide.h"
+#include "../include/block_device.h"
+#include "../include/trdos.h"
+#include "../include/lowio.h"
+#include "../include/buffer.h"
 
 int main() {
 	unsigned char buffer[256];
