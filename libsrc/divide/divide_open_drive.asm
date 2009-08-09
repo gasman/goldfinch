@@ -2,14 +2,11 @@
 
 XLIB divide_open_drive
 XDEF divide_open_drive_asmentry
-XDEF ASMDISP_DIVIDE_OPEN_DRIVE
 
 include	"divide.def"
 
-LIB divide_read_block_callee
-XREF divide_read_block_asmentry
-LIB divide_write_block_callee
-XREF divide_write_block_asmentry
+LIB divide_read_block_asm
+LIB divide_write_block_asm
 
 .divide_open_drive
 
@@ -26,7 +23,6 @@ XREF divide_write_block_asmentry
 	ret z
 	ld hl,slave_drive_block_device
 	ret
-DEFC ASMDISP_DIVIDE_OPEN_DRIVE = divide_open_drive_asmentry - divide_open_drive
 
 .master_drive_block_device
 	DEFW divide_block_device_driver
@@ -40,5 +36,5 @@ DEFC ASMDISP_DIVIDE_OPEN_DRIVE = divide_open_drive_asmentry - divide_open_drive
 
 ; 'device driver' for DivIDE drives: a lookup table to the asm entry points
 .divide_block_device_driver
-	jp divide_read_block_asmentry + (divide_read_block_callee - divide_read_block_callee)	; read_block
-	jp divide_write_block_asmentry + (divide_write_block_callee - divide_write_block_callee)	; write_block
+	jp divide_read_block_asm	; read_block
+	jp divide_write_block_asm	; write_block

@@ -2,8 +2,7 @@
 ; void divide_write_block_callee(BLOCK_DEVICE *device, void *buffer, unsigned long block_number)
 
 XLIB divide_write_block
-LIB divide_write_block_callee
-XREF divide_write_block_asmentry
+LIB divide_write_block_asm
 
 .divide_write_block
 	
@@ -19,4 +18,4 @@ XREF divide_write_block_asmentry
 	push de
 	push af	; restore everything to be torn down by caller
 
-	jp divide_write_block_asmentry + (divide_write_block_callee-divide_write_block_callee)
+	jp divide_write_block_asm
