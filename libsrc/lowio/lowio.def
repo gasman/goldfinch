@@ -21,7 +21,13 @@ defvars 0
 defvars 0
 {
 	dir_filesystem	ds.b	filesystem_size	; copy of the filesystem object
-	dir_fs_data	; followed by filesystem-specific state
+	dir_fsdata	; followed by filesystem-specific state
+}
+; Filesystem-specific portion
+defvars dir_fsdata
+{
+	dir_trdos_block_number	ds.w	1	; block number that the directory pointer currently sits in
+	dir_trdos_block_offset	ds.b	1	; offset into the (256-byte) sector where the next dir entry is
 }
 
 defc MAX_NAME = 32	;max length of a filename (including terminating \0)

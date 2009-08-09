@@ -12,12 +12,12 @@ typedef struct filesystem_st {
 /* Directory handle */
 typedef struct dir_st {
 	FILESYSTEM fs; /* copy of the corresponding filesystem handle */
-	union dir_fs_data_u {
-		struct trdos_dir_fs_data_st {
+	union dir_fsdata_u {
+		struct dir_fsdata_trdos_st {
 			unsigned int block_number; /* block number that the directory pointer currently sits in */
 			unsigned char block_offset; /* offset into the (256-byte) sector where the next dir entry is */
-		} trdos_dir_fs_data;
-	} dir_fs_data;
+		} trdos;
+	} dir_fsdata;
 } DIR;
 
 #define MAX_NAME 32
@@ -26,25 +26,25 @@ typedef struct dirent_st {
 	DIR *dir; /* pointer to the dir (and thus the filesystem) object */
 	char filename[MAX_NAME]; /* null-terminated filename */
 	unsigned char flags; /* bit field; bit 0 set if this is a directory */
-	union dirent_fs_data_u { /*  filesystem-specific state; enough to open the file */
-		struct trdos_dirent_fs_data_st {
+	union dirent_fsdata_u { /*  filesystem-specific state; enough to open the file */
+		struct dirent_fsdata_trdos_st {
 			unsigned char sector_count;
 			unsigned char start_sector;
 			unsigned char start_track;
-		} trdos_dirent_fs_data;
-	} dirent_fs_data;
+		} trdos;
+	} dirent_fsdata;
 } DIRENT;
 
 /* File record */
 typedef struct fsfile_st {
 	FILESYSTEM fs; /* Copy of the corresponding filesystem handle */
-	union file_fs_data_u { /* filesystem-specific state */
-		struct trdos_file_fs_data_st {
+	union file_fsdata_u { /* filesystem-specific state */
+		struct file_fsdata_trdos_st {
 			unsigned int block_number; /* block number that the file pointer currently sits in */
 			unsigned char block_offset; /* offset into the (256-byte) sector where the next byte is */
 			unsigned char remaining_blocks; /* number of blocks left to read before EOF */
-		} trdos_file_fs_data;
-	} file_fs_data;
+		} trdos;
+	} file_fsdata;
 } FSFILE;
 
 // First a list of functions using CALLER and FASTCALL linkage

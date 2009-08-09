@@ -29,10 +29,10 @@ include	"trdos.def"
 	; set bcde to block number
 	ld b,0
 	ld c,b
-	ld d,(iy + dir_fs_data + trdos_dir_block_number + 1)
-	ld e,(iy + dir_fs_data + trdos_dir_block_number)
+	ld d,(iy + dir_trdos_block_number + 1)
+	ld e,(iy + dir_trdos_block_number)
 	call buffer_findbuf	; now hl = start of sector buffer
-	ld c,(iy + dir_fs_data + trdos_dir_block_offset)
+	ld c,(iy + dir_trdos_block_offset)
 	ld b,0
 	add hl,bc	; add offset to move hl to start of directory record
 	
@@ -49,14 +49,14 @@ include	"trdos.def"
 	; advance block offset/number in directory record
 	ld a,c
 	add a,16	; entries are 16 bytes
-	ld (iy + dir_fs_data + trdos_dir_block_offset),a
+	ld (iy + dir_trdos_block_offset),a
 	jr nc,same_sector
 	; need to advance to next sector
-	ld b,(iy + dir_fs_data + trdos_dir_block_number + 1)
-	ld c,(iy + dir_fs_data + trdos_dir_block_number)
+	ld b,(iy + dir_trdos_block_number + 1)
+	ld c,(iy + dir_trdos_block_number)
 	inc bc
-	ld (iy + dir_fs_data + trdos_dir_block_number + 1),b
-	ld (iy + dir_fs_data + trdos_dir_block_number),c
+	ld (iy + dir_trdos_block_number + 1),b
+	ld (iy + dir_trdos_block_number),c
 .same_sector
 	
 	push de	; save dirent
