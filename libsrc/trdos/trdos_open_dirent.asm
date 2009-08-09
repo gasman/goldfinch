@@ -15,7 +15,7 @@ include	"trdos.def"
 	pop iy	; file ptr in iy
 	
 	; populate block number
-	ld l,(ix + dirent_fs_data + trdos_dirent_start_track)
+	ld l,(ix + dirent_trdos_start_track)
 	ld h,0
 
 	ld (iy + file_fs_data + trdos_file_block_offset),h	; set block offset to 0
@@ -24,13 +24,13 @@ include	"trdos.def"
 	add hl,hl
 	add hl,hl
 	add hl,hl
-	ld a,(ix + dirent_fs_data + trdos_dirent_start_sector)
+	ld a,(ix + dirent_trdos_start_sector)
 	or l
 	ld (iy + file_fs_data + trdos_file_block_number),a
 	ld (iy + file_fs_data + trdos_file_block_number + 1),h
 	
 	; populate sectors_left
-	ld a,(ix + dirent_fs_data + trdos_dirent_sector_count)
+	ld a,(ix + dirent_trdos_sector_count)
 	ld (iy + file_fs_data + trdos_file_blocks_remaining),1
 	ret
 	

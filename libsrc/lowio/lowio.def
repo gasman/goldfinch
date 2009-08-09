@@ -1,5 +1,6 @@
 ; low-level I/O API
 
+; ===
 ; structure of a filesystem object
 defvars 0
 {
@@ -8,6 +9,7 @@ defvars 0
 	filesystem_size
 }
 
+; ===
 ; structure of a device driver, to be implemented as a jump table of JP xxxx entries (3 bytes each)
 defvars 0
 {
@@ -17,19 +19,21 @@ defvars 0
 	fsdriver_read_file	ds.b	3
 }
 
+; ===
 ; structure of a directory handle
 defvars 0
 {
 	dir_filesystem	ds.b	filesystem_size	; copy of the filesystem object
 	dir_fsdata	; followed by filesystem-specific state
 }
-; Filesystem-specific portion
+; Filesystem-specific portion - TR-DOS
 defvars dir_fsdata
 {
 	dir_trdos_block_number	ds.w	1	; block number that the directory pointer currently sits in
 	dir_trdos_block_offset	ds.b	1	; offset into the (256-byte) sector where the next dir entry is
 }
 
+; ===
 defc MAX_NAME = 32	;max length of a filename (including terminating \0)
 
 ; structure of a directory entry
@@ -38,9 +42,17 @@ defvars 0
 	dirent_dir_ptr	ds.w	1	; pointer to the dir (and thus the filesystem) object
 	dirent_filename	ds.b	MAX_NAME	; null-terminated filename
 	dirent_flags	ds.b	1	; bit field; bit 0 set if this is a directory
-	dirent_fs_data	; filesystem-specific state; enough to open the file
+	dirent_fsdata	; filesystem-specific state; enough to open the file
+}
+; Filesystem-specific portion - TR-DOS
+defvars dirent_fsdata
+{
+	dirent_trdos_sector_count	ds.b	1
+	dirent_trdos_start_sector	ds.b	1
+	dirent_trdos_start_track	ds.b	1
 }
 
+; ===
 ; structure of a file handle
 defvars 0
 {

@@ -4,7 +4,6 @@ XLIB trdos_read_dir
 LIB buffer_findbuf
 
 include	"../lowio/lowio.def"
-include	"trdos.def"
 
 ; enter with hl = dir, ix = dirent
 ; returns 0 if end of dir
@@ -91,13 +90,13 @@ include	"trdos.def"
 	inc hl
 	inc hl
 	ld a,(hl)	; read sector_count
-	ld (ix + dirent_fs_data + trdos_dirent_sector_count),a
+	ld (ix + dirent_trdos_sector_count),a
 	inc hl
 	ld a,(hl)	; read start_sector
-	ld (ix + dirent_fs_data + trdos_dirent_start_sector),a
+	ld (ix + dirent_trdos_start_sector),a
 	inc hl
 	ld a,(hl)	; read start_track
-	ld (ix + dirent_fs_data + trdos_dirent_start_track),a
+	ld (ix + dirent_trdos_start_track),a
 	
 	scf	; signal success
 	ld hl,1
