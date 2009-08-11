@@ -3,7 +3,7 @@ XLIB fatfs_dir_getentry
 include "fatfs.def"
 
 LIB fatfs_clus_readtobuf
-LIB fatfs_buf_findbuf
+LIB buffer_findbuf
 
 ; ***************************************************************************
 ; * Get address of current entry                                            *
@@ -44,5 +44,5 @@ LIB fatfs_buf_findbuf
 	ex	de,hl
 	ld	c,a
 	ld	b,0			; BCDE=sector to read
-	call	fatfs_buf_findbuf		; read the sector
+	call	buffer_findbuf		; read the sector
 	jr	dir_getentry_formaddr

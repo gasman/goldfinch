@@ -3,7 +3,7 @@ XLIB fatfs_clus_readtobuf
 include "fatfs.def"
 
 LIB fatfs_clus_getsector
-LIB fatfs_buf_findbuf
+LIB buffer_findbuf
 
 ; ***************************************************************************
 ; * Read sector from cluster                                                *
@@ -16,4 +16,4 @@ LIB fatfs_buf_findbuf
 .fatfs_clus_readtobuf
 	call	fatfs_clus_getsector		; BCDE=logical sector
 	ret	nc			; exit if error
-	jp	fatfs_buf_findbuf		; read to buffer
+	jp	buffer_findbuf		; read to buffer

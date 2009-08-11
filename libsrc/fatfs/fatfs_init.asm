@@ -1,7 +1,7 @@
 XLIB fatfs_init
 
 include "fatfs.def"
-LIB fatfs_buf_findbuf_noread
+LIB buffer_findbuf_noread
 
 .fatfs_init
 	; clear fatfs_data_area
@@ -12,6 +12,6 @@ LIB fatfs_buf_findbuf_noread
 	ldir
 	
 	ld	ix,0
-	call	fatfs_buf_findbuf_noread	; get a buffer not associated with a partition - TBD!
+	call	buffer_findbuf_noread	; get a buffer not associated with a partition - TBD!
 	ld	(drive_sectorbuf),hl	; save buffer address for later
 	ret

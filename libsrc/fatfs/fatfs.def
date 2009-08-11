@@ -156,7 +156,7 @@ defvars 0
 	fph_secondary	ds.b	1	; secondary partition number (0, or 1+)
 	fph_freeclusts	ds.w	1	; number of free clusters
 	
-	fph_size	ds.b	1	; dummy
+	fph_size
 }
 
 defc	fattype_fat16 = $80

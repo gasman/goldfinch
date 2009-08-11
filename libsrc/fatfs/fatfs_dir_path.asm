@@ -14,7 +14,7 @@ LIB fatfs_file_delete
 XREF fatfs_file_delete_currententry
 LIB fatfs_file_create_entry
 LIB fatfs_clus_allocate
-LIB fatfs_buf_writebuf
+LIB buffer_writebuf
 LIB fatfs_clus_erase
 LIB fatfs_drive_getdircopy
 
@@ -142,7 +142,7 @@ LIB fatfs_drive_getdircopy
 	ld	(hl),c			; store cluster in directory entry
 	inc	hl
 	ld	(hl),b
-	call	fatfs_buf_writebuf		; write directory entry
+	call	buffer_writebuf		; write directory entry
 	pop	bc
 	ret	nc
 	push	bc
@@ -170,7 +170,7 @@ LIB fatfs_drive_getdircopy
 	ld	hl,fspec_parent
 	ld	bc,11
 	ldir				; copy filespec for ".."
-	jp	fatfs_buf_writebuf		; write buffer and exit with any error
+	jp	buffer_writebuf		; write buffer and exit with any error
 
 .dir_path_get
 	ld	a,(hl)			; first 1-2 chars may be user area - just ignore

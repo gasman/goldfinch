@@ -3,7 +3,7 @@ XLIB fatfs_file_create_entry
 include "fatfs.def"
 
 LIB fatfs_dir_getfree
-LIB fatfs_buf_writebuf
+LIB buffer_writebuf
 
 ; ***************************************************************************
 ; * Subroutine to create directory entry for new file                       *
@@ -40,4 +40,4 @@ LIB fatfs_buf_writebuf
 	ld	(hl),a
 	inc	hl
 	ld	(hl),a
-	jp	fatfs_buf_writebuf		; write directory entry
+	jp	buffer_writebuf		; write directory entry

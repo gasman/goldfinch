@@ -9,7 +9,7 @@ XREF fatfs_dir_getnextmatch
 LIB fatfs_file_isopen
 LIB fatfs_dir_entrydetails_callee
 XREF fatfs_dir_entrydetails_asmentry
-LIB fatfs_buf_writebuf
+LIB buffer_writebuf
 LIB fatfs_clus_freechain
 
 ; ***************************************************************************
@@ -52,7 +52,7 @@ LIB fatfs_clus_freechain
 	inc	hl
 	ld	b,(hl)			; BC=starting cluster
 	push	bc
-	call	fatfs_buf_writebuf		; update directory entry
+	call	buffer_writebuf		; update directory entry
 	pop	bc
 	ret	nc
 	jp	fatfs_clus_freechain		; free the chain and exit with any error

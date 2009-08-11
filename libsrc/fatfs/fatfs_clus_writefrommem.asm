@@ -3,8 +3,8 @@ XLIB fatfs_clus_writefrommem
 include "fatfs.def"
 
 LIB fatfs_clus_getsector
-LIB fatfs_buf_findbuf_noread
-LIB fatfs_buf_writebuf
+LIB buffer_findbuf_noread
+LIB buffer_writebuf
 
 ; ***************************************************************************
 ; * Write sector to cluster                                                 *
@@ -21,9 +21,9 @@ LIB fatfs_buf_writebuf
 	pop	hl
 	ret	nc			; exit if error
 	push	hl			; save source
-	call	fatfs_buf_findbuf_noread	; find buffer, but don't read from disk
+	call	buffer_findbuf_noread	; find buffer, but don't read from disk
 	ex	de,hl
 	pop	hl
 	ld	bc,buf_secsize
 	ldir				; move to buffer
-	jp	fatfs_buf_writebuf		; write the MRU buffer (this one)
+	jp	buffer_writebuf		; write the MRU buffer (this one)

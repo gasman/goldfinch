@@ -36,9 +36,9 @@ AFILES = \
 	fatfs_file_delete.asm \
 	fatfs_file_isopen.asm \
 	fatfs_file_create_entry.asm \
-	fatfs_drive_init.asm \
-	fatfs_drive_init_callee.asm \
-	fatfs_init.asm
+	fatfs_init.asm \
+	fatfs_fsopen.asm \
+	fatfs_fsopen_callee.asm
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)

@@ -2,7 +2,7 @@ XLIB fatfs_fat_readfat
 
 include "fatfs.def"
 
-LIB fatfs_buf_findbuf
+LIB buffer_findbuf
 
 ; ***************************************************************************
 ; * Read FAT entry                                                          *
@@ -38,7 +38,7 @@ LIB fatfs_buf_findbuf
 	ld	b,0			; BCDE=sector to read
 	push	de			; save in case of read error
 	push	bc
-	call	fatfs_buf_findbuf		; get HL=address of sector in memory
+	call	buffer_findbuf		; get HL=address of sector in memory
 	pop	bc
 	pop	de			; restore sector number & copies
 	jr	c,fat_readfat16_ok	; on if no error

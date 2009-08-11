@@ -1,4 +1,34 @@
+#ifndef __FATFS_H__
+#define __FATFS_H__
+
 #include "block_device.h"
+#include "lowio.h"
+
+extern void __LIB__ __FASTCALL__ fatfs_init(void);
+extern void __LIB__ fatfs_fsopen(BLOCK_DEVICE *device, FILESYSTEM *fs);
+//extern void __LIB__ fatfs_drive_init(BLOCK_DEVICE *device, FATFS_FILESYSTEM *fs);
+//extern void __LIB__ fatfs_dir_root(FATFS_FILESYSTEM *fs, FATFS_DIRECTORY *dir);
+//extern FATFS_DIR_ENTRY __LIB__ *fatfs_dir_entrydetails(FATFS_DIRECTORY *dir, FATFS_FILESYSTEM *fs);
+
+// And now a list of the same non-FASTCALL functions using CALLEE linkage
+extern void __LIB__ __CALLEE__ fatfs_fsopen_callee(BLOCK_DEVICE *device, FILESYSTEM *fs);
+//extern void __LIB__ __CALLEE__ fatfs_drive_init_callee(BLOCK_DEVICE *device, FATFS_FILESYSTEM *fs);
+//extern void __LIB__ __CALLEE__ fatfs_dir_root_callee(FATFS_FILESYSTEM *fs, FATFS_DIRECTORY *dir);
+//extern FATFS_DIR_ENTRY __LIB__ __CALLEE__ *fatfs_dir_entrydetails_callee(FATFS_DIRECTORY *dir, FATFS_FILESYSTEM *fs);
+
+// And now we make CALLEE linkage default to make compiled progs shorter and faster
+// These defines will generate warnings for function pointers but that's ok
+#define fatfs_fsopen(a,b) fatfs_fsopen_callee(a,b)
+//#define fatfs_drive_init(a,b)	fatfs_drive_init_callee(a,b)
+//#define fatfs_dir_root(a,b)	fatfs_dir_root_callee(a,b)
+//#define fatfs_dir_entrydetails(a,b)	fatfs_dir_entrydetails_callee(a,b)
+
+
+
+
+
+
+/* Old stuff which probably isn't required for user code now follows */
 
 /* equivalent to a 'partition handle' in fatfs.def */
 typedef struct fatfs_filesystem_st {
@@ -40,18 +70,4 @@ typedef struct fatfs_dir_entry_st {
 	unsigned long filesize; /* size in bytes */
 } FATFS_DIR_ENTRY;
 
-extern void __LIB__ __FASTCALL__ fatfs_init(void);
-extern void __LIB__ fatfs_drive_init(BLOCK_DEVICE *device, FATFS_FILESYSTEM *fs);
-extern void __LIB__ fatfs_dir_root(FATFS_FILESYSTEM *fs, FATFS_DIRECTORY *dir);
-extern FATFS_DIR_ENTRY __LIB__ *fatfs_dir_entrydetails(FATFS_DIRECTORY *dir, FATFS_FILESYSTEM *fs);
-
-// And now a list of the same non-FASTCALL functions using CALLEE linkage
-extern void __LIB__ __CALLEE__ fatfs_drive_init_callee(BLOCK_DEVICE *device, FATFS_FILESYSTEM *fs);
-extern void __LIB__ __CALLEE__ fatfs_dir_root_callee(FATFS_FILESYSTEM *fs, FATFS_DIRECTORY *dir);
-extern FATFS_DIR_ENTRY __LIB__ __CALLEE__ *fatfs_dir_entrydetails_callee(FATFS_DIRECTORY *dir, FATFS_FILESYSTEM *fs);
-
-// And now we make CALLEE linkage default to make compiled progs shorter and faster
-// These defines will generate warnings for function pointers but that's ok
-#define fatfs_drive_init(a,b)	fatfs_drive_init_callee(a,b)
-#define fatfs_dir_root(a,b)	fatfs_dir_root_callee(a,b)
-#define fatfs_dir_entrydetails(a,b)	fatfs_dir_entrydetails_callee(a,b)
+#endif
