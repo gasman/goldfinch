@@ -8,6 +8,7 @@ XREF _u_malloc
 LIB read_block_asm
 LIB fatfs_dir_findvolumelabel
 LIB fatfs_open_root_dir
+LIB fatfs_read_dir
 
 include	"../lowio/lowio.def"
 include	"fatfs.def"
@@ -159,3 +160,4 @@ include	"fatfs.def"
 .fatfs_filesystem_driver
 	; jump table to fs routines
 	jp fatfs_open_root_dir
+	jp fatfs_read_dir

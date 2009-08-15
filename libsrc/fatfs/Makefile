@@ -40,7 +40,10 @@ AFILES = \
 	fatfs_fsopen.asm \
 	fatfs_fsopen_callee.asm \
 	fatfs_open_root_dir.asm \
-	fatfs_dir_home_lowio.asm
+	fatfs_dir_home_lowio.asm \
+	fatfs_dir_getentry_lowio.asm \
+	fatfs_dir_next_lowio.asm \
+	fatfs_read_dir.asm
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)
