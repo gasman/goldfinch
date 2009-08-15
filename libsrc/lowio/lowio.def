@@ -9,6 +9,10 @@ defvars 0
 	filesystem_size
 }
 
+; filesystem_data may be used for many things depending on the filesystem, so
+; here we'll define more appropriate filesystem-specific aliases:
+defc filesystem_fatfs_phandle = filesystem_data
+
 ; ===
 ; structure of a device driver, to be implemented as a jump table of JP xxxx entries (3 bytes each)
 defvars 0
@@ -31,6 +35,19 @@ defvars dir_fsdata
 {
 	dir_trdos_block_number	ds.w	1	; block number that the directory pointer currently sits in
 	dir_trdos_block_offset	ds.b	1	; offset into the (256-byte) sector where the next dir entry is
+}
+; Filesystem-specific portion - fatfs
+defvars dir_fsdata
+{
+;	dir_fatfs_phandle	ds.w	1	; partition handle
+; - present in original residos fatfs, but here it is duplicated by the embedded filesystem object
+	dir_fatfs_flags	ds.b	1	; bit 7=1 for root
+	dir_fatfs_clusstart	ds.w	1	; start cluster (0 for root)
+	dir_fatfs_sector	ds.b	1	; current sector
+	dir_fatfs_cluster	ds.w	1	; current cluster (sector offset for root)
+	dir_fatfs_entry	ds.b	1	; current entry within sector
+	
+	dir_fatfs_size
 }
 
 ; ===

@@ -60,7 +60,7 @@ fatfs_dir.bin.tap: fatfs_dir.bin
 	bintap fatfs_dir.bin fatfs_dir.bin.tap fatfs_dir 32768 > /dev/null
 
 fatfs_dir.bin: ../include/fatfs.h fatfs_dir.c
-	zcc +zx -vn -m fatfs_dir.c -o fatfs_dir.bin -lndos -lmalloc -Ca-i../lib/buffer -Ca-i../lib/divide -Ca-i../lib/block_device -Ca-i../lib/fatfs
+	zcc +zx -vn -m fatfs_dir.c -o fatfs_dir.bin -lndos -lmalloc -Ca-i../lib/buffer -Ca-i../lib/divide -Ca-i../lib/block_device -Ca-i../lib/lowio -Ca-i../lib/fatfs
 
 
 clean:

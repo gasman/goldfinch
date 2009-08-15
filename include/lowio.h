@@ -17,6 +17,13 @@ typedef struct dir_st {
 			unsigned int block_number; /* block number that the directory pointer currently sits in */
 			unsigned char block_offset; /* offset into the (256-byte) sector where the next dir entry is */
 		} trdos;
+		struct dir_fsdata_fatfs_st {
+			unsigned char flags; /* bit 7=1 for root */
+			unsigned int clusstart; /*  start cluster (0 for root) */
+			unsigned char sector; /* current sector */
+			unsigned int cluster; /* current cluster (sector offset for root) */
+			unsigned char entry; /* current entry within sector */
+		} fatfs;
 	} dir_fsdata;
 } DIR;
 

@@ -17,18 +17,15 @@ void u_free(void *addr) {
 }
 
 FILESYSTEM fs;
+DIR dir;
 
 int main() {
 	BLOCK_DEVICE *device;
-	void *test_alloc;
 
 	mallinit();
 	sbrk(55000,5000);
 	
 	buffer_emptybuffers(); // TODO: Can this be sensibly incorporated into fatfs_init?
-
-	test_alloc = u_malloc(42);
-	printf("test allocation of 42 bytes, allocated at %04x\n", test_alloc);
 
 	printf("Initializing fatfs library\n");
 	fatfs_init();
@@ -37,6 +34,8 @@ int main() {
 	printf("opening FATfs filesystem on it\n");
 	fatfs_fsopen(device, &fs);
 	printf("fatfs filesystem at %04x\n", &fs);
+	open_root_dir(&fs, &dir);
+	printf("dir handle at %04x\n", &dir);
 
 	return 0;
 }

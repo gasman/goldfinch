@@ -5,9 +5,12 @@ include "fatfs.def"
 ; ***************************************************************************
 ; * "Home" directory handle to first entry                                  *
 ; ***************************************************************************
-; On entry, IY=directory handle
+; On entry, IY=directory handle ('fdh' structure from fatfs.def)
 ; On exit, Fc=1 (success)
 ; A corrupted.
+
+; TODO: eliminate all fdh structures in favour of lowio directory handles,
+; then retire this function
 
 .fatfs_dir_home
 	ld	a,(iy+fdh_clusstart)	; copy start cluster (0 for root)
