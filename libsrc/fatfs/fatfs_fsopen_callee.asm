@@ -9,6 +9,7 @@ LIB read_block_asm
 LIB fatfs_dir_findvolumelabel
 LIB fatfs_open_root_dir
 LIB fatfs_read_dir
+LIB fatfs_open_dirent
 
 include	"../lowio/lowio.def"
 include	"fatfs.def"
@@ -161,3 +162,5 @@ include	"fatfs.def"
 	; jump table to fs routines
 	jp fatfs_open_root_dir
 	jp fatfs_read_dir
+	jp fatfs_open_dirent
+	

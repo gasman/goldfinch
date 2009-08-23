@@ -4,6 +4,7 @@ XLIB fatfs_read_dir
 LIB fatfs_dir_getentry_lowio
 LIB fatfs_dir_next_lowio
 
+include	"fatfs.def"
 include	"../lowio/lowio.def"
 
 ; enter with hl = dir, ix = dirent
@@ -35,6 +36,9 @@ include	"../lowio/lowio.def"
 	
 	; check for end of dir / other error condition
 	jr nc,end_of_dir
+	
+	push hl	; save pointer to filesystem dir entry
+	push de	; save dirent
 	
 	; copy filename to dir entry
 	inc de
@@ -72,6 +76,19 @@ include	"../lowio/lowio.def"
 .null_terminate
 	xor a
 	ld (de),a
+	
+	pop hl	; restore dirent
+	ld bc,dirent_flags
+	add hl,bc	; advance dirent to the dirent_flags entry
+	ld (hl),a	; clear flags (TODO: set the 'directory' bit if appropriate)
+	inc hl
+	ex de,hl	; now de points to dirent_fatfs_clusstart
+	pop hl	; restore filesystem dir entry
+	ld bc,direntry_cluster
+	add hl,bc	; advance hl to the direntry_cluster entry
+	; copy the cluster and filesize records to dirent
+	ld bc,dirent_fatfs_copyend - dirent_fatfs_clusstart
+	ldir
 	
 	; advance dir to next entry
 	call fatfs_dir_next_lowio

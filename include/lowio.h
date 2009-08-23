@@ -39,6 +39,10 @@ typedef struct dirent_st {
 			unsigned char start_sector;
 			unsigned char start_track;
 		} trdos;
+		struct dirent_fsdata_fatfs_st {
+			unsigned int clusstart; /* start cluster */
+			unsigned long filesize; /* exact filesize in bytes */
+		} fatfs;
 	} dirent_fsdata;
 } DIRENT;
 
@@ -51,6 +55,15 @@ typedef struct fsfile_st {
 			unsigned char block_offset; /* offset into the (256-byte) sector where the next byte is */
 			unsigned char remaining_blocks; /* number of blocks left to read before EOF */
 		} trdos;
+		struct file_fsdata_fatfs_st {
+			unsigned char mode; /* file mode flags (0 if handle free) */
+			unsigned int cluster; /* current cluster */
+			unsigned char sector; /* current sector */
+			unsigned int offset; /* current pos within sector */
+			unsigned long filepos; /* filepointer */
+			unsigned int clusstart; /* start cluster */
+			unsigned long filesize; /* exact filesize in bytes */
+		} fatfs;
 	} file_fsdata;
 } FSFILE;
 

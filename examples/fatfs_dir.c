@@ -19,6 +19,7 @@ void u_free(void *addr) {
 FILESYSTEM fs;
 DIR dir;
 DIRENT entry;
+FSFILE file;
 
 int main() {
 	BLOCK_DEVICE *device;
@@ -38,10 +39,13 @@ int main() {
 	printf("fatfs filesystem at %04x\n", &fs);
 	open_root_dir(&fs, &dir);
 	printf("dir handle at %04x\n", &dir);
-	for (i = 0; i < 12; i++) {
+	for (i = 0; i < 8; i++) {
 		read_dir(&dir, &entry);
 		printf("%s\n", entry.filename);
 	}
+	printf("dirent at %04x\n", &entry);
+	open_dirent(&entry, &file);
+	printf("file handle at %04x\n", &file);
 
 	return 0;
 }

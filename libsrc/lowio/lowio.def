@@ -68,6 +68,13 @@ defvars dirent_fsdata
 	dirent_trdos_start_sector	ds.b	1
 	dirent_trdos_start_track	ds.b	1
 }
+; Filesystem-specific portion - fatfs
+defvars dirent_fsdata
+{
+	dirent_fatfs_clusstart	ds.w	1	; start cluster
+	dirent_fatfs_filesize	ds.l	1	; exact filesize in bytes
+	dirent_fatfs_copyend	; end of data that can be copied directly from the on-disk dir entry
+}
 
 ; ===
 ; structure of a file handle
@@ -82,4 +89,15 @@ defvars file_fsdata
 	file_trdos_block_number	ds.w	1	; number of block containing next data
 	file_trdos_block_offset	ds.b	1	; offset of data pointer into that block
 	file_trdos_blocks_remaining	ds.b	1	; number of blocks left before EOF
+}
+; Filesystem-specific portion - fatfs
+defvars file_fsdata
+{
+	file_fatfs_mode	ds.b	1	; file mode flags (0 if handle free)
+	file_fatfs_cluster	ds.w	1	; current cluster
+	file_fatfs_sector	ds.b	1	; current sector
+	file_fatfs_offset	ds.w	1	; current pos within sector
+	file_fatfs_filepos	ds.l	1	; filepointer
+	file_fatfs_clusstart	ds.w	1	; start cluster
+	file_fatfs_filesize	ds.l	1	; exact filesize in bytes
 }
