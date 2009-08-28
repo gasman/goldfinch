@@ -134,6 +134,28 @@ defvars 0
 	ffh_size	ds.b	1	; dummy
 }
 
+; File mode bits
+defc	fm_access_mask = $07		; current access mode field mask
+
+defgroup
+{
+	fm_exc_read = 1,
+	fm_exc_write = 2,
+	fm_exc_rw = 3,
+	fm_shared_read = 5
+}
+
+defgroup
+{
+	fm_read = 0,			; readable
+	fm_write = 1,			; writeable
+	fm_shared = 2,			; shared
+	fm_header = 7,			; first 128 bytes are +3DOS header
+	fm_valid = 6,			; current cluster/sector/offset is valid
+	fm_entry = 5,			; entry details (filesize/start cluster/header) changed
+					;  and need to be written to entry
+}
+
 ; Partition handles
 ; TBD: This stuff can be re-ordered for convenience of setup, except the standard partition
 ;      handle *must* come first.
@@ -181,6 +203,10 @@ defvars fatfs_data_area
 	fat_defdrive	ds.b	1			; default drive letter ('A'-'P')
 	dir_filespec1	ds.b	11			; 11-byte filespecs
 	dir_filespec2	ds.b	11
+
+	tmp_rwaddr	ds.w	1			; temporary variables used by read/write
+	tmp_rwsize	ds.w	1
+	tmp_rwpossible	ds.w	1
 	fatfs_data_area_end
 }
 

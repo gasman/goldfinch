@@ -30,20 +30,12 @@ typedef struct dir_st {
 #define MAX_NAME 32
 /* Directory entry record */
 typedef struct dirent_st {
-	DIR *dir; /* pointer to the dir (and thus the filesystem) object */
+	DIR dir; /* copy of the dir (and thus the filesystem) object */
 	char filename[MAX_NAME]; /* null-terminated filename */
 	unsigned char flags; /* bit field; bit 0 set if this is a directory */
-	union dirent_fsdata_u { /*  filesystem-specific state; enough to open the file */
-		struct dirent_fsdata_trdos_st {
-			unsigned char sector_count;
-			unsigned char start_sector;
-			unsigned char start_track;
-		} trdos;
-		struct dirent_fsdata_fatfs_st {
-			unsigned int clusstart; /* start cluster */
-			unsigned long filesize; /* exact filesize in bytes */
-		} fatfs;
-	} dirent_fsdata;
+	/*  filesystem-specific state; enough to open the file - probably not needed, as the dir record is enough */
+	/* union dirent_fsdata_u { 
+	} dirent_fsdata; */
 } DIRENT;
 
 /* File record */
@@ -67,19 +59,25 @@ typedef struct fsfile_st {
 	} file_fsdata;
 } FSFILE;
 
+/* file access modes - snarfed from fatfs.def */
+#define FILE_MODE_EXC_READ 1
+#define FILE_MODE_EXC_WRITE 2
+#define FILE_MODE_EXC_RW 3
+#define FILE_MODE_SHARED_READ 5
+
 // First a list of functions using CALLER and FASTCALL linkage
 
 // And now a list of the same non-FASTCALL functions using CALLEE linkage
 extern void __LIB__ __CALLEE__ open_root_dir_callee(FILESYSTEM *fs, DIR *dir);
 extern int __LIB__ __CALLEE__ read_dir_callee(DIR *dir, DIRENT *dirent);
-extern int __LIB__ __CALLEE__ open_dirent_callee(DIRENT *dirent, FSFILE *file);
+extern int __LIB__ __CALLEE__ open_dirent_callee(DIRENT *dirent, FSFILE *file, unsigned char access_mode);
 extern int __LIB__ __CALLEE__ read_file_callee(FSFILE *file, void *buf, unsigned int nbyte);
 
 // And now we make CALLEE linkage default to make compiled progs shorter and faster
 // These defines will generate warnings for function pointers but that's ok
 #define open_root_dir(a,b) open_root_dir_callee(a,b)
 #define read_dir(a,b) read_dir_callee(a,b)
-#define open_dirent(a,b) open_dirent_callee(a,b)
+#define open_dirent(a,b,c) open_dirent_callee(a,b,c)
 #define read_file(a,b,c) read_file_callee(a,b,c)
 
 #endif

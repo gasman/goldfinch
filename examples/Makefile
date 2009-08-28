@@ -30,7 +30,7 @@ trdos.bin.tap: trdos.bin
 	bintap trdos.bin trdos.bin.tap trdos 32768 > /dev/null
 
 trdos.bin: ../include/divide.h ../include/block_device.h ../include/trdos.h trdos.c
-	zcc +zx -vn trdos.c -o trdos.bin -lndos -Ca-i../lib/divide -Ca-i../lib/block_device -Ca-i../lib/trdos -Ca-i../lib/buffer -Ca-i../lib/lowio
+	zcc +zx -vn -m trdos.c -o trdos.bin -lndos -Ca-i../lib/divide -Ca-i../lib/block_device -Ca-i../lib/trdos -Ca-i../lib/buffer -Ca-i../lib/lowio
 
 
 fatfs_test.tap: loader.bas.tap fatfs_test.bin.tap

@@ -1,0 +1,11 @@
+; structure of a trdos on-disk dir entry
+defvars 0
+{
+	trdos_dir_entry_filename	ds.b	8
+	trdos_dir_entry_fileext	ds.b	1
+	trdos_dir_entry_param_1	ds.w	1	; file-type-specific parameter
+	trdos_dir_entry_param_2	ds.w	1	; file-type-specific parameter
+	trdos_dir_entry_sector_count	ds.b	1
+	trdos_dir_entry_start_sector	ds.b	1
+	trdos_dir_entry_start_track	ds.b	1
+}

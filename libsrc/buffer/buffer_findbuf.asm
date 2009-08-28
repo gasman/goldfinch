@@ -13,7 +13,7 @@ LIB read_block_asm
 ; On exit, Fc=1 (success) and HL=address of buffer
 ; or Fc=0 and A=error.
 ; This will update the MRU list
-; ABCDEHL corrupted.
+; ABCDEHL corrupted. IY preserved
 
 .buffer_findbuf
 	push	iy

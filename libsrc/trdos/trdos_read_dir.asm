@@ -1,68 +1,37 @@
 ; int trdos_read_dir(DIR *dir, DIRENT *dirent) - read the next entry from a directory
 XLIB trdos_read_dir
 
-LIB buffer_findbuf
+LIB trdos_dir_get_entry
+LIB trdos_dir_next
 
 include	"../lowio/lowio.def"
 
-; enter with hl = dir, ix = dirent
+; enter with iy = dir, de = dirent
 ; returns 0 if end of dir
 .trdos_read_dir
-	; first make a pointer to the dir (which is handily also a pointer to (a copy of) the filesystem).
-	; NB this requires the calling code NOT to deallocate the dir before it's finished doing stuff
-	; with this dirent (such as opening the file in question)...
-	ld (ix + dirent_dir_ptr),l
-	ld (ix + dirent_dir_ptr + 1),h
-	
-	; store dirent for later
-	push ix
 
-	; get pointer to the block device into ix
-	push hl
-	pop iy
-	ld l,(iy + filesystem_data)	; for the trdos filesystem, the 'data' field is a pointer to the block_device
-	ld h,(iy + filesystem_data + 1)
-	push hl
-	pop ix
-
-	; set bcde to block number
-	ld b,0
-	ld c,b
-	ld d,(iy + dir_trdos_block_number + 1)
-	ld e,(iy + dir_trdos_block_number)
-	call buffer_findbuf	; now hl = start of sector buffer
-	ld c,(iy + dir_trdos_block_offset)
-	ld b,0
-	add hl,bc	; add offset to move hl to start of directory record
+	push de ; save dirent
+	call trdos_dir_get_entry ; get pointer to on-disk dir entry into hl
+	pop de ; restore dirent
 	
-	; restore dirent
-	pop de
-	
-	; check for end of dir
 	ld a,(hl)
-	or a
-	jr z,end_of_dir	; return with carry reset if end of dir (indicated by an entry starting with 0)
-	
+	or a	; if first byte of record is 0, end of dir
+	jr z,end_of_dir
+
 	; TODO: recognise deleted dir entries (is there such a thing in trdos?) and skip them
+
+	push hl	; store pointer to on-disk dir entry
 	
-	; advance block offset/number in directory record
-	ld a,c
-	add a,16	; entries are 16 bytes
-	ld (iy + dir_trdos_block_offset),a
-	jr nc,same_sector
-	; need to advance to next sector
-	ld b,(iy + dir_trdos_block_number + 1)
-	ld c,(iy + dir_trdos_block_number)
-	inc bc
-	ld (iy + dir_trdos_block_number + 1),b
-	ld (iy + dir_trdos_block_number),c
-.same_sector
+	push de ; get pointer to dirent struct into ix
+	pop ix
 	
-	push de	; save dirent
-	; copy filename to dir entry
-	inc de
-	inc de	; advance to the dirent_filename field
-	ld bc,8
+	push iy	; get pointer to dir struct into hl
+	pop hl
+	ld bc,dir_size ; copy the dir struct to start of dirent
+	ldir
+	
+	pop hl ; restore pointer to on-disk dir entry
+	ld bc,8	; copy filename to dirent
 	ldir
 	; rewind to the last non-space character
 .remove_trailing_space
@@ -81,23 +50,11 @@ include	"../lowio/lowio.def"
 	xor a
 	ld (de),a
 	
-	pop ix	; restore dirent
-	xor a
 	ld (ix + dirent_flags),a	; clear flags
-
-	inc hl	; skip past 4 bytes of file params
-	inc hl
-	inc hl
-	inc hl
-	ld a,(hl)	; read sector_count
-	ld (ix + dirent_trdos_sector_count),a
-	inc hl
-	ld a,(hl)	; read start_sector
-	ld (ix + dirent_trdos_start_sector),a
-	inc hl
-	ld a,(hl)	; read start_track
-	ld (ix + dirent_trdos_start_track),a
 	
+	; advance block offset/number in original directory record
+	call trdos_dir_next
+
 	scf	; signal success
 	ld hl,1
 	ret

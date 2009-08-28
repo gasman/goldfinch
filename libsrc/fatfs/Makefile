@@ -42,9 +42,17 @@ AFILES = \
 	fatfs_open_root_dir.asm \
 	fatfs_dir_home_lowio.asm \
 	fatfs_dir_getentry_lowio.asm \
+	fatfs_dir_entrydetails_lowio.asm \
 	fatfs_dir_next_lowio.asm \
 	fatfs_read_dir.asm \
-	fatfs_open_dirent.asm
+	fatfs_open_dirent.asm \
+	fatfs_read_file.asm \
+	fatfs_file_checkfilepos.asm \
+	fatfs_file_getvalidaddr.asm \
+	fatfs_file_getfilepos.asm \
+	fatfs_file_addfpos.asm  \
+	fatfs_file_set_access.asm \
+	fatfs_file_commit.asm
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)

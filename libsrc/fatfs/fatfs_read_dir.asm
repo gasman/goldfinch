@@ -1,48 +1,53 @@
 ; int fatfs_read_dir(DIR *dir, DIRENT *dirent) - read the next entry from a directory
 XLIB fatfs_read_dir
 
-LIB fatfs_dir_getentry_lowio
+LIB fatfs_dir_entrydetails_lowio
 LIB fatfs_dir_next_lowio
 
 include	"fatfs.def"
 include	"../lowio/lowio.def"
 
-; enter with hl = dir, ix = dirent
+; enter with iy = dir, de = dirent
 ; returns 0 if end of dir
 .fatfs_read_dir
-	; first make a pointer to the dir (which is handily also a pointer to (a copy of) the filesystem).
-	; NB this requires the calling code NOT to deallocate the dir before it's finished doing stuff
-	; with this dirent (such as opening the file in question)...
-	ld (ix + dirent_dir_ptr),l
-	ld (ix + dirent_dir_ptr + 1),h
-	
-	; store dirent for later
-	push ix
-	
-	; get dir handle into iy
-	push hl
-	pop iy
 
-	; get pointer to the partition handle into ix
-	ld l,(iy + filesystem_fatfs_phandle)
-	ld h,(iy + filesystem_fatfs_phandle + 1)
+.test_entry
+	; get partition handle into ix
+	ld l,(iy + dir_filesystem + filesystem_fatfs_phandle)
+	ld h,(iy + dir_filesystem + filesystem_fatfs_phandle + 1)
 	push hl
 	pop ix
+
+	; If a previous pass of dir_next returned an 'end of directory' condition,
+	; dir_fatfs_entry will have been left with bit 4 set
+	bit	4,(iy+dir_fatfs_entry)
+	jr nz,end_of_dir
 	
-	; get address of dir entry into hl
-	call fatfs_dir_getentry_lowio
-	; restore dirent
-	pop de
+	push de ; save dirent
+	call fatfs_dir_entrydetails_lowio ; get pointer to on-disk dir entry into hl
+	pop de ; restore dirent
 	
-	; check for end of dir / other error condition
-	jr nc,end_of_dir
+	ret	nc			; exit if error
+	jr	z,skip_entry	; no match if free entry
+	bit	dirattr_vol,a
+	jr	nz,skip_entry	; no match if volume label (which includes LFN entries too)
 	
-	push hl	; save pointer to filesystem dir entry
-	push de	; save dirent
+	; we now have a good entry;
+	; hl = pointer to on-disk dir entry
+	; de = pointer to dirent
+	; ix = partition handle
+	; iy = pointer to dir
+
+	push de ; store pointer to dirent
+	push hl	; store pointer to on-disk dir entry
 	
+	push iy	; get pointer to dir struct into hl
+	pop hl
+	ld bc,dir_size ; copy the dir struct to start of dirent
+	ldir
+	
+	pop hl ; restore pointer to on-disk dir entry
 	; copy filename to dir entry
-	inc de
-	inc de	; advance to the dirent_filename field
 	ld bc,8
 	ldir
 	; rewind to the character following the last non-space character
@@ -77,25 +82,26 @@ include	"../lowio/lowio.def"
 	xor a
 	ld (de),a
 	
-	pop hl	; restore dirent
+	pop hl ; restore pointer to dirent
 	ld bc,dirent_flags
-	add hl,bc	; advance dirent to the dirent_flags entry
+	add hl,bc
 	ld (hl),a	; clear flags (TODO: set the 'directory' bit if appropriate)
-	inc hl
-	ex de,hl	; now de points to dirent_fatfs_clusstart
-	pop hl	; restore filesystem dir entry
-	ld bc,direntry_cluster
-	add hl,bc	; advance hl to the direntry_cluster entry
-	; copy the cluster and filesize records to dirent
-	ld bc,dirent_fatfs_copyend - dirent_fatfs_clusstart
-	ldir
 	
 	; advance dir to next entry
 	call fatfs_dir_next_lowio
-
+	
 	scf	; signal success
 	ld hl,1
 	ret
+	
 .end_of_dir
+	or a ; reset carry
 	ld hl,0
 	ret
+
+.skip_entry
+	push de
+	call fatfs_dir_next_lowio
+	pop de
+	jr test_entry
+	

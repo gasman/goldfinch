@@ -11,6 +11,7 @@ defvars 0
 
 ; filesystem_data may be used for many things depending on the filesystem, so
 ; here we'll define more appropriate filesystem-specific aliases:
+defc filesystem_trdos_block_device = filesystem_data
 defc filesystem_fatfs_phandle = filesystem_data
 
 ; ===
@@ -49,6 +50,7 @@ defvars dir_fsdata
 	
 	dir_fatfs_size
 }
+defc dir_size = dir_fatfs_size
 
 ; ===
 defc MAX_NAME = 32	;max length of a filename (including terminating \0)
@@ -56,33 +58,22 @@ defc MAX_NAME = 32	;max length of a filename (including terminating \0)
 ; structure of a directory entry
 defvars 0
 {
-	dirent_dir_ptr	ds.w	1	; pointer to the dir (and thus the filesystem) object
+	dirent_dir	ds.b	dir_size	; copy of the dir record, preserved in the state of pointing to this entry.
+		; Also contains the filesystem handle
 	dirent_filename	ds.b	MAX_NAME	; null-terminated filename
 	dirent_flags	ds.b	1	; bit field; bit 0 set if this is a directory
-	dirent_fsdata	; filesystem-specific state; enough to open the file
-}
-; Filesystem-specific portion - TR-DOS
-defvars dirent_fsdata
-{
-	dirent_trdos_sector_count	ds.b	1
-	dirent_trdos_start_sector	ds.b	1
-	dirent_trdos_start_track	ds.b	1
-}
-; Filesystem-specific portion - fatfs
-defvars dirent_fsdata
-{
-	dirent_fatfs_clusstart	ds.w	1	; start cluster
-	dirent_fatfs_filesize	ds.l	1	; exact filesize in bytes
-	dirent_fatfs_copyend	; end of data that can be copied directly from the on-disk dir entry
+	dirent_fsdata	; filesystem-specific state; enough to open the file (probably not needed; the copy of the dir record should be enough)
 }
 
 ; ===
 ; structure of a file handle
 defvars 0
 {
-	file_filesystem	ds.b	filesystem_size	; copy of the filesystem object
+	file_dir	ds.b	dir_size	; copy of the dir object, configured to point to this file
 	file_fsdata	; followed by filesystem-specific state
 }
+defc file_filesystem = file_dir	; DEPRECATED (fs drivers will be migrated to expect a full dir record here, not just a filesystem record)
+
 ; Filesystem-specific portion - TR-DOS
 defvars file_fsdata
 {
