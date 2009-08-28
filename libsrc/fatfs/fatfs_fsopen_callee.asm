@@ -4,7 +4,7 @@
 XLIB fatfs_fsopen_callee
 XDEF fatfs_fsopen_asm
 
-XREF _u_malloc
+LIB fatfs_phandle_allocate
 LIB read_block_asm
 LIB fatfs_dir_findvolumelabel
 LIB fatfs_open_root_dir
@@ -33,10 +33,8 @@ include	"fatfs.def"
 	push ix	; store filesystem struct pointer
 	push hl	; store block device pointer
 
-	ld hl,fph_size	; allocate fph_size bytes
-	push hl
-	call _u_malloc
-	pop de	; tear down 'caller' stack frame
+	call fatfs_phandle_allocate ; get a free partition handle into hl
+
 	pop de	; recall block device pointer
 	pop ix	; recall filesystem struct pointer
 	ret nc                      ; mem alloc failed, hl = 0

@@ -52,7 +52,8 @@ AFILES = \
 	fatfs_file_getfilepos.asm \
 	fatfs_file_addfpos.asm  \
 	fatfs_file_set_access.asm \
-	fatfs_file_commit.asm
+	fatfs_file_commit.asm \
+	fatfs_phandle_allocate.asm
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)
