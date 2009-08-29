@@ -4,6 +4,9 @@ XLIB fatfs_read_file
 LIB fatfs_file_checkfilepos
 LIB fatfs_file_getvalidaddr
 LIB fatfs_file_addfpos
+LIB tmp_rwaddr
+LIB tmp_rwsize
+LIB tmp_rwpossible
 
 include	"fatfs.def"
 include	"../lowio/lowio.def"

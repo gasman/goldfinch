@@ -10,6 +10,7 @@ LIB fatfs_open_root_dir
 LIB fatfs_read_dir
 LIB fatfs_open_dirent
 LIB fatfs_read_file
+LIB drive_sectorbuf
 
 include	"../lowio/lowio.def"
 include	"fatfs.def"

@@ -1,5 +1,7 @@
 XLIB fatfs_phandle_allocate
 
+LIB part_handles
+
 include	"fatfs.def"
 
 ; returns HL = pointer to a free partition handle, or carry reset if none are free

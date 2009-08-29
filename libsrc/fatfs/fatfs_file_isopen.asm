@@ -1,5 +1,7 @@
 XLIB fatfs_file_isopen
 
+LIB file_handles
+
 include "fatfs.def"
 
 ; ***************************************************************************

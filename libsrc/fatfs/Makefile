@@ -1,6 +1,7 @@
 CFILES = 
 
 AFILES = \
+	fatfs_data.asm \
 	fatfs_fat_readfat.asm \
 	fatfs_fat_writefat.asm \
 	fatfs_clus_getsector.asm \

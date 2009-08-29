@@ -183,34 +183,6 @@ defvars 0
 
 defc	fattype_fat16 = $80
 
-; Data area
-
-defc	fatfs_data_area = $c000 ; TODO: allocate this in fatfs_data.asm
-
-defvars fatfs_data_area
-{	
-	; Structures
-	buf_mrulist	ds.b	buf_numbufs		; IDs of buffers in order, MRU first
-	buf_handles	ds.b	fbh_size*buf_numbufs	; buffer handles
-	buf_buffers	ds.b	buf_secsize*buf_numbufs	; sector buffers
-	file_handles	ds.b	ffh_size*file_numhandles ; file handles
-	part_handles	ds.b	fph_size*part_numhandles ; partition handles
-	drive_ptrs	ds.w	drive_numdrives		; pointers to drive directory handles
-	sys_directory	ds.b	fdh_size		; system directory handle (temporary)
-	sys_directory2	ds.b	fdh_size		; system directory handle (temporary)
-
-	; Miscellaneous variables
-	drive_sectorbuf	ds.w	1			; pointer to sector buffer used for MBRs etc
-	fat_defdrive	ds.b	1			; default drive letter ('A'-'P')
-	dir_filespec1	ds.b	11			; 11-byte filespecs
-	dir_filespec2	ds.b	11
-
-	tmp_rwaddr	ds.w	1			; temporary variables used by read/write
-	tmp_rwsize	ds.w	1
-	tmp_rwpossible	ds.w	1
-	fatfs_data_area_end
-}
-
 ; error codes (borrowed from p3dos.def)
 defgroup {      rc_ready,
                 rc_wp,
