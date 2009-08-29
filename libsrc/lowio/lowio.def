@@ -63,6 +63,7 @@ defvars 0
 	dirent_filename	ds.b	MAX_NAME	; null-terminated filename
 	dirent_flags	ds.b	1	; bit field; bit 0 set if this is a directory
 	dirent_fsdata	; filesystem-specific state; enough to open the file (probably not needed; the copy of the dir record should be enough)
+	dirent_size
 }
 
 ; ===
@@ -91,4 +92,7 @@ defvars file_fsdata
 	file_fatfs_filepos	ds.l	1	; filepointer
 	file_fatfs_clusstart	ds.w	1	; start cluster
 	file_fatfs_filesize	ds.l	1	; exact filesize in bytes
+
+	file_fatfs_size
 }
+defc file_size=file_fatfs_size

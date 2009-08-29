@@ -2,7 +2,7 @@
 ; open a block device for access as a FAT file system
 
 XLIB fatfs_fsopen_callee
-XDEF fatfs_fsopen_asm
+XDEF fatfs_fsopen_asmentry
 
 LIB fatfs_phandle_allocate
 LIB read_block_asm

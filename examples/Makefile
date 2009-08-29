@@ -1,4 +1,4 @@
-all: simple_io.tap sector_dump.tap trdos.tap fatfs_dir.tap
+all: simple_io.tap sector_dump.tap trdos.tap fatfs_dir.tap screenbrowser0
 
 sector_dump.tap: loader.bas.tap sector_dump.bin.tap
 	cat loader.bas.tap sector_dump.bin.tap > sector_dump.tap
@@ -62,5 +62,9 @@ fatfs_dir.bin.tap: fatfs_dir.bin
 fatfs_dir.bin: ../include/fatfs.h fatfs_dir.c
 	zcc +zx -vn -m fatfs_dir.c -o fatfs_dir.bin -lndos -Ca-i../lib/buffer -Ca-i../lib/divide -Ca-i../lib/block_device -Ca-i../lib/lowio -Ca-i../lib/fatfs
 
+screenbrowser0:
+	cd screenbrowser && make && cd ..
+
 clean:
+	cd screenbrowser ; make clean ; cd ..
 	rm -f *.o* *.sym *.map *.err zcc_opt.def *.i *.tap *.bin
