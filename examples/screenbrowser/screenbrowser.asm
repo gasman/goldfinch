@@ -13,6 +13,8 @@ XREF open_dirent_asmentry
 LIB read_file_callee
 XREF read_file_asmentry
 LIB close_file
+LIB open_subdir_callee
+XREF open_subdir_asmentry
 
 include "../../libsrc/divide/divide.def"
 include "../../libsrc/block_device/block_device.def"
@@ -32,11 +34,12 @@ include "../../libsrc/lowio/lowio.def"
 	ld ix,filesystem
 	call fatfs_fsopen_asmentry + fatfs_fsopen_callee - fatfs_fsopen_callee
 
-.list_dir
+.list_root_dir
 	ld hl,filesystem
 	ld de,dir
 	call open_root_dir_asmentry + open_root_dir_callee - open_root_dir_callee
 	
+.list_current_dir
 	ld iy,0x5c3a
 	call 3435 ; cls
 	; set up text printing
@@ -147,6 +150,17 @@ include "../../libsrc/lowio/lowio.def"
 	pop bc
 	djnz ffwd_dir
 	
+	; if this is a directory, open it as a directory and return to list_current_dir
+	ld a,(dirent + dirent_flags)
+	bit 0,a
+	jr z,dirent_is_file
+	; dirent is a dir
+	ld iy,dirent
+	ld de,dir
+	call open_subdir_asmentry + open_subdir_callee - open_subdir_callee
+	jp list_current_dir
+	
+.dirent_is_file
 	ld ix,dirent
 	ld c,1 ; read access
 	call open_dirent_asmentry + open_dirent_callee - open_dirent_callee
@@ -169,7 +183,7 @@ include "../../libsrc/lowio/lowio.def"
 	and 0x1f
 	jr z,wait_key
 	
-	jp list_dir
+	jp list_root_dir
 	
 .wait_nokey	; wait until none of Q, A, space are pressed
 	ld bc,0x79fe
