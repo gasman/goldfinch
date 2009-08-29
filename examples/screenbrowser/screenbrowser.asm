@@ -147,15 +147,16 @@ include "../../libsrc/lowio/lowio.def"
 	djnz ffwd_dir
 	
 	ld ix,dirent
-	ld de,file
 	ld c,1 ; read access
 	call open_dirent_asmentry + open_dirent_callee - open_dirent_callee
-	
+	; returns file handle in hl
+	push hl
+	pop ix
 	; read 6912 bytes to screen
-	ld ix,file
 	ld de,0x4000
 	ld bc,0x1b00
 	call read_file_asmentry + read_file_callee - read_file_callee
+	; TODO: close file
 	
 	; wait for a key
 .wait_key
@@ -214,5 +215,3 @@ include "../../libsrc/lowio/lowio.def"
 	defs dir_size
 .dirent
 	defs dirent_size
-.file
-	defs file_size

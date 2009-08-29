@@ -1,4 +1,4 @@
-; void open_dirent(DIRENT *dirent, FILE *file, unsigned char access_mode)
+; FILE * open_dirent(DIRENT *dirent, unsigned char access_mode)
 XLIB open_dirent_callee
 XDEF open_dirent_asmentry
 XDEF ASMDISP_OPEN_DIRENT_CALLEE
@@ -8,9 +8,8 @@ include "lowio.def"
 .open_dirent_callee
 	pop ix	; get return address
 	pop bc	; get access mode
-	pop de	; get file
 	ex (sp),ix	; get dirent and restore return address
-; enter with ix = dirent, de = file, c = access mode
+; enter with ix = dirent, c = access mode
 .open_dirent_asmentry
 	; get address of fs driver in hl
 	ld l,(ix + dirent_dir + dir_filesystem + filesystem_driver)

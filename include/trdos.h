@@ -4,6 +4,7 @@
 #include "block_device.h"
 #include "lowio.h"
 
+extern void __LIB__ __FASTCALL__ trdos_init(void);
 extern void __LIB__ trdos_fsopen(BLOCK_DEVICE *device, FILESYSTEM *fs);
 
 /* callee definitions */

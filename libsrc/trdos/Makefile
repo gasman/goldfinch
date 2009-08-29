@@ -1,6 +1,9 @@
 CFILES = 
 
 AFILES = \
+	trdos_data.asm \
+	trdos_init.asm \
+	trdos_file_allocate.asm \
 	trdos_fsopen.asm \
 	trdos_fsopen_callee.asm \
 	trdos_open_root_dir.asm \

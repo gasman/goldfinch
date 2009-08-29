@@ -9,3 +9,5 @@ defvars 0
 	trdos_dir_entry_start_sector	ds.b	1
 	trdos_dir_entry_start_track	ds.b	1
 }
+
+defc file_numhandles = 16

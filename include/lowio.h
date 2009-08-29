@@ -70,14 +70,14 @@ typedef struct fsfile_st {
 // And now a list of the same non-FASTCALL functions using CALLEE linkage
 extern void __LIB__ __CALLEE__ open_root_dir_callee(FILESYSTEM *fs, DIR *dir);
 extern int __LIB__ __CALLEE__ read_dir_callee(DIR *dir, DIRENT *dirent);
-extern int __LIB__ __CALLEE__ open_dirent_callee(DIRENT *dirent, FSFILE *file, unsigned char access_mode);
+extern FSFILE __LIB__ __CALLEE__ *open_dirent_callee(DIRENT *dirent, unsigned char access_mode);
 extern int __LIB__ __CALLEE__ read_file_callee(FSFILE *file, void *buf, unsigned int nbyte);
 
 // And now we make CALLEE linkage default to make compiled progs shorter and faster
 // These defines will generate warnings for function pointers but that's ok
 #define open_root_dir(a,b) open_root_dir_callee(a,b)
 #define read_dir(a,b) read_dir_callee(a,b)
-#define open_dirent(a,b,c) open_dirent_callee(a,b,c)
+#define open_dirent(a,b) open_dirent_callee(a,b)
 #define read_file(a,b,c) read_file_callee(a,b,c)
 
 #endif

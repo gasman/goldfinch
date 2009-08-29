@@ -1,6 +1,7 @@
-; void fatfs_open_dirent(DIRENT *dirent, FILE *file)
+; FILE *fatfs_open_dirent(DIRENT *dirent, unsigned char access_mode)
 XLIB fatfs_open_dirent
 
+LIB fatfs_file_allocate
 LIB fatfs_dir_getentry
 ; LIB fatfs_file_validate_access
 LIB fatfs_file_set_access
@@ -10,10 +11,16 @@ XREF fatfs_file_validate_access
 include "fatfs.def"
 include	"../lowio/lowio.def"
 
-; enter with hl = dirent, de = file, c = access mode
+; enter with hl = dirent, c = access mode
 .fatfs_open_dirent
 	push bc	; save access mode
-	push de ; save file ptr
+	push hl ; save dirent
+	
+	call fatfs_file_allocate ; get file pointer into hl
+	ex de,hl
+	pop hl ; restore dirent
+	push de ; save file/dir/filesytem pointer
+	
 	; copy dir struct from dirent to file
 	ld bc,dir_size
 	ldir
@@ -45,5 +52,8 @@ include	"../lowio/lowio.def"
 	; now perform file_validate_access etc
 	pop bc
 	ld b,0	; B="original" access mode
-	jp fatfs_file_validate_access + fatfs_file_set_access - fatfs_file_set_access
-	
+	call fatfs_file_validate_access + fatfs_file_set_access - fatfs_file_set_access
+	push iy
+	pop hl ; return with file handle in hl
+	scf
+	ret

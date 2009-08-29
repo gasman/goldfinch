@@ -1,13 +1,19 @@
-; void trdos_open_dirent(DIRENT *dirent, FILE *file)
+; FILE *trdos_open_dirent(DIRENT *dirent, unsigned char access_mode)
 XLIB trdos_open_dirent
 
 LIB trdos_dir_get_entry
+LIB trdos_file_allocate
 
 include	"../lowio/lowio.def"
 include	"trdos.def"
 
-; enter with hl = dirent, de = file, c = access mode
+; enter with hl = dirent, c = access mode
 .trdos_open_dirent
+	push hl
+	call trdos_file_allocate
+	ex de,hl ; get file handle in de
+	pop hl
+	
 	push de ; save file ptr
 	; copy dir struct from dirent to file
 	ld bc,dir_size
@@ -35,5 +41,9 @@ include	"trdos.def"
 	; populate sectors_left
 	ld a,(ix + trdos_dir_entry_sector_count)
 	ld (iy + file_trdos_blocks_remaining),1
+	
+	push iy
+	pop hl
+	scf
 	ret
 	

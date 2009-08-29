@@ -7,11 +7,11 @@
 FILESYSTEM fs;
 DIR dir;
 DIRENT entry;
-FSFILE file;
 unsigned char buffer[256];
 
 int main() {
 	BLOCK_DEVICE *device;
+	FSFILE *file;
 	unsigned char i;
 	
 	/* avoid issues with the interrupt routine hijacking the IY register -
@@ -36,9 +36,9 @@ int main() {
 		printf("%s\n", entry.filename);
 	}
 	printf("dirent at %04x\n", &entry);
-	open_dirent(&entry, &file, FILE_MODE_EXC_READ);
-	printf("file handle at %04x\n", &file);
-	read_file(&file, buffer, 200);
+	file = open_dirent(&entry, FILE_MODE_EXC_READ);
+	printf("file handle at %04x\n", file);
+	read_file(file, buffer, 200);
 	printf("first 200 chars stored at %04x\n", buffer);
 
 	#asm
