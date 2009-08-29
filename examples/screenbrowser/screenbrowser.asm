@@ -12,6 +12,7 @@ LIB open_dirent_callee
 XREF open_dirent_asmentry
 LIB read_file_callee
 XREF read_file_asmentry
+LIB close_file
 
 include "../../libsrc/divide/divide.def"
 include "../../libsrc/block_device/block_device.def"
@@ -152,11 +153,13 @@ include "../../libsrc/lowio/lowio.def"
 	; returns file handle in hl
 	push hl
 	pop ix
+	push hl
 	; read 6912 bytes to screen
 	ld de,0x4000
 	ld bc,0x1b00
 	call read_file_asmentry + read_file_callee - read_file_callee
-	; TODO: close file
+	pop hl
+	call close_file
 	
 	; wait for a key
 .wait_key

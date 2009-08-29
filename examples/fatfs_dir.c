@@ -40,6 +40,7 @@ int main() {
 	printf("file handle at %04x\n", file);
 	read_file(file, buffer, 200);
 	printf("first 200 chars stored at %04x\n", buffer);
+	close_file(file);
 
 	#asm
 	ei

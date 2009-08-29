@@ -34,7 +34,8 @@ AFILES = \
 	fatfs_file_set_access.asm \
 	fatfs_file_commit.asm \
 	fatfs_phandle_allocate.asm \
-	fatfs_file_allocate.asm
+	fatfs_file_allocate.asm \
+	fatfs_file_close.asm
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)

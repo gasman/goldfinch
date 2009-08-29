@@ -11,6 +11,7 @@ LIB fatfs_read_dir
 LIB fatfs_open_dirent
 LIB fatfs_read_file
 LIB drive_sectorbuf
+LIB fatfs_file_close
 
 include	"../lowio/lowio.def"
 include	"fatfs.def"
@@ -139,4 +140,5 @@ include	"fatfs.def"
 	jp fatfs_read_dir
 	jp fatfs_open_dirent
 	jp fatfs_read_file
+	jp fatfs_file_close
 	

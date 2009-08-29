@@ -66,6 +66,7 @@ typedef struct fsfile_st {
 #define FILE_MODE_SHARED_READ 5
 
 // First a list of functions using CALLER and FASTCALL linkage
+extern void __LIB__ __FASTCALL__ close_file(FSFILE *file);
 
 // And now a list of the same non-FASTCALL functions using CALLEE linkage
 extern void __LIB__ __CALLEE__ open_root_dir_callee(FILESYSTEM *fs, DIR *dir);
