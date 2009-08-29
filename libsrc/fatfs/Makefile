@@ -14,14 +14,6 @@ AFILES = \
 	fatfs_clus_extendchain.asm \
 	fatfs_clus_freechain.asm \
 	fatfs_clus_erase.asm \
-	fatfs_dir_root.asm \
-	fatfs_dir_root_callee.asm \
-	fatfs_dir_home.asm \
-	fatfs_dir_entrydetails.asm \
-	fatfs_dir_entrydetails_callee.asm \
-	fatfs_dir_getentry.asm \
-	fatfs_dir_next.asm \
-	fatfs_dir_findvolumelabel.asm \
 	fatfs_file_isopen.asm \
 	fatfs_init.asm \
 	fatfs_fsopen.asm \
