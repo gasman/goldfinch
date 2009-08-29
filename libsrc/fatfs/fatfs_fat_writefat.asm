@@ -3,6 +3,7 @@ XLIB fatfs_fat_writefat
 include "fatfs.def"
 
 LIB fatfs_fat_readfat
+LIB write_block_asm
 
 ; ***************************************************************************
 ; * Write FAT entry                                                         *
@@ -53,9 +54,7 @@ LIB fatfs_fat_readfat
 	ld	b,0			; BCDE=sector to write
 	push	de			; save sector low
 	
-	;call	PACKAGE_FS_SECTOR_WRITE	; write the sector
-	; FIXME: block device writing not supported yet. Temporary do-nothing code:
-	or a	; reset carry flag to indicate success
+	call write_block_asm
 	
 	; TBD: remove any copies held in buffers? Should be okay, as we should
 	;      never have more than the 1st readable copy.

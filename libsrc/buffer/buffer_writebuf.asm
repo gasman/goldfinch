@@ -7,6 +7,7 @@ LIB buffer_gethandle
 LIB buffer_setmru
 XREF buffer_getaddress
 LIB buf_mrulist
+LIB write_block_asm
 
 ; ***************************************************************************
 ; * Subroutine to write the MRU buffer                                      *
@@ -33,9 +34,5 @@ LIB buf_mrulist
 	ld	d,(iy+fbh_sector+1)
 	ld	c,(iy+fbh_sector+2)
 	ld	b,(iy+fbh_sector+3)
-	pop	iy
-	
-	; jp	PACKAGE_FS_SECTOR_WRITE	; write sector and exit with error status
-	; FIXME: writing to block device not yet implemented. Temporary do-nothing code:
-	or a	; reset carry flag
-	ret
+	pop	iy	
+	jp write_block_asm

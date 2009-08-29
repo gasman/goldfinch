@@ -4,6 +4,7 @@ include "fatfs.def"
 
 LIB fatfs_clus_tobuf_noread
 LIB fatfs_clus_getsector
+LIB write_block_asm
 
 ; ***************************************************************************
 ; * Erase cluster                                                           *
@@ -38,9 +39,7 @@ LIB fatfs_clus_getsector
 	push	bc
 	push	de
 	push	hl
-;	call	PACKAGE_FS_SECTOR_WRITE	; write the sector
-; FIXME: writing to block devices not yet implemented. Temporary do-nothing code:
-	or a	;reset carry to indicate success
+	call write_block_asm
 	
 	pop	hl
 	pop	de
