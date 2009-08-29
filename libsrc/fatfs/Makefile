@@ -17,14 +17,12 @@ AFILES = \
 	fatfs_dir_root.asm \
 	fatfs_dir_root_callee.asm \
 	fatfs_dir_home.asm \
-	fatfs_dir_change.asm \
 	fatfs_dir_entrydetails.asm \
 	fatfs_dir_entrydetails_callee.asm \
 	fatfs_dir_getentry.asm \
 	fatfs_dir_next.asm \
 	fatfs_dir_findvolumelabel.asm \
 	fatfs_file_isopen.asm \
-	fatfs_file_create_entry.asm \
 	fatfs_init.asm \
 	fatfs_fsopen.asm \
 	fatfs_fsopen_callee.asm \
