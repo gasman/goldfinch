@@ -3,7 +3,7 @@ XDEF fatfs_file_validate_access
 
 LIB fatfs_file_commit
 LIB fatfs_dir_entrydetails
-; LIB fatfs_file_isopen_lowio
+LIB fatfs_file_isopen
 
 include	"../lowio/lowio.def"
 include	"fatfs.def"
@@ -29,12 +29,7 @@ include	"fatfs.def"
 	ld	(iy+file_fatfs_mode),0		; temporarily close file
 .fatfs_file_validate_access
 	push	bc			; save current (B) and new (C) modes
-
-	; call	fatfs_file_isopen_lowio		; check if other handle open to it
-	scf	; TEMP - treat file as not open
-	; TODO: reimplement file handles so that they're allocated by fatfs, so that
-	; fatfs can iterate over them
-	
+	call	fatfs_file_isopen		; check if other handle open to it
 	pop	bc			; restore access mode and new
 	ld	(iy+file_fatfs_mode),b		; change mode back
 	jr	c,file_set_unshared	; okay if not open to other handle
