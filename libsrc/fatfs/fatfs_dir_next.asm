@@ -1,4 +1,4 @@
-XLIB fatfs_dir_next_lowio
+XLIB fatfs_dir_next
 
 include	"../lowio/lowio.def"
 include "fatfs.def"
@@ -13,7 +13,7 @@ LIB fatfs_clus_nextsector
 ; or, Fc=0 (failure) and A=error
 ; ABCDEHL corrupted.
 
-.fatfs_dir_next_lowio
+.fatfs_dir_next
 	inc	(iy+dir_fatfs_entry)		; increment entry number
 	bit	4,(iy+dir_fatfs_entry)	; Fz=1 if entry < 16
 	scf				; success!

@@ -19,10 +19,10 @@ AFILES = \
 	fatfs_fsopen.asm \
 	fatfs_fsopen_callee.asm \
 	fatfs_open_root_dir.asm \
-	fatfs_dir_home_lowio.asm \
-	fatfs_dir_getentry_lowio.asm \
-	fatfs_dir_entrydetails_lowio.asm \
-	fatfs_dir_next_lowio.asm \
+	fatfs_dir_home.asm \
+	fatfs_dir_getentry.asm \
+	fatfs_dir_entrydetails.asm \
+	fatfs_dir_next.asm \
 	fatfs_read_dir.asm \
 	fatfs_open_dirent.asm \
 	fatfs_read_file.asm \

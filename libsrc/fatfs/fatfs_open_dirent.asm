@@ -1,7 +1,7 @@
 ; void fatfs_open_dirent(DIRENT *dirent, FILE *file)
 XLIB fatfs_open_dirent
 
-LIB fatfs_dir_getentry_lowio
+LIB fatfs_dir_getentry
 ; LIB fatfs_file_validate_access
 LIB fatfs_file_set_access
 XREF fatfs_file_validate_access
@@ -34,7 +34,7 @@ include	"../lowio/lowio.def"
 	pop ix
 
 	push de ; preserve pointer to clusstart record
-	call fatfs_dir_getentry_lowio ; get address of on-disk dir entry into hl
+	call fatfs_dir_getentry ; get address of on-disk dir entry into hl
 	pop de
 
 	ld bc,direntry_cluster

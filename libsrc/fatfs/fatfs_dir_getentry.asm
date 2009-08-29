@@ -1,4 +1,4 @@
-XLIB fatfs_dir_getentry_lowio
+XLIB fatfs_dir_getentry
 
 include	"../lowio/lowio.def"
 include	"fatfs.def"
@@ -14,7 +14,7 @@ LIB buffer_findbuf
 ; or, Fc=0 (failure) and A=error
 ; ABCDE corrupted.
 
-.fatfs_dir_getentry_lowio
+.fatfs_dir_getentry
 	bit	7,(iy+dir_fatfs_flags)	; root directory?
 	jr	nz,dir_getentry_root
 	ld	c,(iy+dir_fatfs_cluster)

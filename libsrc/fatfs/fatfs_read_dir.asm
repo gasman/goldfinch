@@ -1,8 +1,8 @@
 ; int fatfs_read_dir(DIR *dir, DIRENT *dirent) - read the next entry from a directory
 XLIB fatfs_read_dir
 
-LIB fatfs_dir_entrydetails_lowio
-LIB fatfs_dir_next_lowio
+LIB fatfs_dir_entrydetails
+LIB fatfs_dir_next
 
 include	"fatfs.def"
 include	"../lowio/lowio.def"
@@ -24,7 +24,7 @@ include	"../lowio/lowio.def"
 	jr nz,end_of_dir
 	
 	push de ; save dirent
-	call fatfs_dir_entrydetails_lowio ; get pointer to on-disk dir entry into hl
+	call fatfs_dir_entrydetails ; get pointer to on-disk dir entry into hl
 	pop de ; restore dirent
 	
 	ret	nc			; exit if error
@@ -100,7 +100,7 @@ include	"../lowio/lowio.def"
 	ld (hl),a	; set flags byte
 	
 	; advance dir to next entry
-	call fatfs_dir_next_lowio
+	call fatfs_dir_next
 	
 	scf	; signal success
 	ld hl,1
@@ -113,7 +113,7 @@ include	"../lowio/lowio.def"
 
 .skip_entry
 	push de
-	call fatfs_dir_next_lowio
+	call fatfs_dir_next
 	pop de
 	jr test_entry
 	

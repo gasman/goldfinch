@@ -1,8 +1,8 @@
-XLIB fatfs_dir_entrydetails_lowio
+XLIB fatfs_dir_entrydetails
 
 include "fatfs.def"
 
-LIB fatfs_dir_getentry_lowio
+LIB fatfs_dir_getentry
 
 ; ***************************************************************************
 ; * Examine current entry                                                   *
@@ -13,8 +13,8 @@ LIB fatfs_dir_getentry_lowio
 ; or, Fc=0 (failure) and A=error
 ; ABCDEHL corrupted.
 
-.fatfs_dir_entrydetails_lowio
-	call	fatfs_dir_getentry_lowio		; locate entry
+.fatfs_dir_entrydetails
+	call	fatfs_dir_getentry		; locate entry
 	ret	nc			; exit if error
 	ld	a,(hl)
 	and	a			; free entry if zero

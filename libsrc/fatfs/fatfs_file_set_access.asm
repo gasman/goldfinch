@@ -2,7 +2,7 @@ XLIB fatfs_file_set_access
 XDEF fatfs_file_validate_access
 
 LIB fatfs_file_commit
-LIB fatfs_dir_entrydetails_lowio
+LIB fatfs_dir_entrydetails
 ; LIB fatfs_file_isopen_lowio
 
 include	"../lowio/lowio.def"
@@ -54,7 +54,7 @@ include	"fatfs.def"
 	jr	nz,file_set_bad		; any other combination is bogus
 .file_set_write
 	push	bc
-	call	fatfs_dir_entrydetails_lowio	; get A=attributes
+	call	fatfs_dir_entrydetails	; get A=attributes
 	pop	bc
 	ret	nc			; exit if error
 	bit	dirattr_ro,a		; is it read-only?

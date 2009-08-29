@@ -2,7 +2,7 @@ XLIB fatfs_file_commit
 
 LIB buffer_flushbuffers
 LIB buffer_writebuf
-LIB fatfs_dir_getentry_lowio
+LIB fatfs_dir_getentry
 
 include	"../lowio/lowio.def"
 include	"fatfs.def"
@@ -31,7 +31,7 @@ include	"fatfs.def"
 .file_commit_readonly
 	bit	fm_entry,(iy+file_fatfs_mode)	; update dir entry?
 	jr	z,file_commit_entryok	; on if not
-	call	fatfs_dir_getentry_lowio		; get the directory entry
+	call	fatfs_dir_getentry		; get the directory entry
 	ret	nc			; exit if error
 	ld	bc,direntry_cluster
 	add	hl,bc

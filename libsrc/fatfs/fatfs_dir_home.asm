@@ -1,4 +1,4 @@
-XLIB fatfs_dir_home_lowio
+XLIB fatfs_dir_home
 
 include "../lowio/lowio.def"
 	
@@ -9,7 +9,7 @@ include "../lowio/lowio.def"
 ; On exit, Fc=1 (success)
 ; A corrupted.
 
-.fatfs_dir_home_lowio
+.fatfs_dir_home
 	ld	a,(iy+dir_fatfs_clusstart)	; copy start cluster (0 for root)
 	ld	(iy+dir_fatfs_cluster),a
 	ld	a,(iy+dir_fatfs_clusstart+1)
