@@ -66,6 +66,14 @@ include "../../libsrc/lowio/lowio.def"
 	jr print_filename
 
 .print_filename_done
+	; indicate directory with a *
+	ld a,(dirent + dirent_flags)
+	and 0x01
+	jr z,not_dir
+	ld a,'*'
+	rst 0x10
+.not_dir
+
 	ld a,0x0d
 	rst 0x10
 	pop bc

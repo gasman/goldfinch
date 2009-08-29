@@ -60,7 +60,7 @@ include	"../lowio/lowio.def"
 	; if extension is blank, null-terminate now
 	ld a,(hl)
 	cp ' '
-	jr z,null_terminate
+	jr z,no_extension
 	; otherwise place a dot here
 	ld a,'.'
 	ld (de),a
@@ -69,7 +69,7 @@ include	"../lowio/lowio.def"
 	ldi
 	ldi
 	ldi
-
+	
 	; rewind to the last non-space character
 .remove_trailing_space_after_ext
 	dec de
@@ -78,14 +78,26 @@ include	"../lowio/lowio.def"
 	jr z,remove_trailing_space_after_ext
 	; then null-terminate
 	inc de
+	jr null_terminate
+.no_extension
+	inc hl	; skip hl past extension
+	inc hl
+	inc hl
 .null_terminate
 	xor a
 	ld (de),a
 	
+	ld e,(hl)	; read attribute byte
+	
 	pop hl ; restore pointer to dirent
 	ld bc,dirent_flags
 	add hl,bc
-	ld (hl),a	; clear flags (TODO: set the 'directory' bit if appropriate)
+	
+	bit	dirattr_dir,e ; test if this is a directory
+	jr z,not_directory
+	or 0x01	; set bit 0 if this is a directory
+.not_directory
+	ld (hl),a	; set flags byte
 	
 	; advance dir to next entry
 	call fatfs_dir_next_lowio
