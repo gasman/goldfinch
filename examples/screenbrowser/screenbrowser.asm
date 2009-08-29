@@ -183,7 +183,10 @@ include "../../libsrc/lowio/lowio.def"
 	and 0x1f
 	jr z,wait_key
 	
-	jp list_root_dir
+	ld hl,dir
+	call dir_home
+	
+	jp list_current_dir
 	
 .wait_nokey	; wait until none of Q, A, space are pressed
 	ld bc,0x79fe
