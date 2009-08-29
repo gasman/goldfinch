@@ -24,6 +24,7 @@ defvars 0
 	fsdriver_read_file	ds.b	3
 	fsdriver_close_file	ds.b	3
 	fsdriver_open_subdir	ds.b	3
+	fsdriver_dir_home	ds.b	3
 }
 
 ; ===

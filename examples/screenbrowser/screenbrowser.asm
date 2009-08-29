@@ -15,6 +15,7 @@ XREF read_file_asmentry
 LIB close_file
 LIB open_subdir_callee
 XREF open_subdir_asmentry
+LIB dir_home
 
 include "../../libsrc/divide/divide.def"
 include "../../libsrc/block_device/block_device.def"
@@ -135,10 +136,9 @@ include "../../libsrc/lowio/lowio.def"
 .key_space
 	call wait_nokey
 	
-; reopen the dir, and fastforward to the 'selected_index'th entry
-	ld hl,filesystem
-	ld de,dir
-	call open_root_dir_asmentry + open_root_dir_callee - open_root_dir_callee
+; rewind the dir, and fastforward to the 'selected_index'th entry
+	ld hl,dir
+	call dir_home
 	ld a,(selected_index)
 	ld b,a
 	inc b
