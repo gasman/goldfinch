@@ -6,7 +6,6 @@ XDEF fatfs_fsopen_asmentry
 
 LIB fatfs_phandle_allocate
 LIB read_block_asm
-LIB fatfs_dir_findvolumelabel
 LIB fatfs_open_root_dir
 LIB fatfs_read_dir
 LIB fatfs_open_dirent
@@ -126,37 +125,13 @@ include	"fatfs.def"
 	ld	(ix+fph_lastalloc+1),$00
 	ld	(ix+fph_freeclusts),$ff	; set free clusters=$ffff (not yet calculated)
 	ld	(ix+fph_freeclusts+1),$ff
-	ld	a,(iy+bootrec_extsig)
-	cp	bootrec_extsig_byte
-	ld	de,novolname		; use "NO NAME" as default if no ext sig
-	jr	nz,drive_gp_noextsig
-	ld	de,bootrec_volname	; else use boot record volume name
-	add	iy,de
-	push	iy			; stack address of volumename
-	pop	hl
-	ld	de,dir_filespec1
-	ld	bc,11
-	ldir				; copy to filespec1
-	ld	de,dir_filespec1
-.drive_gp_noextsig
-	push	de
-	call	fatfs_dir_findvolumelabel	; HL=volume label, if any
-	pop	de			; DE=default volume name
-	jr	nc,drive_gp_badfat	; exit with any error; not valid
-	ld	b,11			; volume name is 11 chars
 	scf				; success
-	ret	z			; exit if didn't find volume label
-	ex	de,hl			; else use found name
 	ret
 .drive_gp_badfat
 	ld	a,rc_invpartition
 	and	a			; Fc=0
 	ret
 	
-.novolname
-	defm	"NO NAME    "
-	ret
-
 .fatfs_filesystem_driver
 	; jump table to fs routines
 	jp fatfs_open_root_dir
