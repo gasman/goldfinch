@@ -33,26 +33,6 @@ trdos.bin: ../include/divide.h ../include/block_device.h ../include/trdos.h trdo
 	zcc +zx -vn -m trdos.c -o trdos.bin -lndos -Ca-i../lib/divide -Ca-i../lib/block_device -Ca-i../lib/trdos -Ca-i../lib/buffer -Ca-i../lib/lowio
 
 
-fatfs_test.tap: loader.bas.tap fatfs_test.bin.tap
-	cat loader.bas.tap fatfs_test.bin.tap > fatfs_test.tap
-
-fatfs_test.bin.tap: fatfs_test.bin
-	bintap fatfs_test.bin fatfs_test.bin.tap fatfs 32768 > /dev/null
-
-fatfs_test.bin: fatfs_test.asm
-	z80asm -a -nv -ns -nm -ilib/divide -ilib/block_device -ilib/fatfs fatfs_test.asm
-
-
-fatfs_test_c.tap: loader.bas.tap fatfs_test_c.bin.tap
-	cat loader.bas.tap fatfs_test_c.bin.tap > fatfs_test_c.tap
-
-fatfs_test_c.bin.tap: fatfs_test_c.bin
-	bintap fatfs_test_c.bin fatfs_test_c.bin.tap fatfs 32768 > /dev/null
-
-fatfs_test_c.bin: ../include/divide.h ../include/block_device.h ../include/fatfs.h fatfs_test_c.c
-	zcc +zx -vn fatfs_test_c.c -o fatfs_test_c.bin -lndos -Ca-i../lib/divide -Ca-i../lib/block_device -Ca-i../lib/fatfs
-
-
 fatfs_dir.tap: loader.bas.tap fatfs_dir.bin.tap
 	cat loader.bas.tap fatfs_dir.bin.tap > fatfs_dir.tap
 

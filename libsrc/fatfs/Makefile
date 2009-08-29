@@ -22,18 +22,7 @@ AFILES = \
 	fatfs_dir_entrydetails_callee.asm \
 	fatfs_dir_getentry.asm \
 	fatfs_dir_next.asm \
-	fatfs_dir_getfree.asm \
 	fatfs_dir_findvolumelabel.asm \
-	fatfs_dir_validchar.asm \
-	fatfs_dir_parsefilename.asm \
-	fatfs_drive_getdircopy.asm \
-	fatfs_drive_getdirhandle.asm \
-	fatfs_drive_refdir.asm \
-	fatfs_dir_getfirstmatch.asm \
-	fatfs_dir_matchname.asm \
-	fatfs_dir_catalog.asm \
-	fatfs_dir_path.asm \
-	fatfs_file_delete.asm \
 	fatfs_file_isopen.asm \
 	fatfs_file_create_entry.asm \
 	fatfs_init.asm \
