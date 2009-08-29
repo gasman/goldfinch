@@ -11,7 +11,8 @@ AFILES = \
 	trdos_open_dirent.asm \
 	trdos_read_file.asm \
 	trdos_dir_get_entry.asm \
-	trdos_dir_next.asm
+	trdos_dir_next.asm \
+	trdos_close_file.asm
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)

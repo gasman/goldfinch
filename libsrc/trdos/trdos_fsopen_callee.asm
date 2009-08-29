@@ -8,6 +8,7 @@ LIB trdos_open_root_dir
 LIB trdos_read_dir
 LIB trdos_open_dirent
 LIB trdos_read_file
+LIB trdos_close_file
 
 include	"../lowio/lowio.def"
 
@@ -37,3 +38,5 @@ include	"../lowio/lowio.def"
 	jp trdos_read_dir
 	jp trdos_open_dirent
 	jp trdos_read_file
+	jp trdos_close_file
+	

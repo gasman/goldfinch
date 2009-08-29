@@ -35,6 +35,7 @@ int main() {
 	}
 	file = open_dirent(&entry, FILE_MODE_EXC_READ);
 	read_file(file, buffer, 200);
+	close_file(file);
 
 	printf("block device at %04x\n", device);
 	printf("trdos filesystem at %04x\n", &fs);
