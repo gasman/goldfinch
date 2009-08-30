@@ -11,7 +11,7 @@ XREF fatfs_file_validate_access
 include "fatfs.def"
 include	"../lowio/lowio.def"
 
-; enter with hl = dirent, c = access mode
+; enter with hl = dirent (or just a dir with this entry as the current pointer), c = access mode
 .fatfs_open_dirent
 	push bc	; save access mode
 	push hl ; save dirent

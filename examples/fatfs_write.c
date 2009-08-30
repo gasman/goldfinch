@@ -15,6 +15,8 @@ int main() {
 	unsigned char i;
 	
 	char *stringtowrite = "i am a fish.";
+	char *newfilename = "new2.txt";
+	char *string2 = "i am still a fish.";
 	
 	/* avoid issues with the interrupt routine hijacking the IY register -
 	not sure how big a problem this really is, but can't hurt... */
@@ -51,6 +53,17 @@ int main() {
 	write_file(file, stringtowrite, 12);
 	write_file(file, stringtowrite, 12);
 	printf("written to file\n");
+	close_file(file);
+
+	file = open_dirent(&entry, FILE_MODE_EXC_READ);
+	printf("file handle at %04x\n", file);
+	read_file(file, buffer, 200);
+	printf("read back 200 chars at %04x\n", buffer);
+	close_file(file);
+	
+	file = create_file(&dir, newfilename, FILE_MODE_EXC_WRITE);
+	printf("opened handle to new file at %04x\n", file);
+	write_file(file, string2, 18);
 	close_file(file);
 
 	file = open_dirent(&entry, FILE_MODE_EXC_READ);

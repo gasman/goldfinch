@@ -15,6 +15,7 @@ LIB fatfs_file_close
 LIB fatfs_open_subdir
 LIB fatfs_dir_home
 LIB fatfs_file_write
+LIB fatfs_create_file
 
 include	"../lowio/lowio.def"
 include	"fatfs.def"
@@ -147,4 +148,5 @@ include	"fatfs.def"
 	jp fatfs_open_subdir
 	jp fatfs_dir_home
 	jp fatfs_file_write
+	jp fatfs_create_file
 	

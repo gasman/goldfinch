@@ -26,6 +26,7 @@ defvars 0
 	fsdriver_open_subdir	ds.b	3
 	fsdriver_dir_home	ds.b	3
 	fsdriver_write_file	ds.b	3
+	fsdriver_create_file	ds.b	3
 }
 
 ; ===

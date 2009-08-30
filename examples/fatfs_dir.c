@@ -31,7 +31,7 @@ int main() {
 	printf("fatfs filesystem at %04x\n", &fs);
 	open_root_dir(&fs, &dir);
 	printf("dir handle at %04x\n", &dir);
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < 13; i++) {
 		read_dir(&dir, &entry);
 		printf("%s\n", entry.filename);
 	}
