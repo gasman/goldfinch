@@ -4,8 +4,7 @@ XDEF buffer_writeany
 include "buffer.def"
 
 LIB buffer_gethandle
-LIB buffer_setmru
-XREF buffer_getaddress
+LIB buffer_getaddress
 LIB buf_mrulist
 LIB write_block_asm
 

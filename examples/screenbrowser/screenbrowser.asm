@@ -1,6 +1,5 @@
 LIB buffer_emptybuffers
-LIB divide_open_drive
-XREF divide_open_drive_asm
+LIB divide_open_drive_asm
 LIB fatfs_init
 LIB fatfs_fsopen_callee
 XREF fatfs_fsopen_asmentry

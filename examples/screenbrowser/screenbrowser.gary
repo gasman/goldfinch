@@ -1,0 +1,8 @@
+lib "../../lib/fatfs.lib", "../../lib/buffer.lib", "../../lib/lowio.lib", "../../lib/divide.lib"
+lib "../../lib/block_device.lib"
+
+obj "screenbrowser.obj"
+
+build "screenbrowser"
+
+restrict "fatfs_data", 0xc000..0xffff
