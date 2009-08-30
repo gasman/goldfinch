@@ -1,4 +1,4 @@
-all: simple_io.tap sector_dump.tap trdos.tap fatfs_dir.tap screenbrowser0
+all: simple_io.tap sector_dump.tap trdos.tap fatfs_dir.tap screenbrowser0 fatfs_write.tap
 
 sector_dump.tap: loader.bas.tap sector_dump.bin.tap
 	cat loader.bas.tap sector_dump.bin.tap > sector_dump.tap
@@ -41,6 +41,17 @@ fatfs_dir.bin.tap: fatfs_dir.bin
 
 fatfs_dir.bin: ../include/fatfs.h fatfs_dir.c
 	zcc +zx -vn -m fatfs_dir.c -o fatfs_dir.bin -lndos -Ca-i../lib/buffer -Ca-i../lib/divide -Ca-i../lib/block_device -Ca-i../lib/lowio -Ca-i../lib/fatfs
+
+
+fatfs_write.tap: loader.bas.tap fatfs_write.bin.tap
+	cat loader.bas.tap fatfs_write.bin.tap > fatfs_write.tap
+
+fatfs_write.bin.tap: fatfs_write.bin
+	bintap fatfs_write.bin fatfs_write.bin.tap fatfswrite 32768 > /dev/null
+
+fatfs_write.bin: ../include/fatfs.h fatfs_write.c
+	zcc +zx -vn -m fatfs_write.c -o fatfs_write.bin -lndos -Ca-i../lib/buffer -Ca-i../lib/divide -Ca-i../lib/block_device -Ca-i../lib/lowio -Ca-i../lib/fatfs
+
 
 screenbrowser0:
 	cd screenbrowser && make && cd ..
