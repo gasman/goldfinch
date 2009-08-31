@@ -47,8 +47,10 @@ def default_range(range)
 	$default_address_range = range
 end
 
-def build(mod_name)
-	$top_level_module_names << mod_name.upcase
+def build(*mod_names)
+	for mod_name in mod_names
+		$top_level_module_names << mod_name.upcase
+	end
 end
 
 def restrict(mod_name, address_range)

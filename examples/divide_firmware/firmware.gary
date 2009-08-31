@@ -1,2 +1,2 @@
-obj "startup.obj", "exit.obj"
-build "startup"
+obj "startup.obj", "exit.obj", "tape_save.obj", "tape_load.obj"
+build "startup", "tape_save", "tape_load"
