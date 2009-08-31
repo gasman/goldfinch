@@ -5,4 +5,5 @@ obj "screenbrowser.obj"
 
 build "screenbrowser"
 
-restrict "fatfs_data", 0xc000..0xffff
+# restrict "fatfs_data", 0xc000..0xffff
+# restrict "buffer_data", 0xc000..0xffff
