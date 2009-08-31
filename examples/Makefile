@@ -1,4 +1,4 @@
-all: simple_io.tap sector_dump.tap trdos.tap fatfs_dir.tap screenbrowser0 fatfs_write.tap
+all: simple_io.tap sector_dump.tap trdos.tap fatfs_dir.tap screenbrowser0 fatfs_write.tap divide_firmware0
 
 sector_dump.tap: loader.bas.tap sector_dump.bin.tap
 	cat loader.bas.tap sector_dump.bin.tap > sector_dump.tap
@@ -56,6 +56,10 @@ fatfs_write.bin: ../include/fatfs.h fatfs_write.c
 screenbrowser0:
 	cd screenbrowser && make && cd ..
 
+divide_firmware0:
+	cd divide_firmware && make && cd ..
+
 clean:
+	cd divide_firmware ; make clean ; cd ..
 	cd screenbrowser ; make clean ; cd ..
 	rm -f *.o* *.sym *.map *.err zcc_opt.def *.i *.tap *.bin
