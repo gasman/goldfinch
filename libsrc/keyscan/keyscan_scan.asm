@@ -6,6 +6,8 @@ LIB keyscan_key
 LIB keyscan_last_key
 LIB keyscan_delay_count
 LIB keyscan_table_unshifted
+LIB keyscan_table_symshift
+LIB keyscan_table_capsshift
 
 include "keyscan.def"
 
@@ -21,8 +23,16 @@ include "keyscan.def"
 	jr z,next_row
 	inc e
 	jr c,test_bit	; if carry set, the tested bit was set => key not pressed
-	; TODO: test that the key code (in E) isn't a shift
+	ld d,a	; store test bitmap in D while we check that the key code in E isn't a shift key
+	ld a,e
+	cp 1	; caps shift
+	jr z,key_is_shift
+	cp 37	; sym shift
+	jr z,key_is_shift
 	jr key_found
+.key_is_shift
+	ld a,d	; resume testing with next bit
+	jr test_bit
 .next_row
 	rlc b
 	jr c,scan_row	; stop when the 0 bit reaches the carry flag
@@ -52,10 +62,22 @@ include "keyscan.def"
 	ld a,keyscan_debounce_time	; ignore repeats of this key code
 	ld (keyscan_delay_count),a	; until 'keyscan_debounce_time' frames have elapsed
 .translate_key
-	; TODO: apply shifts
-	; Look up key code in keyscan_table_unshifted
-	ld d,0
+	; Is symbol shift pressed?
+	ld hl,keyscan_table_symshift
+	ld b,0x7f
+	in a,(c)
+	and 0x02
+	jr z,lookup
+	; Is caps shift pressed
+	ld hl,keyscan_table_capsshift
+	ld b,0xfe
+	in a,(c)
+	and 0x01
+	jr z,lookup
+	; No shift, so look up key code in keyscan_table_unshifted
 	ld hl,keyscan_table_unshifted
+.lookup
+	ld d,0
 	add hl,de
 	ld a,(hl)
 	ld (keyscan_key),a
