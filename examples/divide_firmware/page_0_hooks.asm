@@ -5,12 +5,12 @@ LIB exit_ret
 LIB exit_retn
 
 LIB nmi
+LIB startup
 
 	org 0x0000
 ; rst 0x0000: cold start
 	di	; duplicates instruction in ROM
 .rst00_continue
-	ld bc,0x7ffd	; set register 
 	jr do_reset
 .rst00_end
 	defs 0x0008 - rst00_end
@@ -42,8 +42,8 @@ LIB nmi
 	ex (sp),hl	; restore hl and push return address
 	jp exit_ret
 .do_reset	; rst 00 handler continues here
-	ld a,0x10	; 48K ROM enabled, paging active, page 0 paged in
-	out (c),a	; force usr0 mode - otherwise entering usr0 in 128K Basic gets us stuck in a loop
+	ld sp,0x0000	; put SP somewhere usable
+	call startup
 	ld hl,rst00_continue	; set return address to the next ROM instruction
 	jp exit_jphl	; and return there via firmware exit point
 .rst38_end

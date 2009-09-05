@@ -10,7 +10,19 @@ installer.bin.tap: installer.bin
 installer.bas.tap: installer.bas
 	zmakebas -a 10 -n installer -o installer.bas.tap installer.bas
 
-firmware.bin: firmware.gary page_0_hooks.obj nmi.obj exit.obj tape_load.obj tape_save.obj
+AFILES = \
+	page_0_hooks.asm \
+	nmi.asm \
+	exit.asm \
+	tape_load.asm \
+	tape_save.asm \
+	startup.asm \
+	firmware_data.asm \
+	clear_screen.asm
+	
+OBJECTS = $(AFILES:.asm=.obj)
+
+firmware.bin: firmware.gary ${OBJECTS}
 	ruby ../../bin/gary/gary.rb firmware.gary firmware.bin
 
 page_0_hooks.obj: page_0_hooks.asm
@@ -23,6 +35,12 @@ tape_load.obj: tape_load.asm
 	z80asm tape_load.asm 
 tape_save.obj: tape_save.asm
 	z80asm tape_save.asm 
+startup.obj: startup.asm
+	z80asm startup.asm 
+firmware_data.obj: firmware_data.asm
+	z80asm firmware_data.asm 
+clear_screen.obj: clear_screen.asm
+	z80asm clear_screen.asm 
 
 clean:
 	rm -f *.o* *.sym *.map *.err zcc_opt.def *.i *.tap *.bin

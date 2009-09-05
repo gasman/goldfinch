@@ -3,6 +3,7 @@ XLIB nmi
 
 LIB asciiprint_print
 LIB asciiprint_setpos
+LIB clear_screen
 
 .nmi
 	; save screen
@@ -16,15 +17,7 @@ LIB asciiprint_setpos
 	xor a
 	out (0xe3),a	; page in DivIDE RAM page 0 at 0x2000..0x3fff
 	
-	; clear screen
-	ld hl,0x4000
-	ld de,0x4001
-	ld bc,0x1800
-	ld (hl),l
-	ldir
-	ld (hl),0x3f
-	ld bc,0x02ff
-	ldir
+	call clear_screen
 	
 	ld bc,0
 	call asciiprint_setpos

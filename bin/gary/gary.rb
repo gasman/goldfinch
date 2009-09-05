@@ -62,6 +62,7 @@ end
 
 def restrict(mod_name, address_range)
 	mod_name.upcase!
+	raise "Unknown module in 'restrict' declaration: #{mod_name}" unless $modules_by_name[mod_name]
 	mod_length = $modules_by_name[mod_name].code.size
 	unless $address_restrictions.find{|r| r.first == mod_name}
 		$address_restrictions << [mod_name, (address_range.min .. (address_range.max - mod_length + 1))]
