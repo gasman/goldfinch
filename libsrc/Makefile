@@ -5,7 +5,8 @@ LIBRARIES = \
 	zzzfs \
 	trdos \
 	fatfs \
-	lowio
+	lowio \
+	asciiprint
 
 all:
 	for l in $(LIBRARIES); do \

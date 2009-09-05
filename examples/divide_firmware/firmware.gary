@@ -1,2 +1,7 @@
 obj "startup.obj", "exit.obj", "tape_save.obj", "tape_load.obj"
+lib "../../lib/asciiprint.lib"
+
 build "startup", "tape_save", "tape_load"
+
+restrict "asciiprint_data", 0x2000..0x3fff
+detach "asciiprint_data"

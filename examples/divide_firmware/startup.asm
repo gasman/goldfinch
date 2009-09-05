@@ -4,6 +4,9 @@ LIB exit_jphl
 LIB exit_ret
 LIB exit_retn
 
+LIB asciiprint_print
+LIB asciiprint_setpos
+
 	org 0x0000
 ; rst 0x0000: cold start
 	di	; duplicates instruction in ROM
@@ -51,10 +54,25 @@ LIB exit_retn
 		; If we arrived here from the ROM trap, we will have just executed a PUSH AF
 	xor a
 	out (0xe3),a	; page in DivIDE RAM page 0 at 0x2000..0x3fff
-	ld a,2
-	out (0xfe),a	; test code - turn the border red
+	
+	push hl
+	push de
+	push bc
+	
+	ld bc,0
+	call asciiprint_setpos
+	ld hl,nmi_message
+	call asciiprint_print
+	
+	pop bc
+	pop de
+	pop hl
+	
 	pop af	; restore af
 	jp exit_ret	; retn would probably be more correct, but it's a two byte instruction
 		; which means we'll end up paging out half way through it. I suspect there's no
 		; meaningful difference...
 	
+.nmi_message
+	defm "ping!"
+	defb 0

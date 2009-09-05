@@ -13,7 +13,8 @@ require 'memory_map'
 $modules_by_name = {}
 $top_level_module_names = []
 $address_restrictions = []
-$org_address = nil # lowest explicit org address seen; used as the lower end of the default address range unless overridden
+$detached_module_names = []
+$org_address = nil # lowest explicit org address seen; used as the lower end of the default address range unless overridden
 $default_address_range = nil
 
 def register_module(mod)
@@ -53,6 +54,12 @@ def build(*mod_names)
 	end
 end
 
+def detach(*mod_names)
+	for mod_name in mod_names
+		$detached_module_names << mod_name.upcase
+	end
+end
+
 def restrict(mod_name, address_range)
 	mod_name.upcase!
 	mod_length = $modules_by_name[mod_name].code.size
@@ -77,10 +84,14 @@ while mod = modules_to_scan.shift
 	end
 end
 
-# Allocate module start addresses, starting with the ones with most restrictive address restrictions
+# Allocate module start addresses, starting with the ones with most restrictive
+# address restrictions (and prioritising ones which are not detached from the
+# main compilation block, so that they get grouped together)
 module_addresses = {}
 mm = MemoryMap.new
-$address_restrictions.sort_by{|name, range| range.max - range.min}.each do |name, range|
+$address_restrictions.sort_by{|name, range|
+	[range.max - range.min, if $detached_module_names.include?(name) then 1 else 0 end]
+}.each do |name, range|
 	size = $modules_by_name[name].code.size
 	addr = mm.allocate(range, size)
 	raise "could not allocate address for #{name}" if addr.nil?
@@ -113,7 +124,7 @@ last_addr = 0x0000 # last plus one really
 for mod in modules_to_allocate
 	# generate the list of symbols required to compile this module
 	symbols = {}
-	# import global symbols from external libraries first
+	# import global symbols from external libraries first
 	for lib_name in mod.library_name_declarations
 		lib = $modules_by_name[lib_name]
 		for symbol in lib.name_declarations
@@ -122,9 +133,11 @@ for mod in modules_to_allocate
 		end
 	end
 	base_address = module_addresses[mod.name]
-	first_addr = base_address if base_address < first_addr
 	size = mod.code.size
-	last_addr = base_address + size if base_address + size > last_addr
+	unless $detached_module_names.include?(mod.name)
+		first_addr = base_address if base_address < first_addr
+		last_addr = base_address + size if base_address + size > last_addr
+	end
 	# and now add the symbols from the local file
 	for symbol in mod.name_declarations
 		import_symbol(symbol, base_address, symbols, mod.name)
