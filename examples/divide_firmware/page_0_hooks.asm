@@ -51,9 +51,6 @@ LIB nmi
 ; 0x0066: NMI
 	defb 0x18 ; this combines with the following XOR A instruction to form JR 0x0017.
 		; If we arrived here from the ROM trap, we will have just executed a PUSH AF
-	xor a
-	out (0xe3),a	; page in DivIDE RAM page 0 at 0x2000..0x3fff
-	
 	push hl
 	push de
 	push bc
@@ -63,7 +60,6 @@ LIB nmi
 	pop bc
 	pop de
 	pop hl
-	
 	pop af	; restore af
 	jp exit_ret	; retn would probably be more correct, but it's a two byte instruction
 		; which means we'll end up paging out half way through it. I suspect there's no
