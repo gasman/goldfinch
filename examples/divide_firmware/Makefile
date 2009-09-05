@@ -10,11 +10,13 @@ installer.bin.tap: installer.bin
 installer.bas.tap: installer.bas
 	zmakebas -a 10 -n installer -o installer.bas.tap installer.bas
 
-firmware.bin: firmware.gary startup.obj exit.obj tape_load.obj tape_save.obj
+firmware.bin: firmware.gary page_0_hooks.obj nmi.obj exit.obj tape_load.obj tape_save.obj
 	ruby ../../bin/gary/gary.rb firmware.gary firmware.bin
 
-startup.obj: startup.asm
-	z80asm startup.asm 
+page_0_hooks.obj: page_0_hooks.asm
+	z80asm page_0_hooks.asm 
+nmi.obj: nmi.asm
+	z80asm nmi.asm 
 exit.obj: exit.asm
 	z80asm exit.asm 
 tape_load.obj: tape_load.asm

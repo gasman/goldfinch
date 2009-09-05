@@ -1,11 +1,10 @@
-XLIB startup
+XLIB page_0_hooks
 
 LIB exit_jphl
 LIB exit_ret
 LIB exit_retn
 
-LIB asciiprint_print
-LIB asciiprint_setpos
+LIB nmi
 
 	org 0x0000
 ; rst 0x0000: cold start
@@ -59,10 +58,7 @@ LIB asciiprint_setpos
 	push de
 	push bc
 	
-	ld bc,0
-	call asciiprint_setpos
-	ld hl,nmi_message
-	call asciiprint_print
+	call nmi
 	
 	pop bc
 	pop de
@@ -72,7 +68,3 @@ LIB asciiprint_setpos
 	jp exit_ret	; retn would probably be more correct, but it's a two byte instruction
 		; which means we'll end up paging out half way through it. I suspect there's no
 		; meaningful difference...
-	
-.nmi_message
-	defm "ping!"
-	defb 0
