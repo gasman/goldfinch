@@ -13,6 +13,7 @@ installer.bas.tap: installer.bas
 AFILES = \
 	page_0_hooks.asm \
 	nmi.asm \
+	interrupt.asm \
 	exit.asm \
 	tape_load.asm \
 	tape_save.asm \
@@ -44,6 +45,8 @@ clear_screen.obj: clear_screen.asm
 	z80asm clear_screen.asm 
 print_dir.obj: print_dir.asm
 	z80asm print_dir.asm 
+interrupt.obj: interrupt.asm
+	z80asm interrupt.asm 
 
 clean:
 	rm -f *.o* *.sym *.map *.err zcc_opt.def *.i *.tap *.bin

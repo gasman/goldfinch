@@ -6,7 +6,8 @@ LIBRARIES = \
 	trdos \
 	fatfs \
 	lowio \
-	asciiprint
+	asciiprint \
+	keyscan
 
 all:
 	for l in $(LIBRARIES); do \

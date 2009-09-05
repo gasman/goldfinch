@@ -15,6 +15,8 @@ LIB print_dir
 	xor a
 	out (0xe3),a	; page in DivIDE RAM page 0 at 0x2000..0x3fff
 	
+	ei
+	
 	call print_dir
 	
 	; wait for space

@@ -1,0 +1,2 @@
+	defc keyscan_debounce_time = 35
+	defc keyscan_repeat_time = 5

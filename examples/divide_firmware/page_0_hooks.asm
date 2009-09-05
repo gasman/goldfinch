@@ -5,6 +5,7 @@ LIB exit_ret
 LIB exit_retn
 
 LIB nmi
+LIB interrupt
 LIB startup
 
 	org 0x0000
@@ -29,8 +30,7 @@ LIB startup
 	defs 0x001f - dividenmi_end
 ; 0x001f: arrive here if we take the JR at 0x0038 (IM1 interrupt occurring while DivIDE is paged in);
 ; this is where we can put a DivIDE-specific interrupt handler
-	ei
-	ret
+	jp interrupt
 .divideint_end
 	defs 0x0038 - divideint_end
 ; rst 0x0038: IM1 interrupt

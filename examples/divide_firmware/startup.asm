@@ -60,6 +60,8 @@ include "../../libsrc/divide/divide.def"
 
 	ld hl,msg_ok
 	call asciiprint_print
+	
+	ei
 
 	; wait for space
 .wait_space
@@ -67,6 +69,8 @@ include "../../libsrc/divide/divide.def"
 	in a,(c)
 	and 1
 	jr nz,wait_space
+
+	di
 
 	ret
 
