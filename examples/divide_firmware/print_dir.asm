@@ -32,6 +32,7 @@ include "../../libsrc/lowio/lowio.def"
 	ld a,b
 	or c
 	jr z,skip_done
+	dec bc
 	push bc
 	ld iy,current_dir
 	ld de,current_dirent

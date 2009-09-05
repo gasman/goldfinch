@@ -13,6 +13,10 @@ LIB asciiprint_newline
 LIB current_filesystem
 LIB current_dir
 
+LIB dir_page_start
+LIB dir_this_page_count
+LIB dir_selected_entry
+
 LIB clear_screen
 
 include "../../libsrc/divide/divide.def"
@@ -32,6 +36,10 @@ include "../../libsrc/divide/divide.def"
 
 	call buffer_emptybuffers
 	call fatfs_init
+	ld hl,0
+	ld (dir_page_start),hl
+	xor a
+	ld (dir_selected_entry),a
 	
 	ld hl,msg_opening_drive
 	call asciiprint_print

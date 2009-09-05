@@ -10,8 +10,6 @@ LIB keyscan_key
 	push hl
 	
 	call keyscan_scan
-	ld a,(keyscan_key)
-	ld (0x5800),a
 	
 	pop hl
 	pop de
