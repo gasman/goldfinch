@@ -27,6 +27,7 @@ LIB print_dir
 	jr nz,wait_space
 	
 	; restore screen
+	di	; don't let interrupt routine write to RAM (because this will overwrite the screen)
 	ld a,1
 	out (0xe3),a
 	ld hl,0x2000
