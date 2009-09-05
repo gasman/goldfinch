@@ -18,7 +18,8 @@ AFILES = \
 	tape_save.asm \
 	startup.asm \
 	firmware_data.asm \
-	clear_screen.asm
+	clear_screen.asm \
+	print_dir.asm
 	
 OBJECTS = $(AFILES:.asm=.obj)
 
@@ -41,6 +42,8 @@ firmware_data.obj: firmware_data.asm
 	z80asm firmware_data.asm 
 clear_screen.obj: clear_screen.asm
 	z80asm clear_screen.asm 
+print_dir.obj: print_dir.asm
+	z80asm print_dir.asm 
 
 clean:
 	rm -f *.o* *.sym *.map *.err zcc_opt.def *.i *.tap *.bin

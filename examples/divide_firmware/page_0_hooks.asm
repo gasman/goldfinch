@@ -54,13 +54,29 @@ LIB startup
 	push hl
 	push de
 	push bc
+	exx
+	ex af,af'
+	push af
+	push bc
+	push de
+	push hl
+	push ix
+	push iy
 	
 	call nmi
 	
+	pop iy
+	pop ix
+	pop hl
+	pop de
+	pop bc
+	pop af
+	ex af,af'
+	exx
 	pop bc
 	pop de
 	pop hl
-	pop af	; restore af
+	pop af
 	jp exit_ret	; retn would probably be more correct, but it's a two byte instruction
 		; which means we'll end up paging out half way through it. I suspect there's no
 		; meaningful difference...

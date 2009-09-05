@@ -5,7 +5,8 @@ AFILES = \
 	asciiprint_data.asm \
 	asciiprint_putchar.asm \
 	asciiprint_setpos.asm \
-	asciiprint_print.asm
+	asciiprint_print.asm \
+	asciiprint_newline.asm
 	
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)

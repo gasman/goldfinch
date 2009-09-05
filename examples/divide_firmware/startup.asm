@@ -8,6 +8,7 @@ LIB open_root_dir_asmentry
 
 LIB asciiprint_setpos
 LIB asciiprint_print
+LIB asciiprint_newline
 
 LIB current_filesystem
 LIB current_dir
@@ -27,12 +28,14 @@ include "../../libsrc/divide/divide.def"
 	
 	ld hl,msg_initialising
 	call asciiprint_print
+	call asciiprint_newline
 
 	call buffer_emptybuffers
 	call fatfs_init
 	
 	ld hl,msg_opening_drive
 	call asciiprint_print
+	call asciiprint_newline
 
 	ld a,DIVIDE_DRIVE_MASTER
 	call divide_open_drive_asm
@@ -41,6 +44,7 @@ include "../../libsrc/divide/divide.def"
 	push hl
 	ld hl,msg_opening_filesystem
 	call asciiprint_print
+	call asciiprint_newline
 	pop hl
 
 	ld ix,current_filesystem
@@ -48,6 +52,7 @@ include "../../libsrc/divide/divide.def"
 
 	ld hl,msg_opening_directory
 	call asciiprint_print
+	call asciiprint_newline
 
 	ld hl,current_filesystem
 	ld de,current_dir

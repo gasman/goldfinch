@@ -20,8 +20,8 @@ LIB asciiprint_position
 	sla b
 	sla b
 	sla b
-	; bc = 00yyy000 yyyxxxxx
+	; bc = 000yy000 yyyxxxxx
 	set 6,b
-	; bc = 01yyy000 yyyxxxxx
+	; bc = 010yy000 yyyxxxxx
 	ld (asciiprint_position),bc
 	ret

@@ -1,9 +1,7 @@
 ; Handler for non-maskable interrupts (aka The Magic Button)
 XLIB nmi
 
-LIB asciiprint_print
-LIB asciiprint_setpos
-LIB clear_screen
+LIB print_dir
 
 .nmi
 	; save screen
@@ -17,12 +15,7 @@ LIB clear_screen
 	xor a
 	out (0xe3),a	; page in DivIDE RAM page 0 at 0x2000..0x3fff
 	
-	call clear_screen
-	
-	ld bc,0
-	call asciiprint_setpos
-	ld hl,nmi_message
-	call asciiprint_print
+	call print_dir
 	
 	; wait for space
 .wait_space
@@ -40,7 +33,3 @@ LIB clear_screen
 	ldir
 	
 	ret
-	
-.nmi_message
-	defm "ping!"
-	defb 0
