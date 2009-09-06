@@ -1,7 +1,6 @@
 XLIB interrupt
 
 LIB keyscan_scan
-LIB keyscan_key
 
 .interrupt
 	push af

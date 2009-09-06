@@ -7,7 +7,8 @@ AFILES = \
 	asciiprint_calcpos.asm \
 	asciiprint_setpos.asm \
 	asciiprint_print.asm \
-	asciiprint_newline.asm
+	asciiprint_newline.asm \
+	asciiprint_backspace.asm
 	
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)

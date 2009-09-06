@@ -6,7 +6,7 @@ LIB current_dirent
 LIB open_dirent_asmentry
 LIB read_file_asmentry
 LIB close_file
-LIB keyscan_key
+LIB keyscan_wait_key
 LIB nmi_show_new_page
 
 include "../../libsrc/lowio/lowio.def"
@@ -65,9 +65,5 @@ include "../../libsrc/lowio/lowio.def"
 	call close_file
 	
 	; wait for a key
-.wait_key
-	halt
-	ld a,(keyscan_key)
-	or a
-	jr z,wait_key
+	call keyscan_wait_key
 	jp nmi_show_new_page

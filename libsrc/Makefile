@@ -8,7 +8,8 @@ LIBRARIES = \
 	lowio \
 	asciiprint \
 	keyscan \
-	dirtywindow
+	dirtywindow \
+	input
 
 all:
 	for l in $(LIBRARIES); do \

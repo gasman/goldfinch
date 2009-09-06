@@ -6,8 +6,10 @@ XDEF current_dirent
 
 XDEF dir_page_start
 XDEF dir_this_page_count
-XDEf dir_has_next_page
+XDEF dir_has_next_page
 XDEF dir_selected_entry
+
+XDEF input_filename
 
 include "../../libsrc/lowio/lowio.def"
 
@@ -28,3 +30,6 @@ include "../../libsrc/lowio/lowio.def"
 	defb 0	; zero if this is the last page
 .dir_selected_entry
 	defb 0	; index number of highlighted directory entry, relative to dir_page_start
+
+.input_filename
+	defs 0x20	; buffer to contain filename input at prompt

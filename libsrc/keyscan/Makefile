@@ -5,7 +5,8 @@ AFILES = \
 	keyscan_scan.asm \
 	keyscan_table_unshifted.asm \
 	keyscan_table_symshift.asm \
-	keyscan_table_capsshift.asm
+	keyscan_table_capsshift.asm \
+	keyscan_wait_key.asm
 	
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)

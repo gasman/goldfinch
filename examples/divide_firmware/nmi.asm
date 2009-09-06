@@ -3,7 +3,7 @@ XLIB nmi
 XDEF nmi_show_new_page
 
 LIB print_dir
-LIB keyscan_key
+LIB keyscan_wait_key
 LIB keyscan_last_key
 
 LIB dir_selected_entry
@@ -23,7 +23,7 @@ LIB current_dirent
 LIB read_dir_asmentry
 LIB dir_home
 
-LIB dirtywindow_rect
+LIB save_scr
 
 .nmi
 	; save screen
@@ -51,8 +51,7 @@ LIB dirtywindow_rect
 	
 	; wait for key
 .wait_key
-	halt
-	ld a,(keyscan_key)
+	call keyscan_wait_key
 	cp 0x1b
 	jr z,key_exit
 	cp 'q'
@@ -62,7 +61,7 @@ LIB dirtywindow_rect
 	cp 0x0d
 	jp z,key_select
 	cp '$'
-	jp z,key_save_screen
+	jp z,save_scr
 	jr wait_key
 	
 .key_up
@@ -181,10 +180,4 @@ LIB dirtywindow_rect
 	inc hl
 	djnz paint_row_lp
 	ret
-
-.key_save_screen
-	ld bc,0x0804
-	ld de,0x0818
-	call dirtywindow_rect
-	jp wait_key	; temp
 	

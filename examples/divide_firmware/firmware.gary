@@ -1,10 +1,10 @@
 obj "page_0_hooks.obj", "exit.obj", "tape_save.obj", "tape_load.obj"
 obj "startup.obj", "nmi.obj", "firmware_data.obj", "clear_screen.obj", "print_dir.obj"
-obj "interrupt.obj", "dir_handler.obj", "scr_handler.obj"
+obj "interrupt.obj", "dir_handler.obj", "scr_handler.obj", "save_scr.obj"
 
 lib "../../lib/asciiprint.lib", "../../lib/divide.lib", "../../lib/fatfs.lib"
 lib "../../lib/block_device.lib", "../../lib/lowio.lib", "../../lib/buffer.lib"
-lib "../../lib/keyscan.lib", "../../lib/dirtywindow.lib"
+lib "../../lib/keyscan.lib", "../../lib/dirtywindow.lib", "../../lib/input.lib"
 
 build "page_0_hooks", "tape_save", "tape_load"
 
