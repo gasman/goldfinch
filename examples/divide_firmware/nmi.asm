@@ -3,6 +3,7 @@ XLIB nmi
 
 LIB print_dir
 LIB keyscan_key
+LIB keyscan_last_key
 
 LIB dir_selected_entry
 LIB dir_page_start
@@ -83,6 +84,12 @@ include "../../libsrc/lowio/lowio.def"
 	jr wait_key
 	
 .key_exit
+	; wait for key to be released
+.wait_key_release
+	halt
+	ld a,(keyscan_last_key)
+	or a
+	jr nz,wait_key_release
 	; restore screen
 	di	; don't let interrupt routine write to RAM (because this will overwrite the screen)
 	ld a,1
@@ -104,7 +111,7 @@ include "../../libsrc/lowio/lowio.def"
 	ld (dir_page_start),hl
 	ld a,23	; move to the last entry on the page
 	ld (dir_selected_entry),a
-	jr show_new_page
+	jp show_new_page
 
 .next_page
 	ld a,(dir_has_next_page)	; is this the last page?
