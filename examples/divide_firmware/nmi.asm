@@ -9,6 +9,15 @@ LIB dir_page_start
 LIB dir_this_page_count
 LIB dir_has_next_page
 
+LIB current_dir
+LIB current_dirent
+
+LIB read_dir_asmentry
+LIB open_subdir_asmentry
+LIB dir_home
+
+include "../../libsrc/lowio/lowio.def"
+
 .nmi
 	; save screen
 	ld a,1
@@ -36,12 +45,14 @@ LIB dir_has_next_page
 .wait_key
 	halt
 	ld a,(keyscan_key)
-	cp ' '
-	jr z,key_space
+	cp 0x1b
+	jr z,key_exit
 	cp 'q'
 	jr z,key_up
 	cp 'a'
 	jr z,key_down
+	cp 0x0d
+	jp z,key_select
 	jr wait_key
 	
 .key_up
@@ -71,7 +82,7 @@ LIB dir_has_next_page
 	call paint_row
 	jr wait_key
 	
-.key_space
+.key_exit
 	; restore screen
 	di	; don't let interrupt routine write to RAM (because this will overwrite the screen)
 	ld a,1
@@ -106,6 +117,44 @@ LIB dir_has_next_page
 	xor a	; move to the last entry on the page
 	ld (dir_selected_entry),a
 	jp show_new_page
+
+.key_select
+	; rewind to start of current dir
+	ld hl,current_dir
+	call dir_home
+	; get the dirent for the selected file
+	ld a,(dir_selected_entry)
+	ld e,a
+	ld d,0
+	ld hl,(dir_page_start)
+	add hl,de
+.ffwd_dir
+	push hl
+	ld iy,current_dir
+	ld de,current_dirent
+	call read_dir_asmentry
+	pop hl
+	ld a,h
+	or l
+	dec hl
+	jr nz,ffwd_dir
+
+	; if this is a directory, open it as a directory and redo listing
+	ld a,(current_dirent + dirent_flags)
+	bit 0,a
+	jr z,dirent_is_file
+	; dirent is a dir
+	ld iy,current_dirent
+	ld de,current_dir
+	call open_subdir_asmentry
+	; reset directory position to top
+	ld hl,0
+	ld (dir_page_start),hl
+	xor a
+	ld (dir_selected_entry),a
+	jp show_new_page
+.dirent_is_file
+	jp wait_key	; do nothing
 
 ; enter with a = char row to paint, c = attribute to paint with
 ; preserves A and C, corrupts B and HL

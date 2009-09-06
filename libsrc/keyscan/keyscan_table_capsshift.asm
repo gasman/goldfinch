@@ -17,4 +17,4 @@ XLIB keyscan_table_capsshift
 	; codes for B=0xbf
 	defb 0x0d, 'L', 'K', 'J', 'H'
 	; codes for B=0x7f
-	defb ' ', 0, 'M', 'N', 'B'
+	defb 0x1b, 0, 'M', 'N', 'B'	; 0x1b = chosen for BREAK to match 'escape' in ASCII
