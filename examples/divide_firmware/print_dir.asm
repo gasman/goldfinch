@@ -11,9 +11,13 @@ LIB asciiprint_print
 LIB asciiprint_newline
 LIB asciiprint_putchar
 
+LIB dir_this_page_count
+LIB dir_has_next_page
+
 include "../../libsrc/lowio/lowio.def"
 
 ; Print up to 24 rows of the current directory, starting from the 'BC'th entry to the BC+23rd
+; Sets dir_this_page_count and dir_has_next_page
 .print_dir
 	push bc
 
@@ -51,7 +55,7 @@ include "../../libsrc/lowio/lowio.def"
 	; if 0 returned, end of dir
 	ld a,h
 	or l
-	ret z
+	jr z,end_of_dir
 	
 	push bc
 	ld hl,current_dirent + dirent_filename
@@ -69,8 +73,21 @@ include "../../libsrc/lowio/lowio.def"
 	pop bc
 	djnz print_entry
 
+	; test whether next entry is end of dir (so we know whether to allow paging down)
+	ld iy,current_dir
+	ld de,current_dirent
+	call read_dir_asmentry
+	ld a,h
+	or l
+	ld (dir_has_next_page),a
+	ld a,24
+	ld (dir_this_page_count),a
 	ret
 	
 .end_of_dir
-	pop bc
+	ld a,24
+	sub b
+	ld (dir_this_page_count),a
+	xor a
+	ld (dir_has_next_page),a
 	ret

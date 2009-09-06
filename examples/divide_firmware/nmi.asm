@@ -6,6 +6,8 @@ LIB keyscan_key
 
 LIB dir_selected_entry
 LIB dir_page_start
+LIB dir_this_page_count
+LIB dir_has_next_page
 
 .nmi
 	; save screen
@@ -24,6 +26,7 @@ LIB dir_page_start
 .show_new_page
 	ld bc,(dir_page_start)	; print directory listing starting from dir_page_start
 	call print_dir
+	; TODO: some appropriate behaviour if dir is entirely empty (dir_this_page_count = 0)
 	
 	ld a,(dir_selected_entry)
 	ld c,0x78	; add highlight
@@ -55,8 +58,11 @@ LIB dir_page_start
 
 .key_down
 	ld a,(dir_selected_entry)	; are we on the last entry?
-	cp 23	; TODO: compare with dir_this_page_count instead
-	jr z,next_page	; if so, need to go down to next page (if that's possible)
+	ld hl,dir_this_page_count
+	inc a
+	cp (hl)
+	dec a
+	jr nc,next_page	; if so, need to go down to next page (if that's possible)
 	ld c,0x38	; remove highlight
 	call paint_row
 	inc a
@@ -90,8 +96,9 @@ LIB dir_page_start
 	jr show_new_page
 
 .next_page
-	; TODO: maintain a flag to indicate whether this page is the end of dir
-	; (requires us to look one ahead)
+	ld a,(dir_has_next_page)	; is this the last page?
+	or a
+	jr z,wait_key	; if so, ignore keypress
 	ld hl,(dir_page_start)
 	ld bc,24
 	add hl,bc	; add 24 to dir_page_start
