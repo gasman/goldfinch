@@ -14,6 +14,9 @@ LIB dir_has_next_page
 LIB dir_handler_test
 LIB dir_handler_run
 
+LIB scr_handler_test
+LIB scr_handler_run
+
 LIB current_dir
 LIB current_dirent
 
@@ -34,7 +37,7 @@ LIB dir_home
 	
 	ei
 	
-.nmi_show_new_page	; entry point from change-directory handler
+.nmi_show_new_page	; entry point from change-directory handler (and others)
 .show_new_page
 	ld bc,(dir_page_start)	; print directory listing starting from dir_page_start
 	call print_dir
@@ -151,6 +154,9 @@ LIB dir_home
 	; find a suitable handler for this dirent
 	call dir_handler_test	; is it a dir? Return carry set if so
 	jp c,dir_handler_run
+
+	call scr_handler_test	; is it a .scr?
+	jp c,scr_handler_run
 
 	jp wait_key	; all handlers failed - do nothing
 	; if this is a directory, open it as a directory and redo listing

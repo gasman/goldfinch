@@ -21,7 +21,8 @@ AFILES = \
 	firmware_data.asm \
 	clear_screen.asm \
 	print_dir.asm \
-	dir_handler.asm
+	dir_handler.asm \
+	scr_handler.asm
 	
 OBJECTS = $(AFILES:.asm=.obj)
 
@@ -50,6 +51,8 @@ interrupt.obj: interrupt.asm
 	z80asm interrupt.asm 
 dir_handler.obj: dir_handler.asm
 	z80asm dir_handler.asm 
+scr_handler.obj: scr_handler.asm
+	z80asm scr_handler.asm
 
 clean:
 	rm -f *.o* *.sym *.map *.err zcc_opt.def *.i *.tap *.bin
