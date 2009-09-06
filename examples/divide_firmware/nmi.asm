@@ -1,5 +1,6 @@
 ; Handler for non-maskable interrupts (aka The Magic Button)
 XLIB nmi
+XDEF nmi_show_new_page
 
 LIB print_dir
 LIB keyscan_key
@@ -10,14 +11,14 @@ LIB dir_page_start
 LIB dir_this_page_count
 LIB dir_has_next_page
 
+LIB dir_handler_test
+LIB dir_handler_run
+
 LIB current_dir
 LIB current_dirent
 
 LIB read_dir_asmentry
-LIB open_subdir_asmentry
 LIB dir_home
-
-include "../../libsrc/lowio/lowio.def"
 
 .nmi
 	; save screen
@@ -33,6 +34,7 @@ include "../../libsrc/lowio/lowio.def"
 	
 	ei
 	
+.nmi_show_new_page	; entry point from change-directory handler
 .show_new_page
 	ld bc,(dir_page_start)	; print directory listing starting from dir_page_start
 	call print_dir
@@ -146,22 +148,12 @@ include "../../libsrc/lowio/lowio.def"
 	dec hl
 	jr nz,ffwd_dir
 
+	; find a suitable handler for this dirent
+	call dir_handler_test	; is it a dir? Return carry set if so
+	jp c,dir_handler_run
+
+	jp wait_key	; all handlers failed - do nothing
 	; if this is a directory, open it as a directory and redo listing
-	ld a,(current_dirent + dirent_flags)
-	bit 0,a
-	jr z,dirent_is_file
-	; dirent is a dir
-	ld iy,current_dirent
-	ld de,current_dir
-	call open_subdir_asmentry
-	; reset directory position to top
-	ld hl,0
-	ld (dir_page_start),hl
-	xor a
-	ld (dir_selected_entry),a
-	jp show_new_page
-.dirent_is_file
-	jp wait_key	; do nothing
 
 ; enter with a = char row to paint, c = attribute to paint with
 ; preserves A and C, corrupts B and HL
