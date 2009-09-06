@@ -23,6 +23,8 @@ LIB current_dirent
 LIB read_dir_asmentry
 LIB dir_home
 
+LIB dirtywindow_rect
+
 .nmi
 	; save screen
 	ld a,1
@@ -59,6 +61,8 @@ LIB dir_home
 	jr z,key_down
 	cp 0x0d
 	jp z,key_select
+	cp '$'
+	jp z,key_save_screen
 	jr wait_key
 	
 .key_up
@@ -121,7 +125,7 @@ LIB dir_home
 .next_page
 	ld a,(dir_has_next_page)	; is this the last page?
 	or a
-	jr z,wait_key	; if so, ignore keypress
+	jp z,wait_key	; if so, ignore keypress
 	ld hl,(dir_page_start)
 	ld bc,24
 	add hl,bc	; add 24 to dir_page_start
@@ -177,3 +181,10 @@ LIB dir_home
 	inc hl
 	djnz paint_row_lp
 	ret
+
+.key_save_screen
+	ld bc,0x0804
+	ld de,0x0818
+	call dirtywindow_rect
+	jp wait_key	; temp
+	

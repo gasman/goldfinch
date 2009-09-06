@@ -4,6 +4,7 @@ AFILES = \
 	asciiprint_font.asm \
 	asciiprint_data.asm \
 	asciiprint_putchar.asm \
+	asciiprint_calcpos.asm \
 	asciiprint_setpos.asm \
 	asciiprint_print.asm \
 	asciiprint_newline.asm

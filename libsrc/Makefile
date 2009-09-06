@@ -7,7 +7,8 @@ LIBRARIES = \
 	fatfs \
 	lowio \
 	asciiprint \
-	keyscan
+	keyscan \
+	dirtywindow
 
 all:
 	for l in $(LIBRARIES); do \

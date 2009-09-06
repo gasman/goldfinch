@@ -1,4 +1,5 @@
 XLIB asciiprint_putchar
+XDEF asciiprint_putbitmap
 
 LIB asciiprint_position
 LIB asciiprint_font
@@ -13,6 +14,9 @@ LIB asciiprint_font
 	add hl,hl
 	ld de,asciiprint_font - 0x100	; -0x100 to compensate for codes starting at 0x20
 	add hl,de
+; enter with HL pointing to 8x8 bitmap
+; Corrupts A, HL, DE, B
+.asciiprint_putbitmap
 	ld de,(asciiprint_position)
 	push de
 	ld b,8
