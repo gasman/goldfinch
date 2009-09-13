@@ -7,7 +7,8 @@
 FILESYSTEM fs;
 DIR dir;
 DIRENT entry;
-unsigned char buffer[256];
+unsigned char buffer1[256];
+unsigned char buffer2[256];
 
 int main() {
 	BLOCK_DEVICE *device;
@@ -38,8 +39,11 @@ int main() {
 	printf("dirent at %04x\n", &entry);
 	file = open_dirent(&entry, FILE_MODE_EXC_READ);
 	printf("file handle at %04x\n", file);
-	read_file(file, buffer, 200);
-	printf("first 200 chars stored at %04x\n", buffer);
+	read_file(file, buffer1, 5);
+	printf("first 5 chars stored at %04x\n", buffer1);
+	seek_file(file, 2L);
+	read_file(file, buffer2, 5);
+	printf("chars 2-6 stored at %04x\n", buffer2);
 	close_file(file);
 
 	#asm
