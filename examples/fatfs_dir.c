@@ -34,7 +34,7 @@ int main() {
 	printf("dir handle at %04x\n", &dir);
 	for (i = 0; i < 13; i++) {
 		read_dir(&dir, &entry);
-		printf("%s\n", entry.filename);
+		/* printf("%s\n", entry.filename); */
 	}
 	printf("dirent at %04x\n", &entry);
 	file = open_dirent(&entry, FILE_MODE_EXC_READ);
@@ -44,6 +44,8 @@ int main() {
 	seek_file(file, 2L);
 	read_file(file, buffer2, 5);
 	printf("chars 2-6 stored at %04x\n", buffer2);
+	i = read_byte(file);
+	printf("char 7 is %02x\n", i);
 	close_file(file);
 
 	#asm

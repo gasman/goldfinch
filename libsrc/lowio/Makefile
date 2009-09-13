@@ -10,7 +10,8 @@ AFILES = \
 	dir_home.asm \
 	write_file_callee.asm \
 	create_file_callee.asm \
-	seek_file_callee.asm
+	seek_file_callee.asm \
+	read_byte.asm
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)

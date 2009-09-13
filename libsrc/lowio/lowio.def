@@ -28,6 +28,7 @@ defvars 0
 	fsdriver_write_file	ds.b	3
 	fsdriver_create_file	ds.b	3
 	fsdriver_seek_file	ds.b	3
+	fsdriver_read_byte	ds.b	3
 }
 
 ; ===

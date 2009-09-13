@@ -68,6 +68,7 @@ typedef struct fsfile_st {
 // First a list of functions using CALLER and FASTCALL linkage
 extern void __LIB__ __FASTCALL__ close_file(FSFILE *file);
 extern void __LIB__ __FASTCALL__ dir_home(DIR *dir);
+extern unsigned char __LIB__ __FASTCALL__ read_byte(FSFILE *file);
 
 // And now a list of the same non-FASTCALL functions using CALLEE linkage
 extern void __LIB__ __CALLEE__ open_root_dir_callee(FILESYSTEM *fs, DIR *dir);

@@ -43,7 +43,8 @@ AFILES = \
 	fatfs_dir_getfree.asm \
 	fatfs_file_create_entry.asm \
 	fatfs_create_file.asm \
-	fatfs_seek_file.asm
+	fatfs_seek_file.asm \
+	fatfs_read_byte.asm \
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)
