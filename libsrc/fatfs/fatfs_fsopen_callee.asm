@@ -18,6 +18,7 @@ LIB fatfs_file_write
 LIB fatfs_create_file
 LIB fatfs_seek_file
 LIB fatfs_read_byte
+LIB fatfs_file_getfilepos
 
 include	"../lowio/lowio.def"
 include	"fatfs.def"
@@ -153,3 +154,4 @@ include	"fatfs.def"
 	jp fatfs_create_file
 	jp fatfs_seek_file
 	jp fatfs_read_byte
+	jp fatfs_file_getfilepos

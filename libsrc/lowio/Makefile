@@ -11,7 +11,8 @@ AFILES = \
 	write_file_callee.asm \
 	create_file_callee.asm \
 	seek_file_callee.asm \
-	read_byte.asm
+	read_byte.asm \
+	get_file_pos.asm
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)

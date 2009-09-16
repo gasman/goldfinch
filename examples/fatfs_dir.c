@@ -14,6 +14,7 @@ int main() {
 	BLOCK_DEVICE *device;
 	FSFILE *file;
 	unsigned char i;
+	unsigned long filepos;
 	
 	/* avoid issues with the interrupt routine hijacking the IY register -
 	not sure how big a problem this really is, but can't hurt... */
@@ -46,6 +47,8 @@ int main() {
 	printf("chars 2-6 stored at %04x\n", buffer2);
 	i = read_byte(file);
 	printf("char 7 is %02x\n", i);
+	filepos = get_file_pos(file);
+	printf("file position is now %08lx\n", filepos);
 	close_file(file);
 
 	#asm

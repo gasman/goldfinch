@@ -9,7 +9,7 @@ include "lowio.def"
 	pop iy
 	ld l,(iy + filesystem_driver + 0)	; get pointer to fs driver in hl
 	ld h,(iy + filesystem_driver + 1)
-	IF fsdriver_read_byte <> 0	; add on offset to the dir_home entry point (if it's not zero)
+	IF fsdriver_read_byte <> 0	; add on offset to the read_byte entry point (if it's not zero)
 		ld bc,fsdriver_read_byte
 		add hl,bc
 	ENDIF
