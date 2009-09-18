@@ -13,6 +13,8 @@ XDEF input_filename
 
 XDEF current_tap_file
 
+XDEF firmware_is_active
+
 include "../../libsrc/lowio/lowio.def"
 
 .firmware_data
@@ -38,3 +40,6 @@ include "../../libsrc/lowio/lowio.def"
 
 .current_tap_file
 	defw 0	; address of currently open TAP file handle
+
+.firmware_is_active
+	defb 0	; will be 0x42 if active (indicating that we should not reinitialize file handles on reset)

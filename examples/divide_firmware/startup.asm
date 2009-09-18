@@ -19,12 +19,21 @@ LIB dir_selected_entry
 
 LIB clear_screen
 
+LIB firmware_is_active
+
 include "../../libsrc/divide/divide.def"
 
 .startup
 	ld bc,0x7ffd	; set paging register
 	ld a,0x10	; 48K ROM enabled, paging active, page 0 paged in
 	out (c),a	; force usr0 mode - otherwise entering usr0 in 128K Basic gets us stuck in a loop
+	
+	xor a
+	out (0xe3),a	; page in DivIDE RAM page 0
+	
+	ld a,(firmware_is_active)
+	cp 0x42
+	ret z	; skip startup if already active
 	
 	call buffer_emptybuffers
 	call fatfs_init
@@ -43,5 +52,9 @@ include "../../libsrc/divide/divide.def"
 	ld hl,current_filesystem
 	ld de,current_dir
 	call open_root_dir_asmentry
+	
+	; flag firmware as active
+	ld a,0x42
+	ld (firmware_is_active),a
 	
 	ret
