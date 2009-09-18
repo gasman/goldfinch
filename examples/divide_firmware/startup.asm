@@ -53,6 +53,15 @@ include "../../libsrc/divide/divide.def"
 	ld de,current_dir
 	call open_root_dir_asmentry
 	
+	; Set up vector table to test for IM2
+	ld hl,0x3d00
+	ld de,0x3d01
+	ld bc,0x0100	; fill 0x0101 bytes of 0x3e
+	ld (hl),0x3e
+	ldir
+	ld hl,0xc93c	; opcodes for INC A; RET
+	ld (0x3e3e),hl	; store at 0x3e3e (destination of vector table)
+	
 	; flag firmware as active
 	ld a,0x42
 	ld (firmware_is_active),a

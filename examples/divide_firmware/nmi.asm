@@ -111,6 +111,8 @@ LIB save_scr
 	ld de,0x4000
 	ld bc,0x1b00
 	ldir
+	xor a
+	out (0xe3),a
 	ret
 
 .prev_page
