@@ -23,7 +23,9 @@ AFILES = \
 	print_dir.asm \
 	dir_handler.asm \
 	scr_handler.asm \
-	save_scr.asm
+	save_scr.asm \
+	check_file_extension.asm \
+	tap_handler.asm
 	
 OBJECTS = $(AFILES:.asm=.obj)
 
@@ -56,6 +58,10 @@ scr_handler.obj: scr_handler.asm
 	z80asm scr_handler.asm
 save_scr.obj: save_scr.asm
 	z80asm save_scr.asm
+check_file_extension.obj: check_file_extension.asm
+	z80asm check_file_extension.asm
+tap_handler.obj: tap_handler.asm
+	z80asm tap_handler.asm
 
 clean:
 	rm -f *.o* *.sym *.map *.err zcc_opt.def *.i *.tap *.bin

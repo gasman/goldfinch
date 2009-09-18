@@ -8,6 +8,7 @@ LIB read_file_asmentry
 LIB close_file
 LIB keyscan_wait_key
 LIB nmi_show_new_page
+LIB check_file_extension
 
 include "../../libsrc/lowio/lowio.def"
 
@@ -15,35 +16,10 @@ include "../../libsrc/lowio/lowio.def"
 
 ; return carry set if this is a .scr file
 .scr_handler_test
-
 	; find file extension - the char after the last dot before the terminating null
 	ld hl,current_dirent + dirent_filename
-.save_extension_pos
-	ld d,h
-	ld e,l
-.check_char
-	ld a,(hl)
-	or a
-	jr z,end_of_filename
-	cp '.'
-	inc hl
-	jr z,save_extension_pos	; if it was a dot, record the next address (now in HL) in de
-	jr check_char
-.end_of_filename	; extension is now in DE - compare it against 'SCR'
-	ld hl,string_scr
-.compare
-	ld a,(de)
-	cp (hl)
-	jr nz,match_failed
-	or a	; end comparison (with success) if A=0
-	inc hl
-	inc de
-	jr nz,compare
-	scf
-	ret
-.match_failed
-	or a	; reset carry flag
-	ret
+	ld de,string_scr
+	jp check_file_extension
 	
 .string_scr
 	defm "SCR"

@@ -11,6 +11,8 @@ XDEF dir_selected_entry
 
 XDEF input_filename
 
+XDEF current_tap_file
+
 include "../../libsrc/lowio/lowio.def"
 
 .firmware_data
@@ -33,3 +35,6 @@ include "../../libsrc/lowio/lowio.def"
 
 .input_filename
 	defs 0x20	; buffer to contain filename input at prompt
+
+.current_tap_file
+	defw 0	; address of currently open TAP file handle

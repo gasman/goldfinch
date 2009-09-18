@@ -9,7 +9,8 @@ LIBRARIES = \
 	asciiprint \
 	keyscan \
 	dirtywindow \
-	input
+	input \
+	tap
 
 all:
 	for l in $(LIBRARIES); do \

@@ -1,6 +1,7 @@
 ; Handler for non-maskable interrupts (aka The Magic Button)
 XLIB nmi
 XDEF nmi_show_new_page
+XDEF nmi_exit
 
 LIB print_dir
 LIB keyscan_wait_key
@@ -16,6 +17,9 @@ LIB dir_handler_run
 
 LIB scr_handler_test
 LIB scr_handler_run
+
+LIB tap_handler_test
+LIB tap_handler_run
 
 LIB current_dir
 LIB current_dirent
@@ -92,6 +96,7 @@ LIB save_scr
 	jr wait_key
 	
 .key_exit
+.nmi_exit
 	; wait for key to be released
 .wait_key_release
 	halt
@@ -160,6 +165,9 @@ LIB save_scr
 
 	call scr_handler_test	; is it a .scr?
 	jp c,scr_handler_run
+
+	call tap_handler_test	; is it a .tap?
+	jp c,tap_handler_run
 
 	jp wait_key	; all handlers failed - do nothing
 	; if this is a directory, open it as a directory and redo listing
