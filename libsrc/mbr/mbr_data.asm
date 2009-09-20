@@ -4,6 +4,7 @@ XDEF mbr_next_partition_entry
 XDEF mbr_partition_entries
 
 include "mbr.def"
+include "../block_device/block_device.def"
 
 .mbr_data
 

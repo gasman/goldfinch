@@ -1,6 +1,8 @@
 ; Definitions for MBR / partition support
 
-include "../block_device/block_device.def"
+;include "../block_device/block_device.def"
+;relative paths don't work when doing nested includes, so let's annoyingly hard-code blockdev_size instead
+defc mbr_blockdev_size = 4
 
 ; structure of a partition_info struct (i.e. the translation of an MBR partition record)
 defvars 0 {
@@ -12,7 +14,7 @@ defvars 0 {
 
 ; structure of a partition block device data area
 defvars 0 {
-	partition_data_block_device	ds.b blockdev_size	; copy of the underlying block device
+	partition_data_block_device	ds.b mbr_blockdev_size	; copy of the underlying block device
 	partition_data_offset	ds.l 1	; block number of underlying device at which the partition starts
 	partition_data_size
 }

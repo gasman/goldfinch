@@ -21,7 +21,16 @@ LIB clear_screen
 
 LIB firmware_is_active
 
+LIB firmware_tmp_volume
+LIB firmware_tmp_partition_info
+
+LIB mbr_init
+LIB mbr_has_boot_signature
+LIB mbr_get_partition_info_asm
+LIB mbr_open_partition
+
 include "../../libsrc/divide/divide.def"
+include "../../libsrc/mbr/mbr.def"
 
 .startup
 	ld bc,0x7ffd	; set paging register
@@ -37,6 +46,7 @@ include "../../libsrc/divide/divide.def"
 	
 	call buffer_emptybuffers
 	call fatfs_init
+	call mbr_init
 	ld hl,0
 	ld (dir_page_start),hl
 	xor a
@@ -45,14 +55,54 @@ include "../../libsrc/divide/divide.def"
 	ld a,DIVIDE_DRIVE_MASTER
 	call divide_open_drive_asm
 	; returns block device in hl
+	ld (firmware_tmp_volume),hl
 	
 	ld ix,current_filesystem
+	; try to open the whole drive as a FAT volume
 	call fatfs_fsopen_asmentry
+	jr c,fat_whole_volume_ok
+	
+	; failing that, look for an MBR
+	ld hl,(firmware_tmp_volume)
+	call mbr_has_boot_signature
+	ld a,l
+	or a
+	jr z,no_fat_found
 
+	; loop over the four partition records in the MBR, looking for FAT
+	ld c,0
+.check_next_partition_record
+	push bc
+	ld ix,(firmware_tmp_volume)
+	ld hl,firmware_tmp_partition_info
+	call mbr_get_partition_info_asm
+	pop bc
+	; checked whether the received partition record has one of the known type codes for FAT16
+	ld a,(firmware_tmp_partition_info + partition_info_partition_type)
+	cp partition_type_fat16_small
+	jr z,found_fat_partition
+	cp partition_type_fat16_large
+	jr z,found_fat_partition
+	cp partition_type_fat16_lba
+	jr z,found_fat_partition
+	inc c	; no match, so try again with the next record
+	bit 2,c	; while c < 4
+	jr z,check_next_partition_record
+	jr no_fat_found
+	
+.found_fat_partition
+	ld hl,firmware_tmp_partition_info
+	call mbr_open_partition	; returns block device for partition in HL
+	ld ix,current_filesystem
+	; open the partition as a FAT volume
+	call fatfs_fsopen_asmentry
+	
+.fat_whole_volume_ok
 	ld hl,current_filesystem
 	ld de,current_dir
 	call open_root_dir_asmentry
 	
+.no_fat_found
 	; Set up vector table to test for IM2
 	ld hl,0x3d00
 	ld de,0x3d01

@@ -2,6 +2,7 @@
 XLIB mbr_open_partition
 
 include "mbr.def"
+include "../block_device/block_device.def"
 
 LIB mbr_next_partition_entry
 LIB read_block_asm

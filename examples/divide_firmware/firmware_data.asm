@@ -25,7 +25,11 @@ XDEF reg_store_end
 
 XDEF nmi_final_ret
 
+XDEF firmware_tmp_volume
+XDEF firmware_tmp_partition_info
+
 include "../../libsrc/lowio/lowio.def"
+include "../../libsrc/mbr/mbr.def"
 
 .firmware_data
 
@@ -83,3 +87,8 @@ include "../../libsrc/lowio/lowio.def"
 ; used to exit the nmi routine
 .nmi_final_ret
 	defs 3
+
+.firmware_tmp_volume
+	defw 0	; temporary storage for a pointer to the block device we're working with
+.firmware_tmp_partition_info
+	defs partition_info_size
