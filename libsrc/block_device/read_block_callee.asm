@@ -17,7 +17,7 @@ include	"block_device.def"
 	;         bcde = LBA sector number
 	;         ix = pointer to BLOCK_DEVICE structure
 	; exit  : carry set if successful
-	; uses  : potentially anything, because it calls a child function...
+	; Child functions MUST preserve IX
 .read_block_asm
 	push hl	; save buffer address
 	ld l,(ix + blockdev_driver + 0)	; get pointer to device driver in hl

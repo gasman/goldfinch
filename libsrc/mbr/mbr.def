@@ -1,0 +1,35 @@
+; Definitions for MBR / partition support
+
+include "../block_device/block_device.def"
+
+; structure of a partition_info struct (i.e. the translation of an MBR partition record)
+defvars 0 {
+	partition_info_block_device	ds.w 1	; pointer to the underlying block device
+	partition_info_partition_type	ds.b 1	; partition_type code byte
+	partition_info_start_block	ds.l 1	; block number at which partition starts
+	partition_info_size
+}
+
+; structure of a partition block device data area
+defvars 0 {
+	partition_data_block_device	ds.b blockdev_size	; copy of the underlying block device
+	partition_data_offset	ds.l 1	; block number of underlying device at which the partition starts
+	partition_data_size
+}
+
+defc MBR_PARTITION_COUNT = 8	; number of partition block devices to reserve space for
+
+; partition type codes
+defgroup
+{
+	partition_type_empty = $00,
+	partition_type_fat12 = $01,
+	partition_type_fat16_small = $04,
+	partition_type_extended = $05,
+	partition_type_fat16_large = $06,
+	partition_type_fat32 = $0b,
+	partition_type_fat32_lba = $0c,
+	partition_type_fat16_lba = $0e,
+	partition_type_extended_lba = $0f,
+	partition_type_altos = $7f
+}

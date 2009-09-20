@@ -1,4 +1,14 @@
-all: simple_io.tap sector_dump.tap trdos.tap fatfs_dir.tap screenbrowser0 fatfs_write.tap divide_firmware0
+EXAMPLES = \
+	simple_io.tap \
+	sector_dump.tap \
+	trdos.tap \
+	fatfs_dir.tap \
+	screenbrowser0 \
+	fatfs_write.tap \
+	divide_firmware0 \
+	mbr.tap
+
+all: ${EXAMPLES}
 
 sector_dump.tap: loader.bas.tap sector_dump.bin.tap
 	cat loader.bas.tap sector_dump.bin.tap > sector_dump.tap
@@ -51,6 +61,16 @@ fatfs_write.bin.tap: fatfs_write.bin
 
 fatfs_write.bin: ../include/fatfs.h fatfs_write.c
 	zcc +zx -vn -m fatfs_write.c -o fatfs_write.bin -lndos -Ca-i../lib/buffer -Ca-i../lib/divide -Ca-i../lib/block_device -Ca-i../lib/lowio -Ca-i../lib/fatfs
+
+
+mbr.tap: loader.bas.tap mbr.bin.tap
+	cat loader.bas.tap mbr.bin.tap > mbr.tap
+
+mbr.bin.tap: mbr.bin
+	bintap mbr.bin mbr.bin.tap mbr 32768 > /dev/null
+
+mbr.bin: ../include/mbr.h mbr.c
+	zcc +zx -vn -m mbr.c -o mbr.bin -lndos -Ca-i../lib/buffer -Ca-i../lib/divide -Ca-i../lib/block_device -Ca-i../lib/mbr -Ca-i../lib/lowio -Ca-i../lib/fatfs
 
 
 screenbrowser0:

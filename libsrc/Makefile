@@ -10,7 +10,8 @@ LIBRARIES = \
 	keyscan \
 	dirtywindow \
 	input \
-	tap
+	tap \
+	mbr
 
 all:
 	for l in $(LIBRARIES); do \
