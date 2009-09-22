@@ -29,6 +29,10 @@ LIB mbr_has_boot_signature
 LIB mbr_get_partition_info_asm
 LIB mbr_open_partition
 
+LIB asciiprint_font
+LIB font_is_in_ram
+LIB exit_ret
+
 include "../../libsrc/divide/divide.def"
 include "../../libsrc/mbr/mbr.def"
 
@@ -43,6 +47,26 @@ include "../../libsrc/mbr/mbr.def"
 	ld a,(firmware_is_active)
 	cp 0x42
 	ret z	; skip startup if already active
+	
+	; check whether font is in RAM ready to be copied to DivIDE RAM
+	ld a,(font_is_in_ram)
+	dec a
+	jr z,copy_font_to_divide
+; copy copy_font routine to RAM
+	ld hl,copy_font
+	ld de,0x4000
+	push de
+	ld bc,copy_font_end - copy_font
+	ldir
+	ld a,1
+	ld (font_is_in_ram),a
+	jp exit_ret	; jump to 0x4000 to copy font to RAM, then return here
+	
+.copy_font_to_divide
+	ld hl,0x4100
+	ld de,asciiprint_font
+	ld bc,0x0300
+	ldir
 	
 	call buffer_emptybuffers
 	call fatfs_init
@@ -117,3 +141,11 @@ include "../../libsrc/mbr/mbr.def"
 	ld (firmware_is_active),a
 	
 	ret
+
+.copy_font
+	ld hl,0x3d00
+	ld de,0x4100
+	ld bc,0x0300
+	ldir
+	rst 0x00
+.copy_font_end

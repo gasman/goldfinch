@@ -14,6 +14,7 @@ XDEF input_filename
 XDEF current_tap_file
 
 XDEF firmware_is_active
+XDEF font_is_in_ram
 
 XDEF reg_store_iff
 XDEF reg_store_im
@@ -27,6 +28,8 @@ XDEF nmi_final_ret
 
 XDEF firmware_tmp_volume
 XDEF firmware_tmp_partition_info
+
+XDEF asciiprint_font
 
 include "../../libsrc/lowio/lowio.def"
 include "../../libsrc/mbr/mbr.def"
@@ -94,3 +97,6 @@ include "../../libsrc/mbr/mbr.def"
 	defw 0	; temporary storage for a pointer to the block device we're working with
 .firmware_tmp_partition_info
 	defs partition_info_size
+	
+.asciiprint_font
+	defs 0x300
