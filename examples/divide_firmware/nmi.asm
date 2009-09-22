@@ -29,6 +29,9 @@ LIB dir_home
 
 LIB save_scr
 
+	defc background_colour = 0x38	; black on nonbright white
+	defc highlight_colour = 0x68	; black on bright cyan
+
 .nmi
 	; save screen
 	ld a,1
@@ -50,7 +53,7 @@ LIB save_scr
 	; TODO: some appropriate behaviour if dir is entirely empty (dir_this_page_count = 0)
 	
 	ld a,(dir_selected_entry)
-	ld c,0x78	; add highlight
+	ld c,highlight_colour	; add highlight
 	call paint_row
 	
 	; wait for key
@@ -72,11 +75,11 @@ LIB save_scr
 	ld a,(dir_selected_entry)	; are we on the first entry?
 	or a
 	jr z,prev_page	; if so, need to go up to previous page (if that's possible)
-	ld c,0x38	; remove highlight
+	ld c,background_colour	; remove highlight
 	call paint_row
 	dec a
 	ld (dir_selected_entry),a
-	ld c,0x78	; add highlight
+	ld c,highlight_colour	; add highlight
 	call paint_row
 	jr wait_key
 
@@ -87,11 +90,11 @@ LIB save_scr
 	cp (hl)
 	dec a
 	jr nc,next_page	; if so, need to go down to next page (if that's possible)
-	ld c,0x38	; remove highlight
+	ld c,background_colour	; remove highlight
 	call paint_row
 	inc a
 	ld (dir_selected_entry),a
-	ld c,0x78	; add highlight
+	ld c,highlight_colour	; add highlight
 	call paint_row
 	jr wait_key
 	
