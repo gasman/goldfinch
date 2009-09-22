@@ -1,7 +1,6 @@
 CFILES = 
 
 AFILES = \
-	asciiprint_font.asm \
 	asciiprint_data.asm \
 	asciiprint_putchar.asm \
 	asciiprint_calcpos.asm \

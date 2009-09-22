@@ -11,7 +11,8 @@ LIBRARIES = \
 	dirtywindow \
 	input \
 	tap \
-	mbr
+	mbr \
+	clairsys_font
 
 all:
 	for l in $(LIBRARIES); do \

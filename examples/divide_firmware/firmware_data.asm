@@ -57,6 +57,8 @@ include "../../libsrc/mbr/mbr.def"
 
 .firmware_is_active
 	defb 0	; will be 0x42 if active (indicating that we should not reinitialize file handles on reset)
+.font_is_in_ram
+	defb 0	; will be 0x01 if font is in screen memory ready to be copied to DivIDE RAM
 	
 ; storage space for registers during NMI
 .reg_store_iff
