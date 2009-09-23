@@ -28,6 +28,7 @@ LIB read_dir_asmentry
 LIB dir_home
 
 LIB save_scr
+LIB open_tap_for_writing
 
 	defc background_colour = 0x38	; black on nonbright white
 	defc highlight_colour = 0x68	; black on bright cyan
@@ -69,6 +70,8 @@ LIB save_scr
 	jp z,key_select
 	cp '$'
 	jp z,save_scr
+	cp 'T'
+	jp z,open_tap_for_writing
 	jr wait_key
 	
 .key_up

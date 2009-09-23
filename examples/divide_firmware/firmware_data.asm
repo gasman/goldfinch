@@ -12,6 +12,7 @@ XDEF dir_selected_entry
 XDEF input_filename
 
 XDEF current_tap_file
+XDEF current_write_tap_file
 
 XDEF firmware_is_active
 XDEF font_is_in_ram
@@ -57,6 +58,8 @@ include "../../libsrc/mbr/mbr.def"
 
 .current_tap_file
 	defw 0	; address of currently open TAP file handle
+.current_write_tap_file
+	defw 0	; address of currently open TAP file handle for writing
 
 .firmware_is_active
 	defb 0	; will be 0x42 if active (indicating that we should not reinitialize file handles on reset)

@@ -25,7 +25,8 @@ AFILES = \
 	scr_handler.asm \
 	save_scr.asm \
 	check_file_extension.asm \
-	tap_handler.asm
+	tap_handler.asm \
+	open_tap_for_writing.asm
 	
 OBJECTS = $(AFILES:.asm=.obj)
 
@@ -62,6 +63,8 @@ check_file_extension.obj: check_file_extension.asm
 	z80asm check_file_extension.asm
 tap_handler.obj: tap_handler.asm
 	z80asm tap_handler.asm
+open_tap_for_writing.obj: open_tap_for_writing.asm
+	z80asm open_tap_for_writing.asm
 
 clean:
 	rm -f *.o* *.sym *.map *.err zcc_opt.def *.i *.tap *.bin
