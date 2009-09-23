@@ -45,6 +45,7 @@ AFILES = \
 	fatfs_create_file.asm \
 	fatfs_seek_file.asm \
 	fatfs_read_byte.asm \
+	fatfs_file_sanitise_filename.asm
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)

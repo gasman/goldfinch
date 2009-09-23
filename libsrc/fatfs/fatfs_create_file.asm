@@ -2,6 +2,7 @@ XLIB fatfs_create_file
 
 LIB fatfs_file_create_entry
 LIB fatfs_open_dirent
+LIB fatfs_file_sanitise_filename
 
 include	"../lowio/lowio.def"
 
@@ -11,6 +12,8 @@ include	"../lowio/lowio.def"
 	push bc	; save acces mode
 
 	push hl
+	
+	call fatfs_file_sanitise_filename	; ensure that passed filename is valid
 
 	; get partition handle into ix
 	ld l,(iy + dir_filesystem + filesystem_fatfs_phandle)

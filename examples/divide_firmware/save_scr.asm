@@ -28,24 +28,6 @@ include "../../libsrc/fatfs/fatfs.def"	; for fm_exc_write
 	; exit if input cancelled (carry reset)
 	jp nc,nmi_show_new_page
 	
-	; upcase the filename, to satisfy fatfs 8.3 filename convention -
-	; this will probably go in fatfs_create_file at some point, with some other sanity checks
-	; such as length
-	ld hl,input_filename
-.upcase
-	ld a,(hl)
-	or a
-	jr z,upcase_done
-	cp 'a'
-	jr c,not_alpha	; chars below 'a' don't need capitalising
-	cp 'z'+1
-	jr nc,not_alpha	; chars above 'z' don't need capitalising
-	res 5,(hl)	; reset bit 5 to capitalise
-.not_alpha
-	inc hl
-	jr upcase
-.upcase_done
-
 	; restore screen
 	di	; don't let interrupt routine write to RAM (because this will overwrite the screen)
 	ld a,1
