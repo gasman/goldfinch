@@ -1,4 +1,5 @@
 XLIB fatfs_file_commit
+XDEF fatfs_flush_file
 
 LIB buffer_flushbuffers
 LIB buffer_writebuf
@@ -6,6 +7,15 @@ LIB fatfs_dir_getentry
 
 include	"../lowio/lowio.def"
 include	"fatfs.def"
+
+; fatfs_flush_file - alternative entry point used by lowio driver,
+; where only IY needs to be defined
+.fatfs_flush_file
+	; get partition handle into ix
+	ld l,(iy + filesystem_fatfs_phandle)
+	ld h,(iy + filesystem_fatfs_phandle + 1)
+	push hl
+	pop ix
 
 ; ***************************************************************************
 ; * Write file header, update directory & FAT and commit changes            *

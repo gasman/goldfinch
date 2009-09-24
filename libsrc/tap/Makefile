@@ -1,7 +1,8 @@
 CFILES = 
 
 AFILES = \
-	tap_load_block_callee.asm
+	tap_load_block_callee.asm \
+	tap_save_block_callee.asm
 	
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)
