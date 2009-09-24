@@ -22,5 +22,5 @@ include "lowio.def"
 		add hl,bc
 		pop bc
 	ENDIF
-	ex (sp),hl	; restore buffer address and save jump address for read_file
-	ret	; jump to read_read_file handler routine
+	ex (sp),hl	; restore buffer address and save jump address for write_file
+	ret	; jump to write_file handler routine

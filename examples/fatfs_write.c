@@ -45,13 +45,7 @@ int main() {
 	write_file(file, stringtowrite, 12);
 	write_file(file, stringtowrite, 12);
 	write_file(file, stringtowrite, 12);
-	write_file(file, stringtowrite, 12);
-	write_file(file, stringtowrite, 12);
-	write_file(file, stringtowrite, 12);
-	write_file(file, stringtowrite, 12);
-	write_file(file, stringtowrite, 12);
-	write_file(file, stringtowrite, 12);
-	write_file(file, stringtowrite, 12);
+	write_byte(file, 0x99);
 	printf("written to file\n");
 	close_file(file);
 

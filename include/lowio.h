@@ -80,6 +80,7 @@ extern int __LIB__ __CALLEE__ open_subdir_callee(DIRENT *dirent, DIR *dir);
 extern int __LIB__ __CALLEE__ write_file_callee(FSFILE *file, void *buf, unsigned int nbyte);
 extern FSFILE __LIB__ __CALLEE__ *create_file_callee(DIR *dir, char *filename, unsigned char access_mode);
 extern void __LIB__ __CALLEE__ seek_file_callee(FSFILE *file, unsigned long pos);
+extern void __LIB__ __CALLEE__ write_byte_callee(FSFILE *file, unsigned char byte);
 
 // And now we make CALLEE linkage default to make compiled progs shorter and faster
 // These defines will generate warnings for function pointers but that's ok
@@ -91,5 +92,6 @@ extern void __LIB__ __CALLEE__ seek_file_callee(FSFILE *file, unsigned long pos)
 #define write_file(a,b,c) write_file_callee(a,b,c)
 #define create_file(a,b,c) create_file_callee(a,b,c)
 #define seek_file(a,b) seek_file_callee(a,b)
+#define write_byte(a,b) write_byte_callee(a,b)
 
 #endif
