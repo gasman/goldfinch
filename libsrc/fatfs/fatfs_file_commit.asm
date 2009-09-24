@@ -27,6 +27,7 @@ include	"fatfs.def"
 ; ABCDEHL corrupt
 
 ; TBD: Would be nice to update date & time if we had a RTC.
+; TODO: Invalidate file sizes (+ other dir information?) of other handles open to the same file
 	
 .fatfs_file_commit
 	bit	fm_write,(iy+file_fatfs_mode)	; write access?

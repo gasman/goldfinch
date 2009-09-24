@@ -13,7 +13,6 @@ include	"fatfs.def"
 ; ***************************************************************************
 ; Entry: IY=filehandle, IX=fatfs partition handle (lowio.def)
 ;	 C=access mode: bit 0=read, bit 1=write, bit 2=shared
-;                       (shared only allowed with read)
 ; Or enter at file_validate access with: IY=filehandle (filled in except mode)
 ;					 C=access mode, B=0
 ; Exit: Fc=1 (success)
@@ -35,18 +34,23 @@ include	"fatfs.def"
 	jr	c,file_set_unshared	; okay if not open to other handle
 	bit	fm_shared,c		; if open, must stay shared
 	jr	z,file_set_bad
-	cp	fm_shared_read		; and other file must be shared read
-	jr	nz,file_set_bad
+	bit	fm_shared,a		; and other file must be shared
+	jr	z,file_set_bad
+	; if new handle has write access, old one must not
+	bit fm_write,c
+	jr z,file_shared_readonly
+	bit fm_write,a
+	jr nz,file_set_bad	; fail if old file has write access too
+.file_shared_readonly
+
 .file_set_unshared
-	ld	a,c			; check desired mode
-	cp	fm_exc_read		; read is always okay
-	jr	z,file_set_okay
-	cp	fm_shared_read		; read is always okay
-	jr	z,file_set_okay
-	cp	fm_exc_write		; write needs checking
-	jr	z,file_set_write
-	cp	fm_exc_rw		; write needs checking
-	jr	nz,file_set_bad		; any other combination is bogus
+	; strip out non-access bits of C
+	ld a,c
+	and fm_access_mask
+	ld c,a
+
+	bit fm_write,c	; test for write access
+	jr	z,file_set_okay	; read is always okay
 .file_set_write
 	push	bc
 	call	fatfs_dir_entrydetails	; get A=attributes

@@ -32,7 +32,7 @@ include "../../libsrc/lowio/lowio.def"
 	call nz,close_file
 	
 	ld ix,current_dirent
-	ld c,1 ; read access
+	ld c,0x05 ; shared read access
 	call open_dirent_asmentry
 	; returns file handle in hl
 	ld (current_tap_file),hl

@@ -39,7 +39,7 @@ include "../../libsrc/fatfs/fatfs.def"	; for fm_exc_write
 	; create file
 	ld iy,current_dir
 	ld hl,input_filename
-	ld c,fm_exc_write
+	ld c,0x06	; shared write access
 	call create_file_asmentry	; returns with file handle in hl
 	ld (current_write_tap_file),hl
 	
