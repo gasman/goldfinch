@@ -14,7 +14,8 @@ AFILES = \
 	read_byte.asm \
 	get_file_pos.asm \
 	write_byte_callee.asm \
-	flush_file.asm
+	flush_file.asm \
+	file_is_eof.asm
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)

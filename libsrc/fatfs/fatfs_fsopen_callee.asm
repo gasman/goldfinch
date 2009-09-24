@@ -21,6 +21,7 @@ LIB fatfs_read_byte
 LIB fatfs_file_getfilepos
 LIB fatfs_write_byte
 LIB fatfs_flush_file
+LIB fatfs_file_is_eof
 
 include	"../lowio/lowio.def"
 include	"fatfs.def"
@@ -159,3 +160,4 @@ include	"fatfs.def"
 	jp fatfs_file_getfilepos
 	jp fatfs_write_byte
 	jp fatfs_flush_file
+	jp fatfs_file_is_eof
