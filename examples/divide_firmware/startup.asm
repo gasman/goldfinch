@@ -37,12 +37,35 @@ include "../../libsrc/divide/divide.def"
 include "../../libsrc/mbr/mbr.def"
 
 .startup
+
+; a nice long delay to let the hardware settle down into whatever state it
+; evidently needs to settle down into
+	ld b,0x40
+.wait
+	dec bc
+	ld a,b
+	or c
+	jr nz,wait
+
 	ld bc,0x7ffd	; set paging register
 	ld a,0x10	; 48K ROM enabled, paging active, page 0 paged in
 	out (c),a	; force usr0 mode - otherwise entering usr0 in 128K Basic gets us stuck in a loop
 	
 	xor a
 	out (0xe3),a	; page in DivIDE RAM page 0
+	
+	ld bc,0x7ffe
+	in a,(c)	; test for space; force startup if pressed
+	and 0x01
+	jr nz,no_force_startup
+	ld (firmware_is_active),a
+	ld (font_is_in_ram),a
+	; wait for space to be released
+.release_space
+	in a,(c)
+	and 0x01
+	jr z,release_space
+.no_force_startup
 	
 	ld a,(firmware_is_active)
 	cp 0x42
@@ -52,6 +75,7 @@ include "../../libsrc/mbr/mbr.def"
 	ld a,(font_is_in_ram)
 	dec a
 	jr z,copy_font_to_divide
+
 ; copy copy_font routine to RAM
 	ld hl,copy_font
 	ld de,0x4000
