@@ -24,38 +24,32 @@ LIB write_file_asmentry
 	push af	; save flag byte
 	push de	; save block length
 	push ix	; save start address
-	push hl	; save file handle
 	push af	; save flag byte
-	push hl	; save file handle
-	push hl	; save file handle
 
 	inc de	; we will write a flag byte and checksum in addition to the stated block length
 	inc de
-	push de	; save incremented block length - stack = fh fb bl sa fh fb fh fh ibl
+	push de	; save incremented block length - stack = fh fb bl sa fb ibl
 	
 	push hl	; get file handle into iy
 	pop iy
 	ld c,e	; get low byte of incremented block length into C
 	call write_byte_asmentry	; write low byte of incremented block length
 
-	pop de	; restore incremented block length
-	pop iy	; restore file handle - stack = fh fb bl sa fh fb fh
+	pop de	; restore incremented block length - stack = fh fb bl sa fb
 	ld c,d	; get high byte of incremented block length into C
 	call write_byte_asmentry	; write high byte of incremented block length
 
-	; TODO: put it in the contract that write_byte and write_file preserve IY
-	
-	pop iy	; restore file handle
-	pop af	; restore flag byte - stack = fh fb bl sa fh
+	pop af	; restore flag byte - stack = fh fb bl sa
 	ld c,a	; get flag byte into C
 	call write_byte_asmentry	; write flag byte
 	
-	pop iy	; restore file handle
 	pop hl	; restore start address
 	pop de	; restore data length - stack = fh fb
 	push hl	; save start address
 	push de	; save data length - stack = fh fb sa bl
 	call write_file_asmentry	; write file data
+	
+	; TODO: put it in the contract that write_file preserves IY
 	
 	; calculate checksum
 	pop bc	; restore data length

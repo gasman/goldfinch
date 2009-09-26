@@ -11,7 +11,7 @@ include	"fatfs.def"
 ; ***************************************************************************
 ; Entry: IY=filehandle
 ; Exit: -
-; DEHL corrupt.
+; DEHL corrupt. IX + IY preserved
 
 .fatfs_file_maximisefilesize
 	call	fatfs_file_checkfilepos	; is filepos within size?

@@ -9,7 +9,8 @@ include	"../lowio/lowio.def"
 ; Exit: Fc=1 (success), DEHL=filepos (NB: This exceeds +3DOS specification!)
 ;       Fc=0 (failure), A=error
 ; ABCIXIY corrupt
-; Can enter at file_getfilepos if IY=filehandle already
+; Can enter at file_getfilepos if IY=filehandle already,
+; in which case IX + IY are preserved
 
 ;.file_get_position
 ;	call	file_gethandles		; handles to IY & IX

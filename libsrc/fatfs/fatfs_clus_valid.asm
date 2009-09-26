@@ -8,7 +8,7 @@ include "fatfs.def"
 ; On entry, IX=partition handle, BC=cluster number
 ; On exit, Fc=1 (success) if cluster is valid
 ; Or, Fc=0 (fail) if not
-; A corrupted.
+; A corrupted. IX + IY preserved
 
 .fatfs_clus_valid
 	push	hl

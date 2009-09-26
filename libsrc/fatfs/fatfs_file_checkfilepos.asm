@@ -7,7 +7,7 @@ include	"../lowio/lowio.def"
 ; ***************************************************************************
 ; Entry: IY=filehandle
 ; Exit: Fc=1 if fileposition within current file size, Fc=0 if not
-; DEHL corrupt.
+; DEHL corrupt. IX + IY preserved
 
 .fatfs_file_checkfilepos
 	ld	l,(iy+file_fatfs_filepos)

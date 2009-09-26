@@ -9,7 +9,7 @@ include "lowio.def"
 	pop bc	; get byte
 	pop iy	; get file
 	push hl	; restore return address
-; Entry: IY = file, C = byte
+; Entry: IY = file, C = byte. IY preserved (a requirement of write_byte handlers)
 .write_byte_asmentry
 	ld l,(iy + file_filesystem + filesystem_driver + 0)	; get pointer to filesystem driver in hl
 	ld h,(iy + file_filesystem + filesystem_driver + 1)

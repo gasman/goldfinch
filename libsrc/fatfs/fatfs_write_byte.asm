@@ -14,7 +14,7 @@ include	"../lowio/lowio.def"
 ; Entry: IY=file handle, C=byte
 ; Exit: Fc=1 (success)
 ;       Fc=0 (failure), A=error
-; ABCDEHLIXIY corrupt
+; ABCDEHLIX corrupt, IY preserved
 
 .fatfs_write_byte
 	; get partition handle (fph) into IX;
