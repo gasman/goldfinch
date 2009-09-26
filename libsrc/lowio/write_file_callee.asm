@@ -11,6 +11,7 @@ include "lowio.def"
 	pop iy	; get file
 	push bc	; restore return address
 ; Entry: IY = file, HL=address, DE=size (0==64K)
+; IY preserved (a requirement of write_file handlers)
 .write_file_asmentry
 	push hl	; save buffer
 	ld l,(iy + file_filesystem + filesystem_driver + 0)	; get pointer to filesystem driver in hl

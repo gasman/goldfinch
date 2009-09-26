@@ -19,7 +19,7 @@ include	"../lowio/lowio.def"
 ;       Fc=0 (failure), A=error, DE=bytes remaining unread
 ; Soft-EOF ($1a) is not considered.
 ; Attempting to read over the ROM area is an error. TBD: Should we trap this?
-; ABCDEHLIXIY corrupt
+; ABCDEHLIX corrupt. IY preserved
 
 .fatfs_file_write
 	; get partition handle into ix
