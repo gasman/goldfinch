@@ -32,20 +32,16 @@ LIB mbr_open_partition
 LIB asciiprint_font
 LIB font_is_in_ram
 LIB exit_ret
+LIB divide_flush_buffers
 
 include "../../libsrc/divide/divide.def"
 include "../../libsrc/mbr/mbr.def"
 
 .startup
 
-; a nice long delay to let the hardware settle down into whatever state it
-; evidently needs to settle down into
-	ld b,0x40
-.wait
-	dec bc
-	ld a,b
-	or c
-	jr nz,wait
+; flush DivIDE buffers, giving a nice long delay to let the hardware
+; settle down into whatever state it evidently needs to settle down into
+	call divide_flush_buffers
 
 	ld bc,0x7ffd	; set paging register
 	ld a,0x10	; 48K ROM enabled, paging active, page 0 paged in

@@ -29,6 +29,7 @@ LIB dir_home
 
 LIB save_scr
 LIB open_tap_for_writing
+LIB divide_flush_buffers
 
 	defc background_colour = 0x38	; black on nonbright white
 	defc highlight_colour = 0x68	; black on bright cyan
@@ -44,6 +45,7 @@ LIB open_tap_for_writing
 	
 	xor a
 	out (0xe3),a	; page in DivIDE RAM page 0 at 0x2000..0x3fff
+	call divide_flush_buffers
 	
 	ei
 	

@@ -52,7 +52,7 @@ LIB nmi_final_ret
 	ex (sp),hl	; restore hl and push return address
 	jp exit_ret
 .do_reset	; rst 00 handler continues here
-	ld sp,0x0000	; put SP somewhere usable
+	ld sp,0x8000	; put SP somewhere usable
 	call startup
 	ld hl,rst00_continue	; set return address to the next ROM instruction
 	jp exit_jphl	; and return there via firmware exit point

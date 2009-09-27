@@ -11,6 +11,7 @@
 extern void __LIB__ divide_read_block(BLOCK_DEVICE *device, void *buffer, unsigned long block_number);
 extern void __LIB__ divide_write_block(BLOCK_DEVICE *device, void *buffer, unsigned long block_number);
 extern BLOCK_DEVICE __LIB__ __FASTCALL__ *divide_open_drive(unsigned char drive_number);
+extern void __LIB__ divide_flush_buffers(void);
 
 // And now a list of the same non-FASTCALL functions using CALLEE linkage
 extern void __LIB__ __CALLEE__ divide_read_block_callee(BLOCK_DEVICE *device, void *buffer, unsigned long block_number);

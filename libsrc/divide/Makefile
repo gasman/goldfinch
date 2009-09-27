@@ -7,7 +7,8 @@ AFILES = \
 	divide_write_block.asm \
 	divide_write_block_asm.asm \
 	divide_write_block_callee.asm \
-	divide_open_drive.asm
+	divide_open_drive.asm \
+	divide_flush_buffers.asm
 
 OBJECTS = $(CFILES:.c=.o)
 MODULE_NAMES = $(OBJECTS:.o=) $(AFILES:.asm=)
