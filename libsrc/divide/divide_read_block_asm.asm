@@ -3,11 +3,12 @@
 XLIB divide_read_block_asm
 
 include	"divide.def"
+include	"../errors/errors.def"
 
 	; enter : hl = buffer address
 	;         bcde = LBA sector number
 	;         ix = pointer to BLOCK_DEVICE structure
-	; exit  : carry set if successful
+	; exit  : carry set if successful, carry reset and A=error code on error
 	; uses  : af, bc, de, hl, af'
 .divide_read_block_asm
 	ld a,20	; attempt read up to 20 times
@@ -61,6 +62,7 @@ include	"divide.def"
 	dec a	; decrement retry counter
 	jr nz,retry
 	; too many failures; signal error
+	ld a,err_ide_read_bounce
 	or a	; reset carry flag
 	ret
 .success
@@ -69,4 +71,5 @@ include	"divide.def"
 .ide_error
 	pop bc
 	pop de
+	ld a,err_ide_read_failure
 	ret

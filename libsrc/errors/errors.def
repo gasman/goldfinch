@@ -1,0 +1,6 @@
+defgroup {
+	err_ide_read_failure,	; an error reported by the IDE device's error during a read operation
+	err_ide_read_bounce,
+	err_unrecognised_boot_record,
+	err_no_usable_partitions
+}

@@ -34,10 +34,11 @@ LIB font_is_in_ram
 LIB exit_ret
 LIB divide_flush_buffers
 
-LIB show_notification
+LIB error_popup
 
 include "../../libsrc/divide/divide.def"
 include "../../libsrc/mbr/mbr.def"
+include "../../libsrc/errors/errors.def"
 
 .startup
 
@@ -113,7 +114,7 @@ include "../../libsrc/mbr/mbr.def"
 	; failing that, look for an MBR
 	ld hl,(firmware_tmp_volume)
 	call mbr_has_boot_signature
-	jr nc,mbr_error
+	jr nc,fat_init_error
 	ld a,l
 	or a
 	jr z,mbr_unknown
@@ -139,9 +140,8 @@ include "../../libsrc/mbr/mbr.def"
 	jr z,check_next_partition_record
 
 ; no fat partitions found
-	ld hl,msg_no_fat_partitions
-	call show_notification
-	jr resume_without_fat
+	ld a,err_no_usable_partitions
+	jr fat_init_error
 	
 .found_fat_partition
 	ld hl,firmware_tmp_partition_info
@@ -171,25 +171,11 @@ include "../../libsrc/mbr/mbr.def"
 	
 	ret
 
-.mbr_error
-	ld hl,msg_mbr_error
-	call show_notification
-	jr resume_without_fat
-	
 .mbr_unknown
-	ld hl,msg_unknown_mbr
-	call show_notification
+	ld a,err_unrecognised_boot_record
+.fat_init_error
+	call error_popup
 	jr resume_without_fat
-	
-.msg_mbr_error
-	defm "Failed to read MBR"
-	defb 0
-.msg_unknown_mbr
-	defm "Unknown boot record"
-	defb 0
-.msg_no_fat_partitions
-	defm "No FAT partitions found"
-	defb 0
 
 .copy_font
 	ld hl,0x3d00

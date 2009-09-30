@@ -12,7 +12,8 @@ LIBRARIES = \
 	input \
 	tap \
 	mbr \
-	clairsys_font
+	clairsys_font \
+	errors
 
 all:
 	for l in $(LIBRARIES); do \

@@ -27,7 +27,7 @@ AFILES = \
 	check_file_extension.asm \
 	tap_handler.asm \
 	open_tap_for_writing.asm \
-	show_notification.asm
+	error_popup.asm
 	
 OBJECTS = $(AFILES:.asm=.obj)
 
@@ -66,8 +66,8 @@ tap_handler.obj: tap_handler.asm
 	z80asm tap_handler.asm
 open_tap_for_writing.obj: open_tap_for_writing.asm
 	z80asm open_tap_for_writing.asm
-show_notification.obj: show_notification.asm
-	z80asm show_notification.asm
+error_popup.obj: error_popup.asm
+	z80asm error_popup.asm
 
 clean:
 	rm -f *.o* *.sym *.map *.err zcc_opt.def *.i *.tap *.bin
