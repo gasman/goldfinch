@@ -34,6 +34,8 @@ LIB font_is_in_ram
 LIB exit_ret
 LIB divide_flush_buffers
 
+LIB show_notification
+
 include "../../libsrc/divide/divide.def"
 include "../../libsrc/mbr/mbr.def"
 
@@ -56,6 +58,8 @@ include "../../libsrc/mbr/mbr.def"
 	jr nz,no_force_startup
 	ld (firmware_is_active),a
 	ld (font_is_in_ram),a
+	ld hl,0
+	ld (current_dir),hl
 	; wait for space to be released
 .release_space
 	in a,(c)
@@ -109,9 +113,10 @@ include "../../libsrc/mbr/mbr.def"
 	; failing that, look for an MBR
 	ld hl,(firmware_tmp_volume)
 	call mbr_has_boot_signature
+	jr nc,mbr_error
 	ld a,l
 	or a
-	jr z,no_fat_found
+	jr z,mbr_unknown
 
 	; loop over the four partition records in the MBR, looking for FAT
 	ld c,0
@@ -132,7 +137,11 @@ include "../../libsrc/mbr/mbr.def"
 	inc c	; no match, so try again with the next record
 	bit 2,c	; while c < 4
 	jr z,check_next_partition_record
-	jr no_fat_found
+
+; no fat partitions found
+	ld hl,msg_no_fat_partitions
+	call show_notification
+	jr resume_without_fat
 	
 .found_fat_partition
 	ld hl,firmware_tmp_partition_info
@@ -146,7 +155,7 @@ include "../../libsrc/mbr/mbr.def"
 	ld de,current_dir
 	call open_root_dir_asmentry
 	
-.no_fat_found
+.resume_without_fat
 	; Set up vector table to test for IM2
 	ld hl,0x3d00
 	ld de,0x3d01
@@ -161,6 +170,26 @@ include "../../libsrc/mbr/mbr.def"
 	ld (firmware_is_active),a
 	
 	ret
+
+.mbr_error
+	ld hl,msg_mbr_error
+	call show_notification
+	jr resume_without_fat
+	
+.mbr_unknown
+	ld hl,msg_unknown_mbr
+	call show_notification
+	jr resume_without_fat
+	
+.msg_mbr_error
+	defm "Failed to read MBR"
+	defb 0
+.msg_unknown_mbr
+	defm "Unknown boot record"
+	defb 0
+.msg_no_fat_partitions
+	defm "No FAT partitions found"
+	defb 0
 
 .copy_font
 	ld hl,0x3d00

@@ -49,6 +49,12 @@ LIB divide_flush_buffers
 	
 	ei
 	
+	; do not show menu if there is no current_dir (i.e. no FAT partition found)
+	ld hl,(current_dir)
+	ld a,h
+	or l
+	jr z,nmi_exit
+	
 .nmi_show_new_page	; entry point from change-directory handler (and others)
 .show_new_page
 	ld bc,(dir_page_start)	; print directory listing starting from dir_page_start

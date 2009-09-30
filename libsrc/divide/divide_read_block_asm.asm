@@ -41,7 +41,7 @@ include	"divide.def"
 	; check for error
 	in a,(0xa7)	; error reg
 	and 0x10	; if bit 4 set, error occurred
-	ret nz	; exit with carry reset
+	jr nz,ide_error	; exit with carry reset
 	
 	ld bc,0x00a3 ; C = data register, 0x00 = loop x256
 	inir ; read first 256 bytes
@@ -65,4 +65,8 @@ include	"divide.def"
 	ret
 .success
 	scf	; indicate success
+	ret
+.ide_error
+	pop bc
+	pop de
 	ret
